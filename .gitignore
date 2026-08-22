@@ -1,0 +1,6 @@
+# Git ignore build artifacts and node_modules
+build/
+ui/node_modules/
+ui/dist/
+*.exe
+*.o

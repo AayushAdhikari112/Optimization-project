@@ -1,0 +1,18 @@
+{
+  "name": "opticore-ui",
+  "version": "1.0.0",
+  "description": "OptiCore Login UI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . OptiCore --platform=win32 --arch=x64 --out=dist --overwrite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^43.4.1",
+    "electron-packager": "^17.1.2"
+  }
+}
