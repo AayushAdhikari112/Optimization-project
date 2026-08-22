@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiCore | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <span>OptiCore</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" id="nav-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item" id="nav-disk">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                Disk Cleaner
+            </a>
+            <a href="#" class="nav-item" id="nav-memory">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
+                Memory
+            </a>
+            <a href="#" class="nav-item" id="nav-network">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Network
+            </a>
+            <a href="#" class="nav-item" id="nav-startup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Startup
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <span class="user-name">Admin</span>
+                    <span class="user-role">System Admin</span>
+                </div>
+            </div>
+            <a href="index.html" class="logout-btn" title="Logout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1>System Overview</h1>
+                <span class="topbar-sub" id="currentTime"></span>
+            </div>
+            <div class="topbar-right">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    System Healthy
+                </div>
+                <button class="scan-btn" id="runScanBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Run Full Scan
+                </button>
+            </div>
+        </header>
+
+        <!-- Stat Cards -->
+        <section class="stats-grid">
+            <div class="stat-card" id="card-cpu">
+                <div class="stat-header">
+                    <span class="stat-label">CPU Usage</span>
+                    <div class="stat-icon cpu-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="cpu-val">--</div>
+                <div class="stat-bar-wrap"><div class="stat-bar cpu-bar" id="cpu-bar"></div></div>
+                <div class="stat-footer">4 cores active</div>
+            </div>
+
+            <div class="stat-card" id="card-ram">
+                <div class="stat-header">
+                    <span class="stat-label">RAM Usage</span>
+                    <div class="stat-icon ram-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="ram-val">--</div>
+                <div class="stat-bar-wrap"><div class="stat-bar ram-bar" id="ram-bar"></div></div>
+                <div class="stat-footer">16 GB total</div>
+            </div>
+
+            <div class="stat-card" id="card-disk">
+                <div class="stat-header">
+                    <span class="stat-label">Disk Usage</span>
+                    <div class="stat-icon disk-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="disk-val">--</div>
+                <div class="stat-bar-wrap"><div class="stat-bar disk-bar" id="disk-bar"></div></div>
+                <div class="stat-footer">512 GB SSD</div>
+            </div>
+
+            <div class="stat-card" id="card-temp">
+                <div class="stat-header">
+                    <span class="stat-label">CPU Temp</span>
+                    <div class="stat-icon temp-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+                    </div>
+                </div>
+                <div class="stat-value" id="temp-val">--</div>
+                <div class="stat-bar-wrap"><div class="stat-bar temp-bar" id="temp-bar"></div></div>
+                <div class="stat-footer">Optimal range</div>
+            </div>
+        </section>
+
+        <!-- Quick Actions + Activity -->
+        <section class="bottom-grid">
+
+            <!-- Quick Actions -->
+            <div class="panel" id="quick-actions">
+                <div class="panel-header">
+                    <h3>Quick Actions</h3>
+                    <span class="panel-sub">One-click optimizations</span>
+                </div>
+                <div class="actions-list">
+                    <button class="action-btn" id="act-disk">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                        </div>
+                        <div class="action-text">
+                            <span>Clean Junk Files</span>
+                            <small>Temp, cache & recycle bin</small>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+                    <button class="action-btn" id="act-ram">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                        </div>
+                        <div class="action-text">
+                            <span>Free Up RAM</span>
+                            <small>Empty working sets</small>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+                    <button class="action-btn" id="act-dns">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        </div>
+                        <div class="action-text">
+                            <span>Flush DNS</span>
+                            <small>Clear DNS resolver cache</small>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+                    <button class="action-btn" id="act-startup">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <div class="action-text">
+                            <span>Manage Startup</span>
+                            <small>Disable slow boot apps</small>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="panel" id="activity-panel">
+                <div class="panel-header">
+                    <h3>Activity Log</h3>
+                    <span class="panel-sub">Recent optimizations</span>
+                </div>
+                <ul class="activity-list" id="activityLog">
+                    <li class="activity-item success">
+                        <span class="activity-dot"></span>
+                        <div class="activity-body">
+                            <span>Logged in as Admin</span>
+                            <small>Just now</small>
+                        </div>
+                    </li>
+                    <li class="activity-item info">
+                        <span class="activity-dot"></span>
+                        <div class="activity-body">
+                            <span>System scan ready</span>
+                            <small>Awaiting action</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
