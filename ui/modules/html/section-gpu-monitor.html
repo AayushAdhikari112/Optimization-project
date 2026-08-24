@@ -1,0 +1,171 @@
+<section class="section" id="section-gpu-monitor">
+        <div class="section-hero">
+            <div class="section-hero-icon" >
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <div>
+                <h2>GPU Monitor</h2>
+                <p>Real-time GPU utilization, VRAM usage, temperature, clock speeds, driver version and full adapter info.</p>
+            </div>
+        </div>
+
+        <!-- Top stat row -->
+        <div class="big-stat-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="big-stat-card" >
+                <div class="bsc-label">GPU Load</div>
+                <div class="bsc-val" id="gm-load" >-- %</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">GPU Temperature</div>
+                <div class="bsc-val" id="gm-temp" >-- °C</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">VRAM Used</div>
+                <div class="bsc-val" id="gm-vram-used" >-- GB</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">VRAM Total</div>
+                <div class="bsc-val" id="gm-vram-total" style="color:var(--text2)">-- GB</div>
+            </div>
+        </div>
+
+        <!-- GPU + VRAM gauges -->
+        <div class="gpu-gauges-row">
+
+            <!-- Load ring -->
+            <div class="gpu-gauge-card">
+                <div class="gpu-ring-wrap">
+                    <svg viewBox="0 0 120 120" class="gpu-ring-svg">
+                        <defs>
+                            <linearGradient id="gpuLoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="hsl(265,80%,52%)"/>
+                                <stop offset="100%" stop-color="hsl(265,80%,80%)"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10"/>
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="url(#gpuLoadGrad)" stroke-width="10"
+                            stroke-dasharray="314" stroke-dashoffset="314"
+                            stroke-linecap="round" transform="rotate(-90 60 60)"
+                            id="gpuLoadCircle" style="transition:stroke-dashoffset 0.6s ease"/>
+                    </svg>
+                    <div class="gpu-ring-center">
+                        <div class="gpu-ring-val" id="gm-ring-load" >--%</div>
+                        <div class="gpu-ring-label">GPU Load</div>
+                    </div>
+                </div>
+                <div class="gpu-bar-row">
+                    <span class="gpu-bar-label">Load</span>
+                    <div class="gpu-bar-track"><div class="gpu-bar-fill" id="gm-load-bar" ></div></div>
+                    <span class="gpu-bar-pct" id="gm-load-pct">--%</span>
+                </div>
+                <div class="gpu-bar-row">
+                    <span class="gpu-bar-label">Temp</span>
+                    <div class="gpu-bar-track"><div class="gpu-bar-fill" id="gm-temp-bar" ></div></div>
+                    <span class="gpu-bar-pct" id="gm-temp-pct">-- °C</span>
+                </div>
+            </div>
+
+            <!-- VRAM gauge -->
+            <div class="gpu-gauge-card">
+                <div class="gpu-vram-header">VRAM Usage</div>
+                <div class="gpu-vram-bar-wrap">
+                    <div class="gpu-vram-bar" id="gm-vram-bar"></div>
+                </div>
+                <div class="gpu-vram-labels">
+                    <span>0</span>
+                    <span id="gm-vram-label">-- / -- GB</span>
+                    <span id="gm-vram-total-label">-- GB</span>
+                </div>
+                <div class="gpu-vram-segments" id="gmVramSegments"></div>
+                <div class="gpu-detail-grid">
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Core Clock</div><div class="gpu-detail-val" id="gm-core-clock">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Memory Clock</div><div class="gpu-detail-val" id="gm-mem-clock">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Power Draw</div><div class="gpu-detail-val" id="gm-power">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Fan Speed</div><div class="gpu-detail-val" id="gm-fan">--</div></div>
+                </div>
+            </div>
+
+            <!-- Model card -->
+            <div class="gpu-gauge-card gpu-info-card">
+                <div class="gpu-model-icon">🎮</div>
+                <div class="gpu-model-name" id="gm-model-name">Detecting GPU...</div>
+                <div class="gpu-model-vendor" id="gm-model-vendor"></div>
+                <div class="gpu-spec-list" id="gmSpecList">
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">VRAM</span><span class="gpu-spec-val" id="gm-spec-vram">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Driver</span><span class="gpu-spec-val" id="gm-spec-driver">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Bus</span><span class="gpu-spec-val" id="gm-spec-bus">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Sub-Vendor</span><span class="gpu-spec-val" id="gm-spec-subvendor">--</span></div>
+                </div>
+                <div class="gpu-status-badge" id="gm-status-badge">
+                    <span class="gpu-status-dot" id="gm-status-dot"></span>
+                    <span id="gm-status-text">Checking...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Temperature history label -->
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Thermal Status</h3>
+                <span class="panel-sub" id="gm-thermal-summary">Checking...</span>
+            </div>
+            <div class="gpu-thermal-row" id="gmThermalRow">
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Current Temp</div>
+                    <div class="gpu-thermal-val" id="gm-th-current">-- °C</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Status</div>
+                    <div class="gpu-thermal-val" id="gm-th-status">--</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Safe Max</div>
+                    <div class="gpu-thermal-val" >~85 °C</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Throttle Risk</div>
+                    <div class="gpu-thermal-val" id="gm-th-throttle">--</div>
+                </div>
+            </div>
+            <div class="thermal-warning" id="gmThermalWarn" style="display:none;margin:0 16px 14px">
+                <div class="tw-icon">⚠️</div>
+                <div class="tw-body"><div class="tw-title">GPU Overheating</div><div class="tw-desc">GPU temperature is dangerously high. Check case airflow, GPU fan operation, and consider reapplying thermal paste. <strong>Software cannot fix physical cooling issues.</strong></div></div>
+            </div>
+        </div>
+
+        <!-- NVIDIA Performance Preset -->
+        <div class="panel" >
+            <div class="panel-header" >
+                <div style="display:flex; align-items:center; gap: 12px;">
+                    <div >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <div>
+                        <h3 >NVIDIA Performance Mode</h3>
+                        <span class="panel-sub">Optimized 3D settings profile for maximum frame rates and lowest latency.</span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap: 14px;">
+                    <span id="nvPresetStatus" style="font-size:13px; font-weight:600; color:var(--text3);">Inactive</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="nvPresetToggle">
+                        <span class="toggle-slider" ></span>
+                    </label>
+                </div>
+            </div>
+            <div style="padding: 20px 24px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                    <div class="nv-set-item"><span class="nv-set-label">Power Management</span><span class="nv-set-val">Prefer Maximum Performance</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Preferred GPU</span><span class="nv-set-val">High-performance NVIDIA processor</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Texture Filtering</span><span class="nv-set-val">High Performance</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">FXAA / MFAA</span><span class="nv-set-val">Off</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Vertical Sync</span><span class="nv-set-val">Off / App Controlled</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Triple Buffering</span><span class="nv-set-val">Off</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Low Latency Mode</span><span class="nv-set-val">On</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Threaded Optimization</span><span class="nv-set-val">Auto</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">Shader Cache</span><span class="nv-set-val">Enabled</span></div>
+                    <div class="nv-set-item"><span class="nv-set-label">CUDA GPUs</span><span class="nv-set-val">All</span></div>
+                </div>
+            </div>
+        </div>
+    </section>

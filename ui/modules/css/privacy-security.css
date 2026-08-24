@@ -1,0 +1,57 @@
+/* ================================================================
+   PRIVACY
+================================================================ */
+.privacy-grid { display: flex; flex-direction: column; gap: 12px; }
+.privacy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.prv-info { flex: 1; }
+.prv-label { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.prv-desc  { font-size: 12px; color: var(--text2); }
+.prv-status {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 100px;
+    font-size: 12px; font-weight: 600;
+}
+.prv-enabled  { background: hsla(38,96%,54%,0.12); color: hsl(38,96%,65%); border: 1px solid hsla(38,96%,54%,0.25); }
+.prv-disabled { background: hsla(162,78%,42%,0.12);color: hsl(162,78%,55%);border: 1px solid hsla(162,78%,42%,0.25); }
+.prv-unknown  { background: hsla(235,65%,62%,0.12);color: hsl(235,90%,80%);border: 1px solid hsla(235,65%,62%,0.25); }
+
+
+/* ================================================================
+   SECURITY
+================================================================ */
+.security-warning-banner {
+    display: flex; align-items: center; gap: 14px;
+    background: hsla(0,84%,61%,0.08);
+    border: 1px solid hsla(0,84%,61%,0.2);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    font-size: 13px; color: var(--text2);
+}
+.security-warning-banner span { font-size: 22px; }
+.security-grid { display: flex; flex-direction: column; gap: 12px; }
+.security-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.sec-info { flex: 1; }
+.sec-label { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.sec-desc  { font-size: 12px; color: var(--text2); }
+.sec-badge {
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 600; border: 1px solid;
+    white-space: nowrap;
+}
+.sec-ok      { background: hsla(162,78%,42%,0.12);color: hsl(162,78%,55%);border-color: hsla(162,78%,42%,0.25); }
+.sec-warn    { background: hsla(0,84%,61%,0.12);  color: hsl(0,84%,70%);  border-color: hsla(0,84%,61%,0.25); }
+.sec-donotmodify { margin-top: 4px; font-size: 11px; color: hsl(0,84%,70%); font-weight: 600; }
+
+

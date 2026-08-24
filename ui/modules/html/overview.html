@@ -1,0 +1,66 @@
+<section class="section" id="section-dashboard">
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <div class="dash-header">
+            <h2>PC OPTIMIZATION TOOLKIT</h2>
+            <p>Intelligent system analysis and performance tuning.</p>
+        </div>
+
+        <!-- Performance Score Block -->
+        <div class="dash-score-card">
+            <div class="dash-score-left">
+                <div class="ds-title">PERFORMANCE SCORE</div>
+                <div class="ds-value">86</div>
+                <div class="ds-sub">/ 100</div>
+            </div>
+            <div class="dash-score-right">
+                <div class="ds-metrics-grid">
+                    <div class="ds-metric">
+                        <div class="dsm-label">CPU</div>
+                        <div class="dsm-val" id="dash-cpu-val">18%</div>
+                    </div>
+                    <div class="ds-metric">
+                        <div class="dsm-label">RAM</div>
+                        <div class="dsm-val" id="dash-ram-val">57%</div>
+                    </div>
+                    <div class="ds-metric">
+                        <div class="dsm-label">GPU</div>
+                        <div class="dsm-val" id="dash-gpu-val">22%</div>
+                    </div>
+                    <div class="ds-metric">
+                        <div class="dsm-label">DISK</div>
+                        <div class="dsm-val" id="dash-disk-val">61%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PC Scan Engine Block -->
+        <div class="dash-scan-card">
+            <div class="dsc-header">
+                <div class="dsc-icon">🔍</div>
+                <div class="dsc-title">PC SCAN</div>
+            </div>
+            <div class="dsc-body">
+                <div class="dsc-status" id="scan-status-text">Ready to scan your system.</div>
+                
+                <!-- This list is revealed after scanning -->
+                <div class="dsc-results" id="scan-results" style="display: none;">
+                    <div class="dsc-result-title">8 optimization opportunities found</div>
+                    <ul class="dsc-result-list">
+                        <li><span class="dsr-icon">🧹</span> 8.4 GB temporary files</li>
+                        <li><span class="dsr-icon">🚀</span> 4 unnecessary startup apps</li>
+                        <li><span class="dsr-icon">⚡</span> 3 high-background CPU applications</li>
+                        <li><span class="dsr-icon">🎮</span> NVIDIA profile can be optimized</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dsc-footer">
+                <button class="dash-btn-primary" id="btn-scan-pc">SCAN MY PC</button>
+                <button class="dash-btn-success" id="btn-review-opt" style="display: none;">REVIEW & OPTIMIZE</button>
+            </div>
+        </div>
+        
+    </div>
+</section>

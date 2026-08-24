@@ -1,0 +1,81 @@
+<section class="section" id="section-win-services">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </div>
+        <div><h2>Windows Services</h2><p>Intelligent service management and background optimization.</p></div>
+    </div>
+
+    <!-- Intelligent Card Example: SysMain -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">System Optimization</span>
+            <span class="opt-risk-badge risk-advanced">🟠 ADVANCED</span>
+        </div>
+        
+        <div class="opt-title">SysMain (Superfetch)</div>
+        
+        <div class="opt-grid">
+            <div class="opt-row">
+                <span class="opt-label">Status</span>
+                <span class="opt-val good">Running</span>
+            </div>
+            <div class="opt-row">
+                <span class="opt-label">System Specs</span>
+                <span class="opt-val">SSD + 16 GB RAM detected</span>
+            </div>
+        </div>
+
+        <div class="opt-recommendation">
+            <div class="opt-rec-title">Recommendation</div>
+            <div class="opt-rec-text">KEEP ENABLED</div>
+        </div>
+
+        <div class="opt-why">
+            <strong>Why?</strong>
+            SysMain can improve application launch performance on this system by preloading frequently used programs into memory. Because you have an SSD and sufficient RAM, the performance benefit outweighs the background I/O cost.
+        </div>
+
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Service</button>
+        </div>
+    </div>
+
+    <!-- Intelligent Card Example: Print Spooler -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Peripheral Services</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        
+        <div class="opt-title">Print Spooler</div>
+        
+        <div class="opt-grid">
+            <div class="opt-row">
+                <span class="opt-label">Status</span>
+                <span class="opt-val good">Running</span>
+            </div>
+            <div class="opt-row">
+                <span class="opt-label">Printer Detected</span>
+                <span class="opt-val bad">No active printers found</span>
+            </div>
+        </div>
+
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE IF UNUSED</div>
+        </div>
+
+        <div class="opt-why">
+            <strong>Why?</strong>
+            The Print Spooler service runs in the background continuously. If you do not own a physical printer or print to PDF frequently, this service wastes background resources and can pose a security risk (e.g., PrintNightmare vulnerability).
+        </div>
+
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Service</button>
+        </div>
+    </div>
+
+</section>

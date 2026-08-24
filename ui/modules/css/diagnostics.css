@@ -1,0 +1,99 @@
+/* ================================================================
+   DIAGNOSTICS — Health Analysis
+================================================================ */
+.health-analysis-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+}
+.ha-score-row {
+    display: flex; align-items: center; gap: 20px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.ha-score-big {
+    font-size: 56px; font-weight: 900;
+    background: linear-gradient(135deg,hsl(162,78%,42%),hsl(162,78%,68%));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+.ha-score-label { font-size: 16px; font-weight: 600; color: var(--text2); }
+.ha-score-label small { display: block; font-size: 12px; font-weight: 400; color: var(--text3); margin-top: 4px; }
+.ha-issue { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: hsla(38,96%,54%,0.08); border-radius: 6px; font-size: 13px; color: hsl(38,96%,65%); }
+.ha-issue::before { content: '⚠'; }
+.ha-good-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 13px; color: hsl(162,78%,55%); }
+.ha-good-item::before { content: '✓'; }
+.ha-loading { color: var(--text3); font-size: 13px; }
+.ha-issues, .ha-good { display: flex; flex-direction: column; gap: 6px; }
+
+
+/* ================================================================
+   DISK HEALTH
+================================================================ */
+.drive-opt-actions { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 12px; }
+.drive-opt-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px;
+    background: linear-gradient(135deg,hsl(235,65%,42%),hsl(235,65%,52%));
+    border: none; border-radius: 6px;
+    color: #fff; font-size: 12.5px; font-weight: 600;
+    cursor: pointer; transition: all var(--transition);
+}
+.drive-opt-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+
+/* ================================================================
+   INTEGRITY
+================================================================ */
+.integrity-cards { display: flex; flex-direction: column; gap: 14px; }
+.integrity-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: flex; flex-direction: column; gap: 12px;
+}
+.ic-header { display: flex; align-items: center; gap: 14px; }
+.ic-icon { font-size: 28px; }
+.ic-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.ic-sub   { font-size: 12px; color: var(--text2); }
+.ic-warning {
+    padding: 8px 14px;
+    background: hsla(38,96%,54%,0.08); border: 1px solid hsla(38,96%,54%,0.2);
+    border-radius: 6px; font-size: 12.5px; color: hsl(38,96%,65%);
+}
+.ic-output {
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; padding: 12px;
+    font-family: 'Consolas', monospace; font-size: 11px;
+    color: hsl(162,78%,55%);
+    max-height: 200px; overflow-y: auto;
+    white-space: pre-wrap; word-break: break-all;
+}
+
+
+/* ================================================================
+   BATTERY
+================================================================ */
+.battery-info { display: flex; flex-direction: column; gap: 12px; }
+.battery-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+}
+.bat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.bat-icon { font-size: 32px; }
+.bat-label { font-size: 15px; font-weight: 600; }
+.bat-sub   { font-size: 12px; color: var(--text2); }
+.bat-grid  { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.bat-stat  { }
+.bat-stat-label { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
+.bat-stat-val   { font-size: 15px; font-weight: 600; }
+.bat-bar-wrap { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-top: 12px; overflow: hidden; }
+.bat-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg,hsl(162,78%,30%),hsl(162,78%,55%)); transition: width 0.5s ease; }
+.bat-no-battery { padding: 32px; text-align: center; color: var(--text3); font-size: 13px; }
+
+

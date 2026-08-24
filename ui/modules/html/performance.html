@@ -1,0 +1,84 @@
+<section class="section" id="section-perf-startup">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><h2>Startup Manager</h2><p>Control which apps launch at boot. Shows impact level, source location, and recommendations. Changes are backed up in Restore Center.</p></div></div>
+        <div class="panel">
+            <div class="panel-header"><h3>Startup Applications</h3><span class="panel-sub" id="startup-count">Loading...</span></div>
+            <table class="startup-table">
+                <thead><tr><th>Application</th><th>Location</th><th>Impact</th><th>Recommendation</th><th>Enabled</th></tr></thead>
+                <tbody id="startupBody"></tbody>
+            </table>
+        </div>
+    </section>
+<section class="section" id="section-perf-services">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h2>Windows Services Analyzer</h2><p>Services categorized as Essential, Optional, Usage-Dependent, or Do Not Modify — with consequences explained.</p></div></div>
+        <div class="services-legend">
+            <span class="svc-leg essential">🟢 Essential</span>
+            <span class="svc-leg optional">🟡 Optional</span>
+            <span class="svc-leg depends">🟠 Usage-Dependent</span>
+            <span class="svc-leg donotmodify">🔴 Do Not Modify</span>
+        </div>
+        <div class="panel">
+            <div class="panel-header"><h3>Services</h3><span class="panel-sub" id="svc-count">Loading...</span></div>
+            <div class="svc-filter-row">
+                <input type="text" id="svcSearch" class="svc-search" placeholder="Filter services...">
+                <select id="svcFilter" class="video-select"><option value="all">All Categories</option><option value="essential">Essential</option><option value="optional">Optional</option><option value="depends">Usage-Dependent</option><option value="do-not-modify">Do Not Modify</option></select>
+            </div>
+            <div class="proc-table-wrap"><table class="proc-table"><thead><tr><th>Service</th><th>Display Name</th><th>Status</th><th>Start Type</th><th>Category</th></tr></thead><tbody id="svcBody"></tbody></table></div>
+        </div>
+    </section>
+<section class="section" id="section-perf-tasks">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><div><h2>Scheduled Task Analyzer</h2><p>Scan tasks for telemetry, updates, vendor software, and abandoned tasks. Disable with automatic backup.</p></div></div>
+        <div class="panel">
+            <div class="panel-header"><h3>Scheduled Tasks</h3><span class="panel-sub" id="task-count">Loading...</span></div>
+            <div class="svc-filter-row"><input type="text" id="taskSearch" class="svc-search" placeholder="Filter tasks..."><select id="taskFilter" class="video-select"><option value="all">All Types</option><option value="telemetry">Telemetry</option><option value="update">Updates</option><option value="vendor">Vendor</option><option value="system">System</option></select></div>
+            <div class="proc-table-wrap"><table class="proc-table"><thead><tr><th>Task Name</th><th>Trigger</th><th>State</th><th>Category</th></tr></thead><tbody id="taskBody"></tbody></table></div>
+        </div>
+    </section>
+<section class="section" id="section-perf-bgapps">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div><h2>Background Application Analyzer</h2><p>Detect apps running unnecessarily in the background and estimate their resource impact.</p></div></div>
+        <div id="bgAppGrid" class="dc-grid"><div class="dc-loading">Detecting background applications...</div></div>
+    </section>
+<section class="section" id="section-perf-power">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><h2>Power Plans</h2><p>Switch between Performance, Balanced, and Battery Saver modes. Changes are backed up and reversible.</p></div></div>
+        <div class="power-grid">
+            <div class="power-card" id="power-balanced">
+                <div class="power-card-icon">⚖️</div>
+                <div class="power-card-label">Balanced</div>
+                <div class="power-card-desc">Normal daily use. Windows adjusts performance based on activity.</div>
+                <button class="power-btn" data-guid="381b4222-f694-41f0-9685-ff5bb260df2e">Set Balanced</button>
+            </div>
+            <div class="power-card" id="power-performance">
+                <div class="power-card-icon">⚡</div>
+                <div class="power-card-label">High Performance</div>
+                <div class="power-card-desc">Maximum responsiveness. CPU runs at highest frequencies. Uses more power.</div>
+                <button class="power-btn" data-guid="8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c">Set High Performance</button>
+            </div>
+            <div class="power-card" id="power-saver">
+                <div class="power-card-icon">🔋</div>
+                <div class="power-card-label">Battery Saver</div>
+                <div class="power-card-desc">Reduce background activity and power consumption. Best for laptops on battery.</div>
+                <button class="power-btn" data-guid="a1841308-3541-4fab-bc81-f71556f20b4a">Set Battery Saver</button>
+            </div>
+        </div>
+        <div class="panel" style="margin-top:16px">
+            <div class="panel-header"><h3>Current Power Plan</h3></div>
+            <div class="power-current" id="powerCurrent">Detecting...</div>
+        </div>
+    </section>
+<section class="section" id="section-perf-gaming">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><line x1="6" y1="12" x2="18" y2="12"></line><line x1="12" y1="6" x2="12" y2="18"></line><path d="M17 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10z"></path></svg></div><div><h2>Gaming Mode</h2><p>Temporarily switches to High Performance, suspends background apps, and prioritizes game processes. Everything is restored when you exit.</p></div></div>
+        <div class="gaming-mode-card" id="gamingModeCard">
+            <div class="gm-status-indicator" id="gmStatus">
+                <div class="gm-dot"></div>
+                <span id="gmStatusText">Gaming Mode Inactive</span>
+            </div>
+            <div class="gm-actions">
+                <button class="gm-start-btn" id="gmStartBtn">🎮 Activate Gaming Mode</button>
+                <button class="gm-stop-btn" id="gmStopBtn" style="display:none">🛑 Deactivate &amp; Restore</button>
+            </div>
+            <div class="gm-effects">
+                <div class="gm-effect"><span class="gme-dot" ></span>Switches to High Performance power plan</div>
+                <div class="gm-effect"><span class="gme-dot" ></span>Suspends background apps (Discord, Teams, Spotify, OneDrive)</div>
+                <div class="gm-effect"><span class="gme-dot" ></span>All changes are reversed when Gaming Mode is deactivated</div>
+            </div>
+        </div>
+    </section>

@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OptiCore | Dashboard</title>
+    <meta name="description" content="OptiCore — Full-featured PC optimization, diagnostics, and monitoring suite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
 <!-- ===== SIDEBAR ===== -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
         <div class="brand-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -20,39 +21,164 @@
         <span>OptiCore</span>
     </div>
 
-    <nav class="sidebar-nav">
-        <a class="nav-item active" data-section="dashboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    <div class="admin-badge" id="adminBadge" title="Running as Administrator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="adminLabel">Checking...</span>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+
+        <!-- 🏠 Dashboard -->
+        <a class="nav-item active" data-section="dashboard" id="nav-dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
             Dashboard
         </a>
-        <a class="nav-item" data-section="disk">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
-            Disk Cleaner
-        </a>
-        <a class="nav-item" data-section="memory">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
-            Memory
-        </a>
-        <a class="nav-item" data-section="network">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-            Network
-        </a>
-        <a class="nav-item" data-section="startup">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            Startup
-        </a>
-        <a class="nav-item" data-section="video">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            Video Control
-        </a>
+
+        <!-- ⚡ Performance -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="performance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Performance
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-performance">
+                <a class="nav-sub" data-section="perf-cpu">CPU Optimization</a>
+                <a class="nav-sub" data-section="perf-ram">RAM Optimization</a>
+                <a class="nav-sub" data-section="perf-gpu">GPU Optimization</a>
+                <a class="nav-sub" data-section="perf-power">Power Optimization</a>
+                <a class="nav-sub" data-section="perf-gaming">Gaming Mode</a>
+            </div>
+        </div>
+
+        <!-- 🧹 Cleanup -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="cleanup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                Cleanup
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-cleanup">
+                <a class="nav-sub" data-section="cl-windows">Windows Junk</a>
+                <a class="nav-sub" data-section="cl-browser">Browser Cache</a>
+                <a class="nav-sub" data-section="cl-app">Application Cache</a>
+                <a class="nav-sub" data-section="cl-dev">Developer Cache</a>
+                <a class="nav-sub" data-section="cl-large">Large Files</a>
+                <a class="nav-sub" data-section="cl-dupes">Duplicate Files</a>
+            </div>
+        </div>
+
+        <!-- 🚀 Startup -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="startup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                Startup
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-startup">
+                <a class="nav-sub" data-section="su-apps">Startup Apps</a>
+                <a class="nav-sub" data-section="su-tasks">Startup Tasks</a>
+                <a class="nav-sub" data-section="su-impact">Startup Impact</a>
+            </div>
+        </div>
+
+        <!-- 🪟 Windows Optimization -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="windows">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Windows Opt
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-windows">
+                <a class="nav-sub" data-section="win-services">Services</a>
+                <a class="nav-sub" data-section="win-tasks">Scheduled Tasks</a>
+                <a class="nav-sub" data-section="win-bgapps">Background Apps</a>
+                <a class="nav-sub" data-section="win-ui">UI Tweaks</a>
+                <a class="nav-sub" data-section="win-features">Windows Features</a>
+            </div>
+        </div>
+
+        <!-- 🌐 Network -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="network">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                Network
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-network">
+                <a class="nav-sub" data-section="net-dns">DNS Optimizer</a>
+                <a class="nav-sub" data-section="net-diag">Diagnostics</a>
+                <a class="nav-sub" data-section="net-cache">DNS Cache</a>
+                <a class="nav-sub" data-section="net-adapter">Adapter Settings</a>
+            </div>
+        </div>
+
+        <!-- 🎮 Gaming -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="gaming">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
+                Gaming
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-gaming">
+                <a class="nav-sub" data-section="game-profiles">Game Profiles</a>
+                <a class="nav-sub" data-section="game-nvidia">NVIDIA Opt</a>
+                <a class="nav-sub" data-section="game-cpu">CPU Opt</a>
+                <a class="nav-sub" data-section="game-mode">Game Mode</a>
+            </div>
+        </div>
+
+        <!-- 🔐 Privacy -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="privacy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Privacy
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-privacy">
+                <a class="nav-sub" data-section="priv-telemetry">Telemetry</a>
+                <a class="nav-sub" data-section="priv-tracking">Tracking</a>
+                <a class="nav-sub" data-section="priv-browser">Browser Privacy</a>
+            </div>
+        </div>
+
+        <!-- 🩺 Diagnostics -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="diagnostics">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                Diagnostics
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-diagnostics">
+                <a class="nav-sub" data-section="diag-health">System Health</a>
+                <a class="nav-sub" data-section="diag-cpu">CPU</a>
+                <a class="nav-sub" data-section="diag-gpu">GPU</a>
+                <a class="nav-sub" data-section="diag-disk">Disk</a>
+                <a class="nav-sub" data-section="diag-ram">RAM</a>
+                <a class="nav-sub" data-section="diag-network">Network</a>
+            </div>
+        </div>
+
+        <!-- 🔄 Restore Center -->
+        <div class="nav-group">
+            <div class="nav-group-header" data-group="restore">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg>
+                Restore Center
+                <span class="nav-chevron">›</span>
+            </div>
+            <div class="nav-group-items" id="group-restore">
+                <a class="nav-sub" data-section="res-backups">Backups</a>
+                <a class="nav-sub" data-section="res-history">Change History</a>
+                <a class="nav-sub" data-section="res-undo">Undo</a>
+            </div>
+        </div>
+
     </nav>
 
     <div class="sidebar-bottom">
-        <a class="nav-item" data-section="settings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <a class="nav-item" data-section="settings" id="nav-settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             Settings
         </a>
-
         <div class="sidebar-user">
             <div class="user-avatar">A</div>
             <div class="user-details">
@@ -60,7 +186,7 @@
                 <span class="user-role">System Admin</span>
             </div>
             <a href="index.html" class="logout-btn" title="Logout">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             </a>
         </div>
     </div>
@@ -76,61 +202,113 @@
             <span class="topbar-sub" id="currentTime"></span>
         </div>
         <div class="topbar-right">
-            <div class="status-badge">
+            <div class="status-badge" id="statusBadge">
                 <span class="status-dot"></span>
-                System Healthy
+                <span id="statusText">System Healthy</span>
             </div>
+            <button class="scan-btn" id="scan-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                Scan System
+            </button>
         </div>
     </header>
 
-    <!-- ===========================
+    <!-- ============================================================
          SECTION: DASHBOARD
-    =========================== -->
+    ============================================================ -->
     <section class="section active" id="section-dashboard">
+
+        <!-- Health Score + Smart Profile Row -->
+        <div class="dash-top-row">
+
+            <!-- Health Score Widget -->
+            <div class="health-widget">
+                <div class="health-score-ring">
+                    <svg viewBox="0 0 120 120" class="health-svg">
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10"/>
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="url(#healthGrad)" stroke-width="10"
+                            stroke-dasharray="314" stroke-dashoffset="80"
+                            stroke-linecap="round" transform="rotate(-90 60 60)"
+                            id="healthCircle"/>
+                        <defs>
+                            <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="hsl(162,78%,42%)"/>
+                                <stop offset="100%" stop-color="hsl(162,78%,68%)"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="health-center">
+                        <div class="health-score" id="healthScore">--</div>
+                        <div class="health-label">Health</div>
+                    </div>
+                </div>
+                <div class="health-issues" id="healthIssues">
+                    <div class="health-loading">Analyzing system...</div>
+                </div>
+            </div>
+
+            <!-- Smart Profile Card -->
+            <div class="profile-card" id="profileCard">
+                <div class="profile-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
+                    <span>System Profile</span>
+                </div>
+                <div class="profile-body" id="profileBody">
+                    <div class="profile-loading">Detecting hardware...</div>
+                </div>
+            </div>
+
+            <!-- One-Click Optimize -->
+            <div class="oneclick-card">
+                <div class="oneclick-label">One-Click Optimize</div>
+                <button class="oneclick-btn" id="oneClickBtn">
+                    <div class="oneclick-icon">🚀</div>
+                    <span>OPTIMIZE NOW</span>
+                </button>
+                <div class="oneclick-preview" id="oneclickPreview">
+                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">Temp Files</span><span class="oi-val" id="oi-temp">Scanning...</span></div>
+                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">DNS Cache</span><span class="oi-val">Will flush</span></div>
+                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">Safe operations only</span></div>
+                </div>
+                <div id="optimizeProgress" class="optimize-progress" style="display:none"></div>
+            </div>
+
+        </div>
+
+        <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">CPU Usage</span>
-                    <div class="stat-icon cpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg></div>
-                </div>
+                <div class="stat-header"><span class="stat-label">CPU Usage</span><div class="stat-icon cpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg></div></div>
                 <div class="stat-value" id="cpu-val">--</div>
                 <div class="stat-bar-wrap"><div class="stat-bar cpu-bar" id="cpu-bar"></div></div>
-                <div class="stat-footer">4 cores active</div>
+                <div class="stat-footer" id="cpu-footer">Monitoring cores</div>
             </div>
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">RAM Usage</span>
-                    <div class="stat-icon ram-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div>
-                </div>
+                <div class="stat-header"><span class="stat-label">RAM Usage</span><div class="stat-icon ram-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div></div>
                 <div class="stat-value" id="ram-val">--</div>
                 <div class="stat-bar-wrap"><div class="stat-bar ram-bar" id="ram-bar"></div></div>
-                <div class="stat-footer">16 GB total</div>
+                <div class="stat-footer" id="ram-footer">Loading...</div>
             </div>
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">Disk Usage</span>
-                    <div class="stat-icon disk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div>
-                </div>
-                <div class="stat-value" id="disk-val">--</div>
-                <div class="stat-bar-wrap"><div class="stat-bar disk-bar" id="disk-bar"></div></div>
-                <div class="stat-footer">512 GB SSD</div>
+                <div class="stat-header"><span class="stat-label">GPU Usage</span><div class="stat-icon gpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div></div>
+                <div class="stat-value" id="gpu-val">--</div>
+                <div class="stat-bar-wrap"><div class="stat-bar gpu-bar" id="gpu-bar"></div></div>
+                <div class="stat-footer" id="gpu-footer">Loading...</div>
             </div>
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-label">CPU Temp</span>
-                    <div class="stat-icon temp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></div>
-                </div>
+                <div class="stat-header"><span class="stat-label">CPU Temp</span><div class="stat-icon temp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></div></div>
                 <div class="stat-value" id="temp-val">--</div>
                 <div class="stat-bar-wrap"><div class="stat-bar temp-bar" id="temp-bar"></div></div>
-                <div class="stat-footer">Optimal range</div>
+                <div class="stat-footer" id="temp-footer">Optimal range</div>
             </div>
         </div>
 
+        <!-- Bottom panels -->
         <div class="bottom-grid">
             <div class="panel">
-                <div class="panel-header"><h3>Quick Actions</h3><span class="panel-sub">One-click optimizations</span></div>
+                <div class="panel-header"><h3>Quick Actions</h3><span class="panel-sub">One-click fixes</span></div>
                 <div class="actions-list">
-                    <button class="action-btn" id="act-disk"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg></div><div class="action-text"><span>Clean Junk Files</span><small>Temp, cache & recycle bin</small></div><div class="action-arrow">→</div></button>
+                    <button class="action-btn" id="act-disk"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg></div><div class="action-text"><span>Clean Junk Files</span><small>Temp, cache &amp; recycle bin</small></div><div class="action-arrow">→</div></button>
                     <button class="action-btn" id="act-ram"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></div><div class="action-text"><span>Free Up RAM</span><small>Empty working sets</small></div><div class="action-arrow">→</div></button>
                     <button class="action-btn" id="act-dns"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div><div class="action-text"><span>Flush DNS</span><small>Clear DNS resolver cache</small></div><div class="action-arrow">→</div></button>
                     <button class="action-btn" id="act-startup"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div class="action-text"><span>Manage Startup</span><small>Disable slow boot apps</small></div><div class="action-arrow">→</div></button>
@@ -146,327 +324,38 @@
         </div>
     </section>
 
-    <!-- ===========================
-         SECTION: DISK CLEANER
-    =========================== -->
-    <section class="section" id="section-disk">
-        <div class="section-hero">
-            <div class="section-hero-icon disk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div>
-            <div>
-                <h2>Disk Cleaner</h2>
-                <p>Scan and remove junk files, temp data, and empty the Recycle Bin to free up space.</p>
-            </div>
-        </div>
-        <div class="tool-grid">
-            <div class="tool-card" id="disk-temp">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
-                <h4>Temp Files</h4>
-                <p>Clear Windows temp folder and app caches</p>
-                <div class="tool-size" id="disk-temp-size">~1.2 GB</div>
-                <button class="tool-btn" data-action="disk-temp">Clean Now</button>
-            </div>
-            <div class="tool-card" id="disk-recycle">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg></div>
-                <h4>Recycle Bin</h4>
-                <p>Permanently empty the Recycle Bin</p>
-                <div class="tool-size" id="disk-recycle-size">~340 MB</div>
-                <button class="tool-btn" data-action="disk-recycle">Empty Now</button>
-            </div>
-            <div class="tool-card" id="disk-prefetch">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-                <h4>Prefetch Cache</h4>
-                <p>Clear Windows Prefetch data</p>
-                <div class="tool-size" id="disk-prefetch-size">~80 MB</div>
-                <button class="tool-btn" data-action="disk-prefetch">Clean Now</button>
-            </div>
-            <div class="tool-card" id="disk-logs">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
-                <h4>System Logs</h4>
-                <p>Delete old Windows event logs</p>
-                <div class="tool-size" id="disk-logs-size">~200 MB</div>
-                <button class="tool-btn" data-action="disk-logs">Clean Now</button>
-            </div>
-        </div>
-        <div class="panel result-panel" id="disk-result" style="display:none">
-            <div class="result-body"></div>
-        </div>
-    </section>
-
-    <!-- ===========================
-         SECTION: MEMORY
-    =========================== -->
-    <section class="section" id="section-memory">
-        <div class="section-hero">
-            <div class="section-hero-icon ram-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div>
-            <div>
-                <h2>Memory Optimizer</h2>
-                <p>Free up unused RAM by clearing working sets of all running processes.</p>
-            </div>
-        </div>
-        <div class="ram-overview">
-            <div class="ram-gauge-wrap">
-                <div class="ram-gauge">
-                    <svg viewBox="0 0 120 120">
-                        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
-                        <circle cx="60" cy="60" r="50" fill="none" stroke="url(#ramGrad)" stroke-width="10"
-                            stroke-dasharray="314" stroke-dashoffset="110" stroke-linecap="round"
-                            transform="rotate(-90 60 60)" id="ramGaugeCircle"/>
-                        <defs>
-                            <linearGradient id="ramGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#059669"/>
-                                <stop offset="100%" stop-color="#34d399"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <div class="ram-gauge-label">
-                        <span id="ram-gauge-pct">61%</span>
-                        <small>In Use</small>
-                    </div>
-                </div>
-            </div>
-            <div class="ram-stats">
-                <div class="ram-stat-row"><span>Total RAM</span><strong>16.0 GB</strong></div>
-                <div class="ram-stat-row"><span>In Use</span><strong id="ram-used">9.8 GB</strong></div>
-                <div class="ram-stat-row"><span>Available</span><strong id="ram-free">6.2 GB</strong></div>
-                <div class="ram-stat-row"><span>Cached</span><strong>2.4 GB</strong></div>
-            </div>
-        </div>
-        <div class="center-action">
-            <button class="big-action-btn" id="optimize-ram-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-                Optimize Memory Now
-            </button>
-            <p class="hint">Empties working sets of all running processes</p>
-        </div>
-    </section>
-
-    <!-- ===========================
-         SECTION: NETWORK
-    =========================== -->
-    <section class="section" id="section-network">
-        <div class="section-hero">
-            <div class="section-hero-icon cpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
-            <div>
-                <h2>Network Optimizer</h2>
-                <p>Fix connectivity issues, flush DNS, and reset network adapters with one click.</p>
-            </div>
-        </div>
-        <div class="tool-grid">
-            <div class="tool-card">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6l11 6 11-6M1 12l11 6 11-6"></path></svg></div>
-                <h4>Flush DNS Cache</h4>
-                <p>Clears the DNS resolver cache to fix website loading issues</p>
-                <button class="tool-btn" data-action="net-dns">Flush DNS</button>
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-                <h4>Reset Winsock</h4>
-                <p>Resets Winsock catalog to fix broken network connections</p>
-                <button class="tool-btn" data-action="net-winsock">Reset Winsock</button>
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg></div>
-                <h4>Release & Renew IP</h4>
-                <p>Releases current IP and requests a fresh one from DHCP</p>
-                <button class="tool-btn" data-action="net-ip">Renew IP</button>
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.18 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"></path></svg></div>
-                <h4>Reset TCP/IP Stack</h4>
-                <p>Resets the TCP/IP stack configuration to defaults</p>
-                <button class="tool-btn" data-action="net-tcp">Reset TCP/IP</button>
-            </div>
-        </div>
-        <div class="panel result-panel" id="net-result" style="display:none">
-            <div class="result-body"></div>
-        </div>
-    </section>
-
-    <!-- ===========================
-         SECTION: STARTUP
-    =========================== -->
-    <section class="section" id="section-startup">
-        <div class="section-hero">
-            <div class="section-hero-icon temp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-            <div>
-                <h2>Startup Manager</h2>
-                <p>Control which apps launch at boot. Disabling unnecessary apps speeds up startup time.</p>
-            </div>
-        </div>
-        <div class="panel">
-            <div class="panel-header"><h3>Startup Applications</h3><span class="panel-sub" id="startup-count">6 items found</span></div>
-            <ul class="startup-list" id="startupList">
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-blue">M</div><div><span>Microsoft Teams</span><small>HKCU\Run — High Impact</small></div></div>
-                    <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </li>
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-green">S</div><div><span>Spotify</span><small>HKCU\Run — Medium Impact</small></div></div>
-                    <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </li>
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-red">A</div><div><span>Adobe Updater</span><small>HKLM\Run — Low Impact</small></div></div>
-                    <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
-                </li>
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-purple">D</div><div><span>Discord</span><small>HKCU\Run — Medium Impact</small></div></div>
-                    <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </li>
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-orange">O</div><div><span>OneDrive</span><small>HKCU\Run — High Impact</small></div></div>
-                    <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                </li>
-                <li class="startup-item">
-                    <div class="startup-info"><div class="startup-icon s-gray">W</div><div><span>Windows Defender</span><small>HKLM\Run — System</small></div></div>
-                    <label class="toggle"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- ===========================
-         SECTION: VIDEO CONTROL
-    =========================== -->
-    <section class="section" id="section-video">
-        <div class="section-hero">
-            <div class="section-hero-icon" style="background:rgba(139,92,246,0.12)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#a78bfa" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-            </div>
-            <div><h2>Video Control Settings</h2><p>Manage display resolution, refresh rate, brightness, GPU performance, and color profiles.</p></div>
-        </div>
-
-        <!-- Display Info Cards -->
-        <div class="tool-grid">
-            <div class="tool-card">
-                <div class="tool-card-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-                <h4>Resolution</h4>
-                <p>Current display output resolution</p>
-                <div class="tool-size" style="color:#a78bfa">1920 × 1080</div>
-                <select class="video-select" id="res-select">
-                    <option>1920 × 1080 (FHD)</option>
-                    <option>2560 × 1440 (QHD)</option>
-                    <option>3840 × 2160 (4K)</option>
-                    <option>1280 × 720 (HD)</option>
-                </select>
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-                <h4>Refresh Rate</h4>
-                <p>Monitor refresh rate (Hz)</p>
-                <div class="tool-size" style="color:#a78bfa">144 Hz</div>
-                <select class="video-select" id="hz-select">
-                    <option>60 Hz</option>
-                    <option>75 Hz</option>
-                    <option selected>144 Hz</option>
-                    <option>165 Hz</option>
-                    <option>240 Hz</option>
-                </select>
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></div>
-                <h4>Brightness</h4>
-                <p>Adjust display brightness level</p>
-                <div class="tool-size" style="color:#a78bfa" id="bright-val">80%</div>
-                <input type="range" class="video-slider" id="bright-slider" min="10" max="100" value="80">
-            </div>
-            <div class="tool-card">
-                <div class="tool-card-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></div>
-                <h4>Contrast</h4>
-                <p>Adjust display contrast level</p>
-                <div class="tool-size" style="color:#a78bfa" id="contrast-val">65%</div>
-                <input type="range" class="video-slider" id="contrast-slider" min="0" max="100" value="65">
-            </div>
-        </div>
-
-        <!-- GPU & Color Settings -->
-        <div class="bottom-grid">
-            <div class="panel">
-                <div class="panel-header"><h3>GPU Performance Mode</h3><span class="panel-sub">Applied immediately</span></div>
-                <div class="settings-list">
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Power Saver</span><small>Lower GPU clock speeds to save power</small></div>
-                        <label class="toggle"><input type="radio" name="gpu-mode" class="gpu-radio"><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Balanced</span><small>Default mode — adapts based on load</small></div>
-                        <label class="toggle"><input type="radio" name="gpu-mode" class="gpu-radio" checked><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>High Performance</span><small>Max GPU clocks — best for gaming</small></div>
-                        <label class="toggle"><input type="radio" name="gpu-mode" class="gpu-radio"><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Hardware-Accelerated GPU Scheduling</span><small>Reduces input latency (HAGS)</small></div>
-                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-header"><h3>Color & Display</h3><span class="panel-sub">Visual profile</span></div>
-                <div class="settings-list">
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Night Light</span><small>Reduce blue light in the evening</small></div>
-                        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>HDR Mode</span><small>Enable High Dynamic Range output</small></div>
-                        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Variable Refresh Rate (VRR)</span><small>FreeSync / G-Sync adaptive sync</small></div>
-                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="setting-row">
-                        <div class="setting-info"><span>Color Profile</span><small>sRGB / DCI-P3 / Native</small></div>
-                        <select class="video-select" style="width:auto">
-                            <option>sRGB</option>
-                            <option>DCI-P3</option>
-                            <option>Native</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===========================
-         SECTION: SETTINGS
-    =========================== -->
-    <section class="section" id="section-settings">
-        <div class="section-hero">
-            <div class="section-hero-icon" style="background:rgba(255,255,255,0.06)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#94a3b8"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
-            <div><h2>Settings</h2><p>Configure OptiCore preferences and optimization behavior.</p></div>
-        </div>
-        <div class="settings-grid">
-            <div class="panel">
-                <div class="panel-header"><h3>General</h3></div>
-                <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Launch at Windows startup</span><small>Start OptiCore automatically when Windows boots</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Minimize to system tray</span><small>Keep running in the background when window is closed</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Show notifications</span><small>Get alerts when optimization completes</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-header"><h3>Optimization</h3></div>
-                <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Auto-clean temp files</span><small>Automatically clear junk files weekly</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Safe mode cleaning</span><small>Skip files that may be in use by the system</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Deep scan mode</span><small>Scan more locations (slower but more thorough)</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-header"><h3>Account</h3></div>
-                <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Username</span><small>admin</small></div><button class="settings-btn">Change</button></div>
-                    <div class="setting-row"><div class="setting-info"><span>Password</span><small>Last changed: Today</small></div><button class="settings-btn">Change</button></div>
-                    <div class="setting-row"><div class="setting-info"><span>Version</span><small>OptiCore v1.0.0</small></div><button class="settings-btn">Check Updates</button></div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- ============================================================
+         SYSTEM MONITOR: Overview
+    ============================================================ -->
+    
+        <div id="sections-container"></div>
+        <script>
+            const fs = require('fs');
+            const path = require('path');
+            const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore"];
+            let stitchedHtml = '';
+            for (const sec of sections) {
+                stitchedHtml += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';
+            }
+            document.getElementById('sections-container').innerHTML = stitchedHtml;
+        </script>
+    
 
 </main>
+<script>
+window.onerror = function(msg, url, line, col, error) {
+    require('fs').appendFileSync('c:/Users/User/Desktop/opt_project/ui/error.log', msg + ' at ' + line + ':' + col + '\n' + (error && error.stack ? error.stack : '') + '\n');
+}
+window.addEventListener("unhandledrejection", function(event) { 
+    require('fs').appendFileSync('c:/Users/User/Desktop/opt_project/ui/error.log', 'Unhandled promise rejection: ' + event.reason + '\n' + (event.reason && event.reason.stack ? event.reason.stack : '') + '\n');
+});
+</script>
 
-<script src="dashboard.js"></script>
+<script src="modules/js/core.js"></script>
+    <script src="modules/js/monitor.js"></script>
+    <script src="modules/js/cleanup.js"></script>
+    <script src="modules/js/performance.js"></script>
+    <script src="modules/js/diagnostics.js"></script>
+    <script src="modules/js/privacy-security.js"></script>
 </body>
 </html>

@@ -1,0 +1,359 @@
+<section class="section" id="section-mon-cpu">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg></div><div><h2>CPU Monitor</h2><p>Per-process CPU usage, load analysis and spike detection.</p></div></div>
+        <div class="big-stat-row">
+            <div class="big-stat-card"><div class="bsc-label">Total CPU Load</div><div class="bsc-val" id="cpu-big-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Frequency</div><div class="bsc-val" id="cpu-freq-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Processes</div><div class="bsc-val" id="cpu-proc-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Status</div><div class="bsc-val" id="cpu-status-val">--</div></div>
+        </div>
+        <div class="panel"><div class="panel-header"><h3>Top CPU Consumers</h3><span class="panel-sub">Sorted by CPU usage</span></div>
+            <div class="proc-table-wrap"><table class="proc-table"><thead><tr><th>Process</th><th>PID</th><th>CPU %</th><th>RAM (GB)</th></tr></thead><tbody id="cpuProcBody"></tbody></table></div>
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+            <div class="panel-header">
+                <h3>CPU PERFORMANCE MODE</h3>
+                <span class="panel-sub">Advanced processor state and core management</span>
+            </div>
+            <div class="nv-settings-grid">
+                <div class="nv-setting">
+                    <div class="nv-setting-info">
+                        <div class="nv-setting-name">Core Parking</div>
+                        <div class="nv-setting-desc">Unpark all processor cores for maximum availability</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="tgl-cpu-core"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="nv-setting">
+                    <div class="nv-setting-info">
+                        <div class="nv-setting-name">Processor State</div>
+                        <div class="nv-setting-desc">Force minimum processor state to 100%</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="tgl-cpu-state"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="nv-setting">
+                    <div class="nv-setting-info">
+                        <div class="nv-setting-name">Foreground Priority</div>
+                        <div class="nv-setting-desc">Allocate maximum CPU quanta to active applications</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="tgl-cpu-prio"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="nv-setting">
+                    <div class="nv-setting-info">
+                        <div class="nv-setting-name">System Cooling Policy</div>
+                        <div class="nv-setting-desc">Set to Active (Prioritize fan speed over throttling)</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="tgl-cpu-cool"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="nv-setting">
+                    <div class="nv-setting-info">
+                        <div class="nv-setting-name">C-States (Idle)</div>
+                        <div class="nv-setting-desc">Disable deep sleep C-States to reduce wake latency</div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="tgl-cpu-cstate"><span class="toggle-slider"></span></label>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="section" id="section-mon-ram">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div><div><h2>RAM Analysis</h2><p>Memory pressure, commit, standby, pagefile activity, and top consumers.</p></div></div>
+        <div class="mem-layout">
+            <div class="mem-gauge-panel">
+                <div class="mem-gauge-wrap">
+                    <div class="mem-gauge-glow"></div>
+                    <svg class="mem-gauge-svg" viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="ramGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="hsl(162,78%,32%)"/><stop offset="100%" stop-color="hsl(162,78%,58%)"/></linearGradient>
+                            <linearGradient id="ramGradWarn" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="hsl(38,96%,38%)"/><stop offset="100%" stop-color="hsl(38,96%,60%)"/></linearGradient>
+                            <linearGradient id="ramGradDanger" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="hsl(0,84%,44%)"/><stop offset="100%" stop-color="hsl(0,84%,65%)"/></linearGradient>
+                            <filter id="gaugeGlow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="14"/>
+                        <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="6"/>
+                        <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="390" stroke-dashoffset="320" stroke-linecap="round" transform="rotate(-90 100 100)" id="ramCacheCircle"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#ramGrad)" stroke-width="14" stroke-dasharray="503" stroke-dashoffset="300" stroke-linecap="round" transform="rotate(-90 100 100)" id="ramGaugeCircle" filter="url(#gaugeGlow)"/>
+                    </svg>
+                    <div class="mem-gauge-center">
+                        <div class="mem-gauge-pct" id="ram-gauge-pct">--</div>
+                        <div class="mem-gauge-sub">In Use</div>
+                        <div class="mem-gauge-abs" id="ram-gauge-abs">-- GB</div>
+                    </div>
+                </div>
+                <div class="mem-gauge-legend">
+                    <span class="mgl-item"><i ></i>Active</span>
+                    <span class="mgl-item"><i ></i>Cached</span>
+                    <span class="mgl-item"><i ></i>Free</span>
+                </div>
+            </div>
+            <div class="mem-stats-col">
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Total RAM</span><strong class="mem-stat-value" id="ram-total-disp">-- GB</strong></div><div class="mem-stat-badge" >Physical</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" ></div></div></div>
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div><div class="mem-stat-info"><span class="mem-stat-label">In Use</span><strong class="mem-stat-value" id="ram-used" >-- GB</strong></div><div class="mem-stat-badge" id="ram-used-badge" >--%</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-used-bar" ></div></div></div>
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Available</span><strong class="mem-stat-value" id="ram-free" >-- GB</strong></div><div class="mem-stat-badge" id="ram-free-badge" >--%</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-free-bar" ></div></div></div>
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Commit</span><strong class="mem-stat-value" id="ram-commit" >-- GB</strong></div><div class="mem-stat-badge" >Commit</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-commit-bar" ></div></div></div>
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Standby</span><strong class="mem-stat-value" id="ram-standby" >-- GB</strong></div><div class="mem-stat-badge" >Standby</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-standby-bar" ></div></div></div>
+            </div>
+        </div>
+        <div class="panel" style="margin-top:20px">
+            <div class="panel-header"><h3>Top RAM Consumers</h3></div>
+            <div class="proc-table-wrap"><table class="proc-table"><thead><tr><th>Process</th><th>RAM (GB)</th><th>RAM %</th></tr></thead><tbody id="ramProcBody"></tbody></table></div>
+        </div>
+        <div class="mem-action-panel">
+            <div class="mem-action-info"><div class="mem-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><div class="mem-action-title">Memory Optimization</div><div class="mem-action-desc">Empties working sets of all running processes. Safe to run — apps keep running and reclaim memory as needed.</div></div></div>
+            <div class="mem-action-right"><button class="mem-optimize-btn" id="optimize-ram-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>Optimize Memory Now</button></div>
+        </div>
+    </section>
+<section class="section" id="section-mon-gpu">
+        <div class="section-hero">
+            <div class="section-hero-icon" >
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <div>
+                <h2>GPU Monitor</h2>
+                <p>Real-time GPU utilization, VRAM usage, temperature, clock speeds, driver version and full adapter info.</p>
+            </div>
+        </div>
+
+        <!-- Top stat row -->
+        <div class="big-stat-row" style="grid-template-columns:repeat(4,1fr)">
+            <div class="big-stat-card" >
+                <div class="bsc-label">GPU Load</div>
+                <div class="bsc-val" id="gm-load" >-- %</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">GPU Temperature</div>
+                <div class="bsc-val" id="gm-temp" >-- °C</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">VRAM Used</div>
+                <div class="bsc-val" id="gm-vram-used" >-- GB</div>
+            </div>
+            <div class="big-stat-card" >
+                <div class="bsc-label">VRAM Total</div>
+                <div class="bsc-val" id="gm-vram-total" style="color:var(--text2)">-- GB</div>
+            </div>
+        </div>
+
+        <!-- GPU + VRAM gauges -->
+        <div class="gpu-gauges-row">
+
+            <!-- Load ring -->
+            <div class="gpu-gauge-card">
+                <div class="gpu-ring-wrap">
+                    <svg viewBox="0 0 120 120" class="gpu-ring-svg">
+                        <defs>
+                            <linearGradient id="gpuLoadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="hsl(265,80%,52%)"/>
+                                <stop offset="100%" stop-color="hsl(265,80%,80%)"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10"/>
+                        <circle cx="60" cy="60" r="50" fill="none" stroke="url(#gpuLoadGrad)" stroke-width="10"
+                            stroke-dasharray="314" stroke-dashoffset="314"
+                            stroke-linecap="round" transform="rotate(-90 60 60)"
+                            id="gpuLoadCircle" style="transition:stroke-dashoffset 0.6s ease"/>
+                    </svg>
+                    <div class="gpu-ring-center">
+                        <div class="gpu-ring-val" id="gm-ring-load" >--%</div>
+                        <div class="gpu-ring-label">GPU Load</div>
+                    </div>
+                </div>
+                <div class="gpu-bar-row">
+                    <span class="gpu-bar-label">Load</span>
+                    <div class="gpu-bar-track"><div class="gpu-bar-fill" id="gm-load-bar" ></div></div>
+                    <span class="gpu-bar-pct" id="gm-load-pct">--%</span>
+                </div>
+                <div class="gpu-bar-row">
+                    <span class="gpu-bar-label">Temp</span>
+                    <div class="gpu-bar-track"><div class="gpu-bar-fill" id="gm-temp-bar" ></div></div>
+                    <span class="gpu-bar-pct" id="gm-temp-pct">-- °C</span>
+                </div>
+            </div>
+
+            <!-- VRAM gauge -->
+            <div class="gpu-gauge-card">
+                <div class="gpu-vram-header">VRAM Usage</div>
+                <div class="gpu-vram-bar-wrap">
+                    <div class="gpu-vram-bar" id="gm-vram-bar"></div>
+                </div>
+                <div class="gpu-vram-labels">
+                    <span>0</span>
+                    <span id="gm-vram-label">-- / -- GB</span>
+                    <span id="gm-vram-total-label">-- GB</span>
+                </div>
+                <div class="gpu-vram-segments" id="gmVramSegments"></div>
+                <div class="gpu-detail-grid">
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Core Clock</div><div class="gpu-detail-val" id="gm-core-clock">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Memory Clock</div><div class="gpu-detail-val" id="gm-mem-clock">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Power Draw</div><div class="gpu-detail-val" id="gm-power">--</div></div>
+                    <div class="gpu-detail-item"><div class="gpu-detail-label">Fan Speed</div><div class="gpu-detail-val" id="gm-fan">--</div></div>
+                </div>
+            </div>
+
+            <!-- Model card -->
+            <div class="gpu-gauge-card gpu-info-card">
+                <div class="gpu-model-icon">🎮</div>
+                <div class="gpu-model-name" id="gm-model-name">Detecting GPU...</div>
+                <div class="gpu-model-vendor" id="gm-model-vendor"></div>
+                <div class="gpu-spec-list" id="gmSpecList">
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">VRAM</span><span class="gpu-spec-val" id="gm-spec-vram">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Driver</span><span class="gpu-spec-val" id="gm-spec-driver">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Bus</span><span class="gpu-spec-val" id="gm-spec-bus">--</span></div>
+                    <div class="gpu-spec-item"><span class="gpu-spec-label">Sub-Vendor</span><span class="gpu-spec-val" id="gm-spec-subvendor">--</span></div>
+                </div>
+                <div class="gpu-status-badge" id="gm-status-badge">
+                    <span class="gpu-status-dot" id="gm-status-dot"></span>
+                    <span id="gm-status-text">Checking...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Temperature history label -->
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Thermal Status</h3>
+                <span class="panel-sub" id="gm-thermal-summary">Checking...</span>
+            </div>
+            <div class="gpu-thermal-row" id="gmThermalRow">
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Current Temp</div>
+                    <div class="gpu-thermal-val" id="gm-th-current">-- °C</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Status</div>
+                    <div class="gpu-thermal-val" id="gm-th-status">--</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Safe Max</div>
+                    <div class="gpu-thermal-val" >~85 °C</div>
+                </div>
+                <div class="gpu-thermal-item">
+                    <div class="gpu-thermal-label">Throttle Risk</div>
+                    <div class="gpu-thermal-val" id="gm-th-throttle">--</div>
+                </div>
+            </div>
+            <div class="thermal-warning" id="gmThermalWarn" style="display:none;margin:0 16px 14px">
+                <div class="tw-icon">⚠️</div>
+                <div class="tw-body"><div class="tw-title">GPU Overheating</div><div class="tw-desc">GPU temperature is dangerously high. Check case airflow, GPU fan operation, and consider reapplying thermal paste. <strong>Software cannot fix physical cooling issues.</strong></div></div>
+            </div>
+        </div>
+
+        <!-- NVIDIA Performance Preset -->
+        <div class="panel" >
+            <div class="panel-header" >
+                <div style="display:flex; align-items:center; gap: 12px;">
+                    <div >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <div>
+                        <h3 >NVIDIA Performance Mode</h3>
+                        <span class="panel-sub">Optimized 3D settings profile for maximum frame rates and lowest latency.</span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap: 14px;">
+                    <span id="nvPresetStatus" style="font-size:13px; font-weight:600; color:var(--text3);">Inactive</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="nvPresetToggle">
+                        <span class="toggle-slider" ></span>
+                    </label>
+                </div>
+            </div>
+            <div style="padding: 20px 24px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Power Management</span><span class="nv-set-val">Prefer Maximum Performance</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Preferred GPU</span><span class="nv-set-val">High-performance NVIDIA</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Texture Filtering</span><span class="nv-set-val">High Performance</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">FXAA / MFAA</span><span class="nv-set-val">Off</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Vertical Sync</span><span class="nv-set-val">Off / App Controlled</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Triple Buffering</span><span class="nv-set-val">Off</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Low Latency Mode</span><span class="nv-set-val">On</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Threaded Optimization</span><span class="nv-set-val">Auto</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">Shader Cache</span><span class="nv-set-val">Enabled</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="nv-set-item">
+                        <div style="display:flex; flex-direction:column; gap:4px;"><span class="nv-set-label">CUDA GPUs</span><span class="nv-set-val">All</span></div>
+                        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="section" id="section-mon-disk">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div><div><h2>Disk I/O</h2><p>Real-time read/write throughput, disk usage per drive.</p></div></div>
+        <div class="big-stat-row">
+            <div class="big-stat-card"><div class="bsc-label">Read (ops/s)</div><div class="bsc-val" id="disk-read-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Write (ops/s)</div><div class="bsc-val" id="disk-write-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Total I/O</div><div class="bsc-val" id="disk-tio-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Disk Fill</div><div class="bsc-val" id="disk-fill-val">--</div></div>
+        </div>
+    </section>
+<section class="section" id="section-mon-network">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div><div><h2>Network Monitor</h2><p>Live bandwidth usage, adapter info, gateway, ping, and DNS latency.</p></div></div>
+        <div class="big-stat-row">
+            <div class="big-stat-card"><div class="bsc-label">Download</div><div class="bsc-val" id="net-dl-val">-- KB/s</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Upload</div><div class="bsc-val" id="net-ul-val">-- KB/s</div></div>
+            <div class="big-stat-card"><div class="bsc-label">Ping</div><div class="bsc-val" id="net-ping-val">--</div></div>
+            <div class="big-stat-card"><div class="bsc-label">DNS Latency</div><div class="bsc-val" id="net-dns-val">--</div></div>
+        </div>
+        <div class="panel" style="margin-top:20px">
+            <div class="panel-header"><h3>Adapter Information</h3></div>
+            <div id="netAdapterInfo" class="adapter-info-grid"></div>
+        </div>
+        <div class="tool-grid" style="margin-top:16px">
+            <div class="tool-card"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6l11 6 11-6M1 12l11 6 11-6"></path></svg></div><h4>Flush DNS Cache</h4><p>Clears the DNS resolver cache to fix website loading issues</p><button class="tool-btn" data-action="net-dns">Flush DNS</button></div>
+            <div class="tool-card"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><h4>Reset Winsock</h4><p>Resets Winsock catalog to fix broken network connections</p><button class="tool-btn" data-action="net-winsock">Reset Winsock</button></div>
+            <div class="tool-card"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg></div><h4>Release &amp; Renew IP</h4><p>Releases current IP and requests a fresh one from DHCP</p><button class="tool-btn" data-action="net-ip">Renew IP</button></div>
+            <div class="tool-card"><div class="tool-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.18 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.11 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16z"></path></svg></div><h4>Reset TCP/IP Stack</h4><p>Resets the TCP/IP stack configuration to defaults</p><button class="tool-btn" data-action="net-tcp">Reset TCP/IP</button></div>
+        </div>
+        <div class="panel result-panel" id="net-result" style="display:none"><div class="result-body"></div></div>
+    </section>
+<section class="section" id="section-mon-thermal">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></div><div><h2>Thermal Monitoring</h2><p>CPU and GPU temperatures, fan speed, and thermal throttle detection.</p></div></div>
+        <div class="thermal-grid" id="thermalGrid">
+            <div class="thermal-card" id="thermal-cpu">
+                <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect></svg></div>
+                <div class="tc-label">CPU Temperature</div>
+                <div class="tc-temp" id="tc-cpu-temp">--</div>
+                <div class="tc-bar-wrap"><div class="tc-bar" id="tc-cpu-bar"></div></div>
+                <div class="tc-status" id="tc-cpu-status">Checking...</div>
+            </div>
+            <div class="thermal-card" id="thermal-gpu">
+                <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect></svg></div>
+                <div class="tc-label">GPU Temperature</div>
+                <div class="tc-temp" id="tc-gpu-temp">--</div>
+                <div class="tc-bar-wrap"><div class="tc-bar" id="tc-gpu-bar" ></div></div>
+                <div class="tc-status" id="tc-gpu-status">Checking...</div>
+            </div>
+        </div>
+        <div class="thermal-warning" id="thermalWarning" style="display:none">
+            <div class="tw-icon">⚠️</div>
+            <div class="tw-body">
+                <div class="tw-title">High Temperature Detected</div>
+                <div class="tw-desc">Possible causes: High CPU load, poor ventilation, dust accumulation, or thermal paste degradation. Software cannot fix physical cooling issues.</div>
+            </div>
+        </div>
+    </section>

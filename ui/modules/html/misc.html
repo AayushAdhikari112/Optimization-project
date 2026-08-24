@@ -1,0 +1,42 @@
+<section class="section" id="section-restore">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg></div><div><h2>Restore Center</h2><p>Before any change to services, startup entries, scheduled tasks, registry, or power settings, OptiCore creates a backup snapshot. Undo changes at any time.</p></div></div>
+        <div class="panel">
+            <div class="panel-header"><h3>Change History</h3><span class="panel-sub" id="restore-count">Loading...</span></div>
+            <div id="restoreHistory" class="restore-history"><div class="dc-loading">Loading history...</div></div>
+        </div>
+    </section>
+<section class="section" id="section-reports">
+        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div><div><h2>Reports &amp; Benchmarks</h2><p>Compare system metrics before and after optimization. Health scores are calculated from real, measured metrics.</p></div></div>
+        <div class="benchmark-controls">
+            <button class="scan-btn" id="takeBefore">📸 Take Before Snapshot</button>
+            <button class="scan-btn" id="takeAfter">📸 Take After Snapshot</button>
+            <button class="scan-btn" id="clearBenchmark" >Clear</button>
+        </div>
+        <div id="benchmarkCompare" class="benchmark-compare"></div>
+    </section>
+<section class="section" id="section-settings">
+        <div class="section-hero"><div class="section-hero-icon" style="background:rgba(255,255,255,0.06)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#94a3b8"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h2>Settings</h2><p>Configure OptiCore preferences and optimization behavior.</p></div></div>
+        <div class="settings-grid">
+            <div class="panel"><div class="panel-header"><h3>General</h3></div>
+                <div class="settings-list">
+                    <div class="setting-row"><div class="setting-info"><span>Launch at Windows startup</span><small>Start OptiCore automatically when Windows boots</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                    <div class="setting-row"><div class="setting-info"><span>Minimize to system tray</span><small>Keep running in the background when window is closed</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <div class="setting-row"><div class="setting-info"><span>Show notifications</span><small>Get alerts when optimization completes</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3>Optimization</h3></div>
+                <div class="settings-list">
+                    <div class="setting-row"><div class="setting-info"><span>Auto-clean temp files</span><small>Automatically clear junk files weekly</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                    <div class="setting-row"><div class="setting-info"><span>Safe mode cleaning</span><small>Skip files that may be in use by the system</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <div class="setting-row"><div class="setting-info"><span>Deep scan mode</span><small>Scan more locations (slower but more thorough)</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3>Account</h3></div>
+                <div class="settings-list">
+                    <div class="setting-row"><div class="setting-info"><span>Username</span><small>admin</small></div><button class="settings-btn">Change</button></div>
+                    <div class="setting-row"><div class="setting-info"><span>Password</span><small>Last changed: Today</small></div><button class="settings-btn">Change</button></div>
+                    <div class="setting-row"><div class="setting-info"><span>Version</span><small>OptiCore v2.0.0</small></div><button class="settings-btn">Check Updates</button></div>
+                </div>
+            </div>
+        </div>
+    </section>
