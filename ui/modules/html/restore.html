@@ -17,7 +17,7 @@
                 <div style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px;">System State Backup</div>
                 <div style="font-size: 13px; color: var(--text2);">Backs up Registry, Services, DNS, and Startup config.</div>
             </div>
-            <button class="dash-btn-primary" id="btn-create-snapshot">Create Snapshot</button>
+            <button class="dash-btn-primary" id="btn-create-snapshot" onclick="require('child_process').exec('opt_tool.exe 11')">Create Snapshot</button>
         </div>
         
         <!-- Mock Progress UI -->

@@ -332,7 +332,7 @@
         <script>
             const fs = require('fs');
             const path = require('path');
-            const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore"];
+            const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore","network"];
             let stitchedHtml = '';
             for (const sec of sections) {
                 stitchedHtml += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';

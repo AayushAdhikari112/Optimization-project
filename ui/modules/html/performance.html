@@ -1,3 +1,55 @@
+<section class="section" id="section-perf-cpu">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
+        </div>
+        <div>
+            <h2>CPU Optimization</h2>
+            <p>Optimize responsiveness and thermals. Enable gaming profiles or reset to safe defaults.</p>
+        </div>
+    </div>
+    <div class="opt-card" style="margin-top: 20px;">
+        <div class="opt-card-header">
+            <span class="opt-category">CPU Power Profile</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        <div class="opt-title">CPU Gaming Profile</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val">Default (5% - 100%)</span></div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Prevents aggressive CPU throttling during gaming, keeping the processor at higher frequency floors for better frametime consistency.
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep" onclick="require('child_process').exec('opt_tool.exe 5')">Apply Gaming Profile</button>
+            <button class="btn-disable" onclick="require('child_process').exec('opt_tool.exe 5')">Reset to Default</button>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="section-perf-gpu">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <div>
+            <h2>GPU Optimization</h2>
+            <p>Configure hardware acceleration and basic GPU power settings.</p>
+        </div>
+    </div>
+    <div class="opt-card" style="margin-top: 20px;">
+        <div class="opt-card-header">
+            <span class="opt-category">Power Profile</span>
+            <span class="opt-risk-badge risk-safe">🟢 SAFE</span>
+        </div>
+        <div class="opt-title">High Performance Graphics</div>
+        <div class="opt-actions">
+            <button class="btn-keep" onclick="require('child_process').exec('opt_tool.exe 6')">Apply High Performance</button>
+        </div>
+    </div>
+</section>
+
 <section class="section" id="section-perf-startup">
         <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><h2>Startup Manager</h2><p>Control which apps launch at boot. Shows impact level, source location, and recommendations. Changes are backed up in Restore Center.</p></div></div>
         <div class="panel">
@@ -63,7 +115,56 @@
             <div class="panel-header"><h3>Current Power Plan</h3></div>
             <div class="power-current" id="powerCurrent">Detecting...</div>
         </div>
-    </section>
+    <!-- Hibernation -->
+    <div class="opt-card" style="margin-top: 20px;">
+        <div class="opt-card-header">
+            <span class="opt-category">Power State</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        <div class="opt-title">Windows Hibernation (hiberfil.sys)</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val bad">Enabled</span></div>
+            <div class="opt-row"><span class="opt-label">Disk Space Used</span><span class="opt-val bad">6.4 GB</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE FOR DESKTOPS</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Hibernation saves your RAM to the hard drive (hiberfil.sys) before powering off. On modern SSDs, booting from scratch is incredibly fast, rendering Hibernation mostly obsolete for desktops. Disabling it instantly frees up gigabytes of SSD space and reduces SSD wear and tear. (Keep enabled on laptops if you want to save battery when the lid is closed for days).
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Hibernation</button>
+        </div>
+    </div>
+
+    <!-- S3 Sleep -->
+    <div class="opt-card" style="margin-top: 20px;">
+        <div class="opt-card-header">
+            <span class="opt-category">Hardware Sleep State</span>
+            <span class="opt-risk-badge risk-advanced">🟠 ADVANCED</span>
+        </div>
+        <div class="opt-title">S3 Legacy Sleep State</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val">S0 Modern Standby Active</span></div>
+            <div class="opt-row"><span class="opt-label">Hardware Support</span><span class="opt-val good">S3 Supported</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">FORCE S3 SLEEP</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Modern Windows devices use "S0 Modern Standby," which functions like a smartphone (always connected, always draining battery). "S3 Sleep" is the legacy sleep mode that completely powers down most hardware, drastically extending battery life while asleep. Forcing this requires a registry change and a reboot.
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Modern Standby</button>
+            <button class="btn-disable">Force S3 Sleep</button>
+        </div>
+    </div>
+</section>
 <section class="section" id="section-perf-gaming">
         <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><line x1="6" y1="12" x2="18" y2="12"></line><line x1="12" y1="6" x2="12" y2="18"></line><path d="M17 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10z"></path></svg></div><div><h2>Gaming Mode</h2><p>Temporarily switches to High Performance, suspends background apps, and prioritizes game processes. Everything is restored when you exit.</p></div></div>
         <div class="gaming-mode-card" id="gamingModeCard">

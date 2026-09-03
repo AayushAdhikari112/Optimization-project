@@ -1,12 +1,83 @@
-<section class="section" id="section-privacy">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h2>Privacy Analyzer</h2><p>Review telemetry and privacy-related settings. See what's enabled and decide what to change — we never blindly disable Windows components.</p></div></div>
-        <div id="privacyGrid" class="privacy-grid"><div class="dc-loading">Analyzing privacy settings...</div></div>
-    </section>
-<section class="section" id="section-security">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div><div><h2>Security Analyzer</h2><p>Identifies potentially dangerous "optimizations." Some settings must never be changed for performance. We'll tell you clearly.</p></div></div>
-        <div class="security-warning-banner">
-            <span>🛡️</span>
-            <div>OptiCore will <strong>never</strong> recommend disabling Windows Defender, the Firewall, or UAC for performance purposes. These settings protect your system.</div>
+<section class="section" id="section-priv-telemetry">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <div id="securityGrid" class="security-grid"><div class="dc-loading">Checking security status...</div></div>
-    </section>
+        <div><h2>Telemetry & Privacy</h2><p>Stop unnecessary background data collection to save resources and protect privacy.</p></div>
+    </div>
+
+    <!-- Windows Telemetry -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Data Collection</span>
+            <span class="opt-risk-badge risk-advanced">🟠 ADVANCED</span>
+        </div>
+        <div class="opt-title">Connected User Experiences and Telemetry</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val bad">Running (Full Data)</span></div>
+            <div class="opt-row"><span class="opt-label">Background Impact</span><span class="opt-val bad">High CPU / Disk I/O</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            The Windows Telemetry service (DiagTrack) constantly runs in the background, collecting usage data, keystrokes, and system metrics to send to Microsoft. This consumes CPU cycles and disk bandwidth unnecessarily. Disabling it improves privacy and system responsiveness.
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Telemetry</button>
+        </div>
+    </div>
+
+    <!-- Activity History -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Tracking</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        <div class="opt-title">Activity History & Timeline</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val bad">Enabled</span></div>
+            <div class="opt-row"><span class="opt-label">Cloud Sync</span><span class="opt-val bad">Active</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Windows tracks the apps you use, files you open, and websites you browse to create an "Activity History." If cloud sync is on, this data is uploaded. Disabling it stops local caching and network uploads, freeing up small amounts of resources.
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Activity History</button>
+        </div>
+    </div>
+    
+    <!-- Location Tracking -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Sensors</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        <div class="opt-title">Location Tracking Service</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val bad">Enabled</span></div>
+            <div class="opt-row"><span class="opt-label">Device Type</span><span class="opt-val">Desktop PC</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE FOR DESKTOPS</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            The Windows Location Service runs in the background to provide location data to apps like Weather or Maps. On a stationary Desktop PC, this is largely unnecessary. Disabling it stops the background polling. (Note: Keep enabled on laptops if you use Find My Device).
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Enabled</button>
+            <button class="btn-disable">Disable Location</button>
+        </div>
+    </div>
+</section>

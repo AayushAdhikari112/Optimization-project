@@ -1,0 +1,59 @@
+<section class="section" id="section-net-adapter">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+        </div>
+        <div><h2>Network Adapters</h2><p>Optimize advanced network protocols and standby connection states.</p></div>
+    </div>
+
+    <!-- IPv6 -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Internet Protocol</span>
+            <span class="opt-risk-badge risk-advanced">🟠 ADVANCED</span>
+        </div>
+        <div class="opt-title">IPv6 Connectivity</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val">Enabled (Default)</span></div>
+            <div class="opt-row"><span class="opt-label">ISP Support</span><span class="opt-val bad">No IPv6 Detected</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
+            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">PREFER IPV4 OVER IPV6</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Many ISPs and older routers do not fully support IPv6, yet Windows attempts to resolve IPv6 addresses first by default. This can cause DNS timeout delays while browsing or gaming. Disabling IPv6 entirely can break some modern Windows features, so the safest optimization is to change the prefix policy to "Prefer IPv4."
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Leave Default</button>
+            <button class="btn-disable">Prefer IPv4</button>
+            <button class="btn-disable" style="background: linear-gradient(135deg, hsl(0,84%,51%), hsl(0,84%,31%)); margin-left: auto;">Disable IPv6</button>
+        </div>
+    </div>
+
+    <!-- S0 Sleep Network Connectivity -->
+    <div class="opt-card">
+        <div class="opt-card-header">
+            <span class="opt-category">Power & Network</span>
+            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
+        </div>
+        <div class="opt-title">Modern Standby Network Connectivity</div>
+        <div class="opt-grid">
+            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val">Connected in Standby</span></div>
+            <div class="opt-row"><span class="opt-label">Sleep State</span><span class="opt-val">S0 Low Power Idle</span></div>
+        </div>
+        <div class="opt-recommendation" style="border-color: hsl(162,78%,42%);">
+            <div class="opt-rec-title" style="color: hsl(162,78%,65%);">Recommendation</div>
+            <div class="opt-rec-text" style="color: hsl(162,78%,54%);">DISCONNECT IN STANDBY</div>
+        </div>
+        <div class="opt-why">
+            <strong>Why?</strong>
+            Modern laptops use "S0 Sleep" which keeps the network connected while asleep to download emails and updates. This causes excessive battery drain and "hot bag" syndrome. Disabling standby network connectivity drastically improves sleep battery life without breaking the sleep state itself.
+        </div>
+        <div class="opt-actions">
+            <button class="btn-keep">Keep Connected</button>
+            <button class="btn-disable">Disconnect in Sleep</button>
+        </div>
+    </div>
+</section>

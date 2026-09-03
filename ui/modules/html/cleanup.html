@@ -1,3 +1,25 @@
+<section class="section" id="section-cl-ssd">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><line x1="2" y1="12" x2="22" y2="12"></line><line x1="8" y1="2" x2="8" y2="22"></line></svg>
+        </div>
+        <div>
+            <h2>Storage Optimization</h2>
+            <p>Maintain SSD health by running manual TRIM operations, or defragment HDDs.</p>
+        </div>
+    </div>
+    <div class="opt-card" style="margin-top: 20px;">
+        <div class="opt-card-header">
+            <span class="opt-category">Drive Optimization</span>
+            <span class="opt-risk-badge risk-safe">🟢 SAFE</span>
+        </div>
+        <div class="opt-title">SSD TRIM Operation</div>
+        <div class="opt-actions">
+            <button class="btn-keep" onclick="require('child_process').exec('opt_tool.exe 8')">Run TRIM on C:\</button>
+        </div>
+    </div>
+</section>
+
 <section class="section" id="section-cl-windows">
         <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div><div style="flex:1"><h2>Windows Cleanup</h2><p>Remove temp files, Windows Update cache, delivery optimization, thumbnail cache, shader cache, error reports, crash dumps, logs, and upgrade leftovers.</p></div><button class="dc-clean-all-btn" id="win-clean-all">Clean Selected</button></div>
         <div class="dc-summary">

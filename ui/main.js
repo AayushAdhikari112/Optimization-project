@@ -134,18 +134,42 @@ ipcMain.handle('request-admin', () => relaunchAsAdmin())
 // ─────────────────────────────────────────────
 // IPC: Extended real-time system stats
 // ─────────────────────────────────────────────
+let cachedFsSize = null;
+let cachedGraphics = null;
+let cachedOsInfo = null;
+let cachedProcCount = 0;
+let lastHeavyUpdate = 0;
+let cachedWmiTemp = null;
+let lastWmiTempTime = 0;
+
 ipcMain.handle('get-system-stats', async () => {
     try {
-        const [cpu, mem, fsSize, cpuTemp, graphics, netStats, processes, osInfo] = await Promise.all([
+        const now = Date.now();
+        if (now - lastHeavyUpdate > 30000 || !cachedFsSize) {
+            const [fs, gx, os, procs] = await Promise.all([
+                si.fsSize(),
+                si.graphics(),
+                si.osInfo(),
+                si.processes()
+            ]);
+            cachedFsSize = fs;
+            cachedGraphics = gx;
+            cachedOsInfo = os;
+            cachedProcCount = procs.all || 0;
+            lastHeavyUpdate = now;
+        }
+
+        const [cpu, mem, cpuTemp, netStats] = await Promise.all([
             si.currentLoad(),
             si.mem(),
-            si.fsSize(),
             si.cpuTemperature(),
-            si.graphics(),
             si.networkStats(),
-            si.processes(),
-            si.osInfo(),
-        ])
+        ]);
+
+        const fsSize = cachedFsSize;
+        const graphics = cachedGraphics;
+        const osInfo = cachedOsInfo;
+        const procCount = cachedProcCount;
 
         const cpuUsage  = Math.round(cpu.currentLoad)
         const ramUsed   = mem.active
@@ -164,7 +188,14 @@ ipcMain.handle('get-system-stats', async () => {
         if (cpuTemp.main) cpuTempVal = Math.round(cpuTemp.main)
         else if (cpuTemp.cores && cpuTemp.cores.length > 0)
             cpuTempVal = Math.round(cpuTemp.cores.reduce((a, b) => a + b, 0) / cpuTemp.cores.length)
-        if (!cpuTempVal) cpuTempVal = await getWmiCpuTemp()
+        
+        if (!cpuTempVal) {
+            if (now - lastWmiTempTime > 15000) {
+                cachedWmiTemp = await getWmiCpuTemp();
+                lastWmiTempTime = now;
+            }
+            cpuTempVal = cachedWmiTemp;
+        }
 
         const gpu        = graphics.controllers && graphics.controllers[0]
         const gpuTempVal = gpu && gpu.temperatureGpu ? Math.round(gpu.temperatureGpu) : null
@@ -178,7 +209,6 @@ ipcMain.handle('get-system-stats', async () => {
         const netTxSec   = netIface ? Math.round(netIface.tx_sec / 1024) : 0
 
         const uptimeSec  = os.uptime()
-        const procCount  = processes.all || 0
 
         return {
             cpu: cpuUsage,
