@@ -1,78 +1,17 @@
 /* ================================================================
-   SCROLLBAR
+   BASE — layout helpers
 ================================================================ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border2); }
 
-
-/* ================================================================
-   MAIN CONTENT
-================================================================ */
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--bg);
+    min-height: 0;
+    position: relative;
+    z-index: 1;
 }
 
 #sections-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
+    display: contents; /* children become direct flex children of main-content */
 }
-
-/* ── Topbar ── */
-.topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 28px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    flex-shrink: 0;
-    gap: 16px;
-}
-.topbar-left h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; }
-.topbar-sub { font-size: 12px; color: var(--text3); margin-top: 2px; display: block; }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
-
-.status-badge {
-    display: flex; align-items: center; gap: 8px;
-    padding: 6px 14px;
-    background: hsla(162,78%,42%,0.1);
-    border: 1px solid hsla(162,78%,42%,0.2);
-    border-radius: 100px;
-    font-size: 12px; color: hsl(162,78%,55%); font-weight: 500;
-}
-.status-dot {
-    width: 7px; height: 7px;
-    background: hsl(162,78%,42%);
-    border-radius: 50%;
-    box-shadow: 0 0 8px hsl(162,78%,42%);
-    animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
-
-.status-badge.warn { background: hsla(38,96%,54%,0.1); border-color: hsla(38,96%,54%,0.2); color: hsl(38,96%,65%); }
-.status-badge.warn .status-dot { background: hsl(38,96%,54%); box-shadow: 0 0 8px hsl(38,96%,54%); }
-.status-badge.danger { background: hsla(0,84%,61%,0.1); border-color: hsla(0,84%,61%,0.2); color: hsl(0,84%,70%); }
-.status-badge.danger .status-dot { background: hsl(0,84%,61%); box-shadow: 0 0 8px hsl(0,84%,61%); }
-
-.scan-btn {
-    display: flex; align-items: center; gap: 7px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, hsl(235,65%,52%), hsl(235,65%,42%));
-    border: none;
-    border-radius: var(--radius-sm);
-    color: #fff; font-size: 13px; font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition);
-}
-.scan-btn svg { width: 14px; height: 14px; }
-.scan-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px hsla(235,65%,62%,0.3); }
-.scan-btn:active { transform: translateY(0); }
-.scan-btn.scanning svg { animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }

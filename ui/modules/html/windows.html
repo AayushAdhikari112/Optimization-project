@@ -1,3 +1,6 @@
+<!-- ============================================================
+     SECTION: INPUT OPTIMIZATION (input_optimizer.c)
+============================================================ -->
 <section class="section" id="section-win-input">
     <div class="section-hero">
         <div class="section-hero-icon">
@@ -5,241 +8,80 @@
         </div>
         <div>
             <h2>Input Optimization</h2>
-            <p>Optimize mouse and keyboard latency, and disable intrusive accessibility shortcuts during gaming.</p>
+            <p>Optimize mouse/keyboard latency and disable intrusive accessibility shortcuts that trigger during gaming.</p>
         </div>
     </div>
     
-    <div class="opt-card" style="margin-top: 20px;">
-        <div class="opt-card-header">
-            <span class="opt-category">Mouse Precision</span>
-            <span class="opt-risk-badge risk-safe">🟢 SAFE</span>
+    <div class="tweak-list">
+        <!-- toggle_mouse_acceleration() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Mouse Acceleration</h3>
+                <p>Turns off Windows "Enhance Pointer Precision" via <code>SPI_SETMOUSE</code>. Ensures 1:1 raw input and consistent muscle memory for FPS games.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 10')">Disable</button>
         </div>
-        <div class="opt-title">Enhance Pointer Precision</div>
-        <div class="opt-why">
-            <strong>Why?</strong>
-            "Enhance Pointer Precision" is Windows' built-in mouse acceleration. Gamers typically want this disabled for 1:1 raw input and consistent muscle memory.
+
+        <!-- toggle_sticky_keys() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Sticky Keys</h3>
+                <p>Turns off Sticky Keys via <code>SPI_SETSTICKYKEYS</code> API. Prevents the game-minimizing prompt when pressing SHIFT 5 times quickly.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Control Panel\\Accessibility\\StickyKeys\" /v Flags /t REG_SZ /d 506 /f')">Disable</button>
         </div>
-        <div class="opt-actions">
-            <button class="btn-keep" onclick="require('child_process').exec('opt_tool.exe 10')">Disable Acceleration</button>
+
+        <!-- toggle_filter_keys() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Filter Keys</h3>
+                <p>Turns off Filter Keys via <code>SPI_SETFILTERKEYS</code> API. Prevents ignored keystrokes if you hold a key down for too long (e.g. running in games).</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Control Panel\\Accessibility\\Keyboard Response\" /v Flags /t REG_SZ /d 122 /f')">Disable</button>
         </div>
     </div>
 </section>
 
+<!-- ============================================================
+     SECTION: WINDOWS DEBLOAT (Telemetry, Ads)
+============================================================ -->
 <section class="section" id="section-win-services">
     <div class="section-hero">
         <div class="section-hero-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         </div>
-        <div><h2>Windows Services</h2><p>Intelligent service management and background optimization.</p></div>
+        <div><h2>Windows Debloat & Privacy</h2><p>Disable built-in Windows telemetry, ads, and unnecessary data collection.</p></div>
     </div>
 
-    <!-- Intelligent Card Example: SysMain -->
-    <div class="opt-card">
-        <div class="opt-card-header">
-            <span class="opt-category">System Optimization</span>
-            <span class="opt-risk-badge risk-advanced">🟠 ADVANCED</span>
-        </div>
-        
-        <div class="opt-title">SysMain (Superfetch)</div>
-        
-        <div class="opt-grid">
-            <div class="opt-row">
-                <span class="opt-label">Status</span>
-                <span class="opt-val good">Running</span>
+    <div class="tweak-list">
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Windows Telemetry</h3>
+                <p>Sets <code>AllowTelemetry = 0</code> to stop Windows from sending background diagnostic data to Microsoft.</p>
             </div>
-            <div class="opt-row">
-                <span class="opt-label">System Specs</span>
-                <span class="opt-val">SSD + 16 GB RAM detected</span>
+            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 0 /f')">Disable</button>
+        </div>
+
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Cortana & Search Web Results</h3>
+                <p>Disables Cortana and prevents the Start Menu from searching Bing (reducing web lag when searching local files).</p>
             </div>
+            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer\" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f')">Disable</button>
         </div>
 
-        <div class="opt-recommendation">
-            <div class="opt-rec-title">Recommendation</div>
-            <div class="opt-rec-text">KEEP ENABLED</div>
-        </div>
-
-        <div class="opt-why">
-            <strong>Why?</strong>
-            SysMain can improve application launch performance on this system by preloading frequently used programs into memory. Because you have an SSD and sufficient RAM, the performance benefit outweighs the background I/O cost.
-        </div>
-
-        <div class="opt-actions">
-            <button class="btn-keep">Keep Enabled</button>
-            <button class="btn-disable">Disable Service</button>
-        </div>
-    </div>
-
-    <!-- Intelligent Card Example: Print Spooler -->
-    <div class="opt-card">
-        <div class="opt-card-header">
-            <span class="opt-category">Peripheral Services</span>
-            <span class="opt-risk-badge risk-moderate">🟡 MODERATE</span>
-        </div>
-        
-        <div class="opt-title">Print Spooler</div>
-        
-        <div class="opt-grid">
-            <div class="opt-row">
-                <span class="opt-label">Status</span>
-                <span class="opt-val good">Running</span>
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+            <div class="tweak-info">
+                <h3>Disable Lock Screen Ads</h3>
+                <p>Disables Windows Spotlight and "Fun facts, tips, tricks" ads on the Windows lock screen.</p>
             </div>
-            <div class="opt-row">
-                <span class="opt-label">Printer Detected</span>
-                <span class="opt-val bad">No active printers found</span>
-            </div>
-        </div>
-
-        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
-            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
-            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">DISABLE IF UNUSED</div>
-        </div>
-
-        <div class="opt-why">
-            <strong>Why?</strong>
-            The Print Spooler service runs in the background continuously. If you do not own a physical printer or print to PDF frequently, this service wastes background resources and can pose a security risk (e.g., PrintNightmare vulnerability).
-        </div>
-
-        <div class="opt-actions">
-            <button class="btn-keep">Keep Enabled</button>
-            <button class="btn-disable">Disable Service</button>
-        </div>
-    </div>
-
-</section>
-<section class="section" id="section-win-ui">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-        </div>
-        <div><h2>Windows UI Tweaks</h2><p>Customize your Windows experience, File Explorer, and Taskbar aesthetics.</p></div>
-    </div>
-
-    <!-- File Explorer -->
-    <div class="panel">
-        <div class="panel-header">
-            <h3>File Explorer</h3>
-            <span class="panel-sub">Customize navigation and visibility</span>
-        </div>
-        <div class="nv-settings-grid">
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Show File Extensions</div><div class="nv-setting-desc">Always show file extensions for known file types</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Show Hidden Files</div><div class="nv-setting-desc">Display hidden files, folders, and drives</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Auto Folder Discovery</div><div class="nv-setting-desc">Disable automatic folder type discovery for faster loading</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Home & Gallery</div><div class="nv-setting-desc">Remove Home and Gallery from File Explorer sidebar</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-        </div>
-    </div>
-
-    <!-- Taskbar & Start Menu -->
-    <div class="panel" style="margin-top: 20px;">
-        <div class="panel-header">
-            <h3>Taskbar & Start Menu</h3>
-            <span class="panel-sub">Debloat and clean up the taskbar</span>
-        </div>
-        <div class="nv-settings-grid">
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Centered Icons</div><div class="nv-setting-desc">Center align taskbar icons (Windows 11)</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Taskbar Search</div><div class="nv-setting-desc">Hide the search box/icon from the taskbar</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Widgets Panel</div><div class="nv-setting-desc">Completely remove the Widgets panel from the taskbar</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Start Menu Recommendations</div><div class="nv-setting-desc">Hide recommended files and new apps in Start</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Start Menu Bing Search</div><div class="nv-setting-desc">Disable web results from Start Menu search</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Previous Layout</div><div class="nv-setting-desc">Enable classic Windows 10 style context menus</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-        </div>
-    </div>
-
-    <!-- Visuals & Interaction -->
-    <div class="panel" style="margin-top: 20px;">
-        <div class="panel-header">
-            <h3>Visuals & Interaction</h3>
-            <span class="panel-sub">Customize display and input preferences</span>
-        </div>
-        <div class="nv-settings-grid">
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Dark Theme</div><div class="nv-setting-desc">Force Dark Theme across Windows and apps</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Logon Screen Blur</div><div class="nv-setting-desc">Enable acrylic blur effect on the logon screen</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Always Show Scrollbars</div><div class="nv-setting-desc">Prevent Windows from auto-hiding scrollbars</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">Disable Lock Screen</div><div class="nv-setting-desc">Skip the lock screen and go straight to password prompt</div></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-            <div class="nv-setting"><div class="nv-setting-info"><div class="nv-setting-name">System Tray Battery %</div><div class="nv-setting-desc">Show battery percentage on the system tray icon</div></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="section-win-features">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        </div>
-        <div><h2>Windows Features</h2><p>Advanced system feature configurations.</p></div>
-    </div>
-
-    <!-- Long Paths -->
-    <div class="opt-card">
-        <div class="opt-card-header">
-            <span class="opt-category">File System</span>
-            <span class="opt-risk-badge risk-moderate">?? MODERATE</span>
-        </div>
-        <div class="opt-title">Enable Long Paths (Win32)</div>
-        <div class="opt-grid">
-            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val bad">Disabled</span></div>
-            <div class="opt-row"><span class="opt-label">Limit</span><span class="opt-val">260 Characters</span></div>
-        </div>
-        <div class="opt-recommendation" style="border-color: hsl(162,78%,42%);">
-            <div class="opt-rec-title" style="color: hsl(162,78%,65%);">Recommendation</div>
-            <div class="opt-rec-text" style="color: hsl(162,78%,54%);">ENABLE</div>
-        </div>
-        <div class="opt-why">
-            <strong>Why?</strong>
-            By default, Windows APIs limit file paths to 260 characters. Enabling this removes the limit, allowing developers and modern applications to use paths up to 32,767 characters. Very few legacy applications have issues with this.
-        </div>
-        <div class="opt-actions">
-            <button class="btn-keep">Keep Disabled</button>
-            <button class="btn-disable" style="background: linear-gradient(135deg, hsl(162,78%,42%), hsl(162,78%,32%));">Enable Long Paths</button>
-        </div>
-    </div>
-
-    <!-- BitLocker -->
-    <div class="opt-card">
-        <div class="opt-card-header">
-            <span class="opt-category">Security</span>
-            <span class="opt-risk-badge risk-advanced">?? ADVANCED</span>
-        </div>
-        <div class="opt-title">BitLocker Drive Encryption</div>
-        <div class="opt-grid">
-            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val good">Enabled (OS Drive)</span></div>
-            <div class="opt-row"><span class="opt-label">System Type</span><span class="opt-val">Laptop / Mobile</span></div>
-        </div>
-        <div class="opt-recommendation" style="border-color: hsl(162,78%,42%);">
-            <div class="opt-rec-title" style="color: hsl(162,78%,65%);">Recommendation</div>
-            <div class="opt-rec-text" style="color: hsl(162,78%,54%);">KEEP ENABLED</div>
-        </div>
-        <div class="opt-why">
-            <strong>Why?</strong>
-            BitLocker encrypts your drive to protect your data if your device is lost or stolen. While disabling it can slightly improve SSD read/write speeds, the severe security risk of data theft on a portable device outweighs the performance gain.
-        </div>
-        <div class="opt-actions">
-            <button class="btn-keep">Keep Enabled</button>
-            <button class="btn-disable">Decrypt Drive</button>
-        </div>
-    </div>
-
-    <!-- WPBT -->
-    <div class="opt-card">
-        <div class="opt-card-header">
-            <span class="opt-category">UEFI / BIOS</span>
-            <span class="opt-risk-badge risk-extreme">?? EXTREME</span>
-        </div>
-        <div class="opt-title">WPBT (Windows Platform Binary Table)</div>
-        <div class="opt-grid">
-            <div class="opt-row"><span class="opt-label">Status</span><span class="opt-val">Enabled by OEM</span></div>
-            <div class="opt-row"><span class="opt-label">Vendor</span><span class="opt-val">Lenovo / ASUS / HP</span></div>
-        </div>
-        <div class="opt-recommendation" style="border-color: hsl(38,96%,54%);">
-            <div class="opt-rec-title" style="color: hsl(38,96%,65%);">Recommendation</div>
-            <div class="opt-rec-text" style="color: hsl(38,96%,54%);">EXPERT USERS ONLY</div>
-        </div>
-        <div class="opt-why">
-            <strong>Why?</strong>
-            WPBT allows OEMs (like Lenovo, ASUS) to inject executables into Windows during boot, often used for force-installing bloatware or updater tools even after a clean Windows install. Disabling this involves modifying the ACPI tables and carries a high risk of rendering the system unbootable if done incorrectly.
-        </div>
-        <div class="opt-actions">
-            <button class="btn-keep">Leave Alone</button>
-            <button class="btn-disable" style="background: linear-gradient(135deg, hsl(0,84%,51%), hsl(0,84%,31%)); border: 1px solid #ff0000;">Force Disable WPBT</button>
+            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\" /v RotatingLockScreenEnabled /t REG_DWORD /d 0 /f')">Disable</button>
         </div>
     </div>
 </section>

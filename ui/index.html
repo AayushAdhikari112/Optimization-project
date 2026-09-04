@@ -134,53 +134,31 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function doLogin() {
             const btn = document.getElementById('submitBtn');
             if (btn.classList.contains('loading') || btn.classList.contains('success')) return;
 
-            const email    = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-
-            // Mock credentials
-            const VALID_USER = 'admin';
-            const VALID_PASS = 'admin123';
-
-            // Clear previous error
-            const existingErr = document.getElementById('loginError');
-            if (existingErr) existingErr.remove();
-
             btn.classList.add('loading');
-            const originalHTML = btn.innerHTML;
             btn.innerHTML = '<div class="spinner"></div>';
 
             setTimeout(() => {
-                btn.classList.remove('loading');
+                btn.classList.add('success');
+                btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Welcome!</span>`;
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 800);
+            }, 600);
+        }
 
-                if (email === VALID_USER && password === VALID_PASS) {
-                    // ✅ Success — redirect to dashboard
-                    btn.classList.add('success');
-                    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Welcome, Admin!</span>`;
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1200);
-                } else {
-                    // ❌ Wrong credentials
-                    btn.innerHTML = originalHTML;
+        // Click the button → log in
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            doLogin();
+        });
 
-                    // Shake the form
-                    const form = document.getElementById('loginForm');
-                    form.classList.add('shake');
-                    form.addEventListener('animationend', () => form.classList.remove('shake'), { once: true });
-
-                    // Show error message
-                    const err = document.createElement('div');
-                    err.id = 'loginError';
-                    err.className = 'error-msg';
-                    err.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Invalid username or password.`;
-                    form.insertBefore(err, form.firstChild);
-                }
-            }, 1200);
+        // Also log in on Enter key anywhere
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doLogin();
         });
     </script>
 </body>

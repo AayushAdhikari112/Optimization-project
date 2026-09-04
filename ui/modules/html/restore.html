@@ -1,65 +1,36 @@
+<!-- ============================================================
+     SECTION: REVERT (safety_engine.c)
+============================================================ -->
 <section class="section" id="section-res-backups">
     <div class="section-hero">
         <div class="section-hero-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg>
         </div>
-        <div><h2>Restore Center</h2><p>Roll back optimizations and view historical changes made to your system.</p></div>
-    </div>
-
-    <!-- Optimization Snapshot Control -->
-    <div class="panel">
-        <div class="panel-header">
-            <h3>Manual Snapshot</h3>
-            <span class="panel-sub">Create a restore point before making major changes</span>
-        </div>
-        <div class="restore-control-box" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-            <div>
-                <div style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px;">System State Backup</div>
-                <div style="font-size: 13px; color: var(--text2);">Backs up Registry, Services, DNS, and Startup config.</div>
-            </div>
-            <button class="dash-btn-primary" id="btn-create-snapshot" onclick="require('child_process').exec('opt_tool.exe 11')">Create Snapshot</button>
-        </div>
-        
-        <!-- Mock Progress UI -->
-        <div class="snapshot-progress" id="snapshot-progress-ui" style="display: none; margin-top: 16px; padding: 16px; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); border-left: 4px solid hsl(235,65%,52%);">
-            <div style="font-weight: 600; color: #fff; margin-bottom: 12px; font-size: 14px;">Creating backup...</div>
-            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text2);">
-                <div style="color: hsl(162,78%,55%);">✓ Startup configuration</div>
-                <div style="color: hsl(162,78%,55%);">✓ Registry changes</div>
-                <div style="color: hsl(162,78%,55%);">✓ Services</div>
-                <div>○ DNS settings</div>
-                <div>○ Hosts file</div>
-                <div>○ Power settings</div>
-            </div>
+        <div>
+            <h2>Restore Center & Safety Engine</h2>
+            <p>Roll back optimizations and create system restore points using Windows VSS.</p>
         </div>
     </div>
 
-    <!-- Restore History -->
-    <div class="panel" style="margin-top: 20px;">
-        <div class="panel-header">
-            <h3>Restore History</h3>
-            <span class="panel-sub">Recent optimization snapshots</span>
+    <div class="tweak-list">
+        <!-- create_restore_point() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Create System Restore Point</h3>
+                <p>Calls <code>safety_engine.c</code> which uses WMI/PowerShell to create an immediate system restore point named "Pre-Optimization Backup".</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 11')">Create Backup</button>
         </div>
-        
-        <div class="opt-card" style="margin-bottom: 0;">
-            <div class="opt-card-header">
-                <span class="opt-category">24 Aug 2026</span>
-                <span class="opt-risk-badge" style="background: rgba(255,255,255,0.1); color: #fff;">14:30 PM</span>
-            </div>
-            
-            <div class="opt-title">Optimization #004</div>
-            
-            <div class="opt-grid" style="grid-template-columns: 1fr;">
-                <div class="opt-row">
-                    <span class="opt-label">Changes Applied</span>
-                    <span class="opt-val">17 configurations modified</span>
-                </div>
-            </div>
 
-            <div class="opt-actions">
-                <button class="btn-keep">View Details</button>
-                <button class="btn-disable" style="background: linear-gradient(135deg, hsl(38,96%,54%), hsl(38,96%,44%));">Restore Snapshot</button>
+        <!-- Launch System Restore -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Launch Windows System Restore</h3>
+                <p>Opens the native Windows System Restore utility (<code>rstrui.exe</code>) allowing you to roll back your PC to a previous safe state.</p>
             </div>
+            <button class="run-btn" onclick="runOpt(this,'rstrui.exe')">Open Utility</button>
         </div>
     </div>
 </section>

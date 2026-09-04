@@ -12,209 +12,43 @@
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-        <div class="brand-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+<!-- Top Title Bar -->
+<header class="title-bar">
+    <div class="title-left">
+        <div class="brand-icon-yuno">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
         </div>
-        <span>OptiCore</span>
+        <h1>OptiCore <span>Tweaking Util</span> 2.0</h1>
     </div>
-
-    <div class="admin-badge" id="adminBadge" title="Running as Administrator">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span id="adminLabel">Checking...</span>
+    <div class="title-center">OPTICORE</div>
+    <div class="title-right">
+        <button class="win-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
     </div>
+</header>
 
-    <nav class="sidebar-nav" id="sidebarNav">
-
-        <!-- 🏠 Dashboard -->
-        <a class="nav-item active" data-section="dashboard" id="nav-dashboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-            Dashboard
-        </a>
-
-        <!-- ⚡ Performance -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="performance">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                Performance
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-performance">
-                <a class="nav-sub" data-section="perf-cpu">CPU Optimization</a>
-                <a class="nav-sub" data-section="perf-ram">RAM Optimization</a>
-                <a class="nav-sub" data-section="perf-gpu">GPU Optimization</a>
-                <a class="nav-sub" data-section="perf-power">Power Optimization</a>
-                <a class="nav-sub" data-section="perf-gaming">Gaming Mode</a>
-            </div>
-        </div>
-
-        <!-- 🧹 Cleanup -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="cleanup">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
-                Cleanup
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-cleanup">
-                <a class="nav-sub" data-section="cl-windows">Windows Junk</a>
-                <a class="nav-sub" data-section="cl-browser">Browser Cache</a>
-                <a class="nav-sub" data-section="cl-app">Application Cache</a>
-                <a class="nav-sub" data-section="cl-dev">Developer Cache</a>
-                <a class="nav-sub" data-section="cl-large">Large Files</a>
-                <a class="nav-sub" data-section="cl-dupes">Duplicate Files</a>
-            </div>
-        </div>
-
-        <!-- 🚀 Startup -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="startup">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M18 8a6 6 0 0 0-9.33-5"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                Startup
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-startup">
-                <a class="nav-sub" data-section="su-apps">Startup Apps</a>
-                <a class="nav-sub" data-section="su-tasks">Startup Tasks</a>
-                <a class="nav-sub" data-section="su-impact">Startup Impact</a>
-            </div>
-        </div>
-
-        <!-- 🪟 Windows Optimization -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="windows">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                Windows Opt
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-windows">
-                <a class="nav-sub" data-section="win-services">Services</a>
-                <a class="nav-sub" data-section="win-tasks">Scheduled Tasks</a>
-                <a class="nav-sub" data-section="win-bgapps">Background Apps</a>
-                <a class="nav-sub" data-section="win-ui">UI Tweaks</a>
-                <a class="nav-sub" data-section="win-features">Windows Features</a>
-            </div>
-        </div>
-
-        <!-- 🌐 Network -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="network">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-                Network
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-network">
-                <a class="nav-sub" data-section="net-dns">DNS Optimizer</a>
-                <a class="nav-sub" data-section="net-diag">Diagnostics</a>
-                <a class="nav-sub" data-section="net-cache">DNS Cache</a>
-                <a class="nav-sub" data-section="net-adapter">Adapter Settings</a>
-            </div>
-        </div>
-
-        <!-- 🎮 Gaming -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="gaming">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
-                Gaming
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-gaming">
-                <a class="nav-sub" data-section="game-profiles">Game Profiles</a>
-                <a class="nav-sub" data-section="game-nvidia">NVIDIA Opt</a>
-                <a class="nav-sub" data-section="game-cpu">CPU Opt</a>
-                <a class="nav-sub" data-section="game-mode">Game Mode</a>
-            </div>
-        </div>
-
-        <!-- 🔐 Privacy -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="privacy">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Privacy
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-privacy">
-                <a class="nav-sub" data-section="priv-telemetry">Telemetry</a>
-                <a class="nav-sub" data-section="priv-tracking">Tracking</a>
-                <a class="nav-sub" data-section="priv-browser">Browser Privacy</a>
-            </div>
-        </div>
-
-        <!-- 🩺 Diagnostics -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="diagnostics">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                Diagnostics
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-diagnostics">
-                <a class="nav-sub" data-section="diag-health">System Health</a>
-                <a class="nav-sub" data-section="diag-cpu">CPU</a>
-                <a class="nav-sub" data-section="diag-gpu">GPU</a>
-                <a class="nav-sub" data-section="diag-disk">Disk</a>
-                <a class="nav-sub" data-section="diag-ram">RAM</a>
-                <a class="nav-sub" data-section="diag-network">Network</a>
-            </div>
-        </div>
-
-        <!-- 🔄 Restore Center -->
-        <div class="nav-group">
-            <div class="nav-group-header" data-group="restore">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-4.56"></path></svg>
-                Restore Center
-                <span class="nav-chevron">›</span>
-            </div>
-            <div class="nav-group-items" id="group-restore">
-                <a class="nav-sub" data-section="res-backups">Backups</a>
-                <a class="nav-sub" data-section="res-history">Change History</a>
-                <a class="nav-sub" data-section="res-undo">Undo</a>
-            </div>
-        </div>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-        <a class="nav-item" data-section="settings" id="nav-settings">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            Settings
-        </a>
-        <div class="sidebar-user">
-            <div class="user-avatar">A</div>
-            <div class="user-details">
-                <span class="user-name">Admin</span>
-                <span class="user-role">System Admin</span>
-            </div>
-            <a href="index.html" class="logout-btn" title="Logout">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            </a>
-        </div>
-    </div>
-</aside>
+<!-- Navigation Tabs -->
+<nav class="nav-tabs" id="sidebarNav">
+    <button class="tab nav-item active" data-section="dashboard">GENERAL</button>
+    <button class="tab nav-item" data-section="win-ui">WINDOWS</button>
+    <button class="tab nav-item" data-section="cl-windows">DEBLOAT</button>
+    <button class="tab nav-item" data-section="perf-gpu">GPU</button>
+    <button class="tab nav-item" data-section="perf-cpu">CPU</button>
+    <button class="tab nav-item" data-section="cl-browser">CLEANER</button>
+    <button class="tab nav-item" data-section="win-services">SERVICES</button>
+    <button class="tab nav-item" data-section="perf-gaming">GAMES</button>
+    <button class="tab nav-item" data-section="perf-power">EXTRA</button>
+    <button class="tab nav-item" data-section="perf-startup">WEAK PC</button>
+    <button class="tab nav-item" data-section="diag-health">INFORMATION</button>
+    <button class="tab nav-item" data-section="res-backups">REVERT</button>
+</nav>
 
 <!-- ===== MAIN ===== -->
 <main class="main-content">
 
-    <!-- Top Bar -->
-    <header class="topbar">
-        <div class="topbar-left">
-            <h1 id="pageTitle">System Overview</h1>
-            <span class="topbar-sub" id="currentTime"></span>
-        </div>
-        <div class="topbar-right">
-            <div class="status-badge" id="statusBadge">
-                <span class="status-dot"></span>
-                <span id="statusText">System Healthy</span>
-            </div>
-            <button class="scan-btn" id="scan-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-                Scan System
-            </button>
-        </div>
-    </header>
-
     <!-- ============================================================
-         SECTION: DASHBOARD
+         SECTION: DASHBOARD (GENERAL)
     ============================================================ -->
     <section class="section active" id="section-dashboard">
 
@@ -232,8 +66,8 @@
                             id="healthCircle"/>
                         <defs>
                             <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="hsl(162,78%,42%)"/>
-                                <stop offset="100%" stop-color="hsl(162,78%,68%)"/>
+                                <stop offset="0%" stop-color="hsl(265,80%,52%)"/>
+                                <stop offset="100%" stop-color="hsl(265,80%,75%)"/>
                             </linearGradient>
                         </defs>
                     </svg>
@@ -328,17 +162,17 @@
          SYSTEM MONITOR: Overview
     ============================================================ -->
     
-        <div id="sections-container"></div>
-        <script>
-            const fs = require('fs');
-            const path = require('path');
-            const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore","network"];
-            let stitchedHtml = '';
-            for (const sec of sections) {
-                stitchedHtml += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';
-            }
-            document.getElementById('sections-container').innerHTML = stitchedHtml;
-        </script>
+    <div id="sections-container"></div>
+    <script>
+        const fs = require('fs');
+        const path = require('path');
+        const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore","network"];
+        let stitchedHtml = '';
+        for (const sec of sections) {
+            stitchedHtml += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';
+        }
+        document.getElementById('sections-container').innerHTML = stitchedHtml;
+    </script>
     
 
 </main>
@@ -357,5 +191,8 @@ window.addEventListener("unhandledrejection", function(event) {
     <script src="modules/js/performance.js"></script>
     <script src="modules/js/diagnostics.js"></script>
     <script src="modules/js/privacy-security.js"></script>
+
+
+
 </body>
 </html>

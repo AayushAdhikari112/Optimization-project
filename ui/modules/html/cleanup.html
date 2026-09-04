@@ -1,74 +1,87 @@
-<section class="section" id="section-cl-ssd">
+<!-- ============================================================
+     SECTION: DEBLOAT / DISK CLEANUP (disk_cleaner.c)
+============================================================ -->
+<section class="section" id="section-cl-windows">
     <div class="section-hero">
         <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><line x1="2" y1="12" x2="22" y2="12"></line><line x1="8" y1="2" x2="8" y2="22"></line></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
         </div>
-        <div>
-            <h2>Storage Optimization</h2>
-            <p>Maintain SSD health by running manual TRIM operations, or defragment HDDs.</p>
-        </div>
+        <div><h2>Disk & System Cleanup</h2><p>Free up disk space and flush temporary caches using core system APIs.</p></div>
     </div>
-    <div class="opt-card" style="margin-top: 20px;">
-        <div class="opt-card-header">
-            <span class="opt-category">Drive Optimization</span>
-            <span class="opt-risk-badge risk-safe">🟢 SAFE</span>
+
+    <div class="tweak-list">
+        <!-- empty_recycle_bin() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Empty Recycle Bin</h3>
+                <p>Calls <code>SHEmptyRecycleBinA</code> API to instantly clear all deleted files without confirmation prompts or progress UI.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 1')">Empty</button>
         </div>
-        <div class="opt-title">SSD TRIM Operation</div>
-        <div class="opt-actions">
-            <button class="btn-keep" onclick="require('child_process').exec('opt_tool.exe 8')">Run TRIM on C:\</button>
+
+        <!-- clear_temp_folder() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Clear Temp Files & Caches</h3>
+                <p>Recursively deletes files from User Temp, <code>Windows\Temp</code>, <code>Prefetch</code>, and <code>SoftwareDistribution\Download</code>.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 1')">Clean Temp</button>
+        </div>
+        
+        <!-- run_ssd_trim("C:") -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><line x1="2" y1="12" x2="22" y2="12"></line></svg></div>
+            <div class="tweak-info">
+                <h3>SSD TRIM (C:\)</h3>
+                <p>Runs <code>defrag C: /L /O</code> to execute a manual TRIM command, telling the SSD controller to wipe deleted blocks immediately for peak write speeds.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'defrag C: /L /O')">Run TRIM</button>
+        </div>
+
+        <!-- run_hdd_defrag("C:") -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+            <div class="tweak-info">
+                <h3>HDD Defragment (C:\)</h3>
+                <p>Runs standard defragmentation (<code>defrag C: /O</code>) to consolidate file fragments on mechanical hard drives. Do not run on SSDs.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'defrag C: /O')">Defrag</button>
         </div>
     </div>
 </section>
 
-<section class="section" id="section-cl-windows">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div><div style="flex:1"><h2>Windows Cleanup</h2><p>Remove temp files, Windows Update cache, delivery optimization, thumbnail cache, shader cache, error reports, crash dumps, logs, and upgrade leftovers.</p></div><button class="dc-clean-all-btn" id="win-clean-all">Clean Selected</button></div>
-        <div class="dc-summary">
-            <div class="dc-summary-item"><span class="dc-summary-label">Total Found</span><span class="dc-summary-value" id="win-total-size">Scanning...</span></div>
-            <div class="dc-summary-divider"></div>
-            <div class="dc-summary-item"><span class="dc-summary-label">Categories</span><span class="dc-summary-value" id="win-cat-count">--</span></div>
-            <div class="dc-summary-divider"></div>
-            <div class="dc-summary-item"><span class="dc-summary-label">Last Cleaned</span><span class="dc-summary-value" id="win-last-clean">Never</span></div>
-        </div>
-        <div id="winCleanupGrid" class="dc-grid">
-            <div class="dc-loading">Scanning system for junk files...</div>
-        </div>
-        <div class="panel result-panel" id="win-result" style="display:none"><div class="result-body"></div></div>
-    </section>
+<!-- ============================================================
+     SECTION: NETWORK CLEANER (network_optimizer.c)
+============================================================ -->
 <section class="section" id="section-cl-browser">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><div><h2>Browser Cache Cleaner</h2><p>Detect and clean browser caches from Chrome, Edge, Firefox, Brave, and Opera. Never silently deletes passwords or bookmarks.</p></div></div>
-        <div id="browserCacheGrid" class="dc-grid"><div class="dc-loading">Detecting installed browsers...</div></div>
-        <div class="panel result-panel" id="browser-result" style="display:none"><div class="result-body"></div></div>
-    </section>
-<section class="section" id="section-cl-dev">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div><div style="flex:1"><h2>Developer Cache Cleaner</h2><p>Reclaim disk space from npm, Yarn, pnpm, pip, Gradle, Maven, Docker, Cargo, and NuGet caches. Each category is individually selectable.</p></div></div>
-        <div id="devCacheGrid" class="dc-grid"><div class="dc-loading">Scanning developer caches...</div></div>
-        <div class="dev-cache-actions" style="margin-top:16px;display:flex;gap:12px">
-            <button class="dc-clean-all-btn" id="devCleanSelected">Clean Selected</button>
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
         </div>
-        <div class="panel result-panel" id="dev-result" style="display:none"><div class="result-body"></div></div>
-    </section>
-<section class="section" id="section-cl-large">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div><div><h2>Large File Analyzer</h2><p>Scan drives to find files larger than 500 MB. Drill down into directories to find what's consuming space.</p></div></div>
-        <div class="large-file-controls">
-            <select id="lfDrive" class="video-select"><option value="C:\">C:\</option><option value="D:\">D:\</option></select>
-            <select id="lfMinSize" class="video-select"><option value="100">100 MB+</option><option value="500" selected>500 MB+</option><option value="1024">1 GB+</option><option value="5120">5 GB+</option></select>
-            <button class="scan-btn" id="lfScanBtn">Scan Drive</button>
+        <div><h2>Network & TCP/IP Reset</h2><p>Flush DNS cache and rebuild the Winsock catalog to fix connection issues.</p></div>
+    </div>
+    
+    <div class="tweak-list">
+        <!-- flush_dns() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+            <div class="tweak-info">
+                <h3>Flush DNS Cache</h3>
+                <p>Runs <code>ipconfig /flushdns</code> to clear local DNS resolver cache. Fixes issues where domains point to old or incorrect IPs.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'ipconfig /flushdns')">Flush DNS</button>
         </div>
-        <div id="dirTreeGrid" class="dir-tree-grid" style="margin-top:16px"></div>
-        <div class="panel" style="margin-top:16px">
-            <div class="panel-header"><h3>Large Files</h3><span class="panel-sub" id="lfCount">--</span></div>
-            <div id="largeFileList" class="large-file-list"><div class="dc-loading">Click "Scan Drive" to begin scanning.</div></div>
+
+        <!-- reset_winsock() -->
+        <div class="tweak-item">
+            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+            <div class="tweak-info">
+                <h3>Reset Winsock Catalog</h3>
+                <p>Runs <code>netsh winsock reset</code> to restore TCP/IP stack to clean state. Requires system restart to take effect.</p>
+            </div>
+            <button class="run-btn" onclick="runOpt(this,'netsh winsock reset')">Reset Winsock</button>
         </div>
-    </section>
-<section class="section" id="section-cl-dupes">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><rect x="8" y="18" width="8" height="4" rx="1" ry="1"></rect><path d="M4 7V4h3M4 17v3h3M20 7V4h-3M20 17v3h-3"></path></svg></div><div><h2>Duplicate File Finder</h2><p>Find exact duplicates using SHA-256 content hashing — not just filename matching.</p></div></div>
-        <div class="dupe-controls">
-            <input type="text" id="dupeDir" class="dupe-dir-input" placeholder="e.g. C:\Users\User\Pictures" value="">
-            <button class="scan-btn" id="dupeScanBtn">Find Duplicates</button>
-        </div>
-        <div class="dupe-progress" id="dupeProgress" style="display:none">
-            <div class="dupe-progress-bar-wrap"><div class="dupe-progress-bar" id="dupeProgressBar"></div></div>
-            <span id="dupeProgressLabel">Scanning files...</span>
-        </div>
-        <div id="dupeResults" class="dupe-results"></div>
-    </section>
+    </div>
+</section>

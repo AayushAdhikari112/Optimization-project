@@ -20,6 +20,27 @@ async function invoke(channel, ...args) {
     return null
 }
 
+// ─── Shared Optimization Helper ───────────────────────────────
+window.runOpt = function(btn, cmd) {
+    const orig = btn.textContent;
+    btn.textContent = '...';
+    btn.disabled = true;
+    try {
+        require('child_process').exec(cmd, (err) => {
+            btn.textContent = err ? '✗ Error' : '✓ Done';
+            btn.style.color = err ? 'var(--danger)' : 'var(--green)';
+            setTimeout(() => {
+                btn.textContent = orig;
+                btn.style.color = '';
+                btn.disabled = false;
+            }, 2500);
+        });
+    } catch(e) {
+        btn.textContent = orig;
+        btn.disabled = false;
+    }
+}
+
 
 // ─── Clock ────────────────────────────────────────────────────
 function updateClock() {
@@ -50,36 +71,48 @@ checkAdmin()
 
 // ─── Navigation ───────────────────────────────────────────────
 const sectionTitles = {
-    dashboard:       'System Overview',
-    'mon-overview':  'System Monitor — Overview',
-    'mon-cpu':       'System Monitor — CPU',
-    'mon-ram':       'System Monitor — RAM',
-    'mon-gpu':       'System Monitor — GPU',
-    'mon-disk':      'System Monitor — Disk I/O',
-    'mon-network':   'System Monitor — Network',
-    'mon-thermal':   'System Monitor — Thermal',
-    'cl-windows':    'Cleanup — Windows',
-    'cl-browser':    'Cleanup — Browser Cache',
-    'cl-dev':        'Cleanup — Developer Cache',
-    'cl-large':      'Cleanup — Large Files',
-    'cl-dupes':      'Cleanup — Duplicate Finder',
-    'perf-startup':  'Performance — Startup Manager',
-    'perf-services': 'Performance — Services',
-    'perf-tasks':    'Performance — Scheduled Tasks',
-    'perf-bgapps':   'Performance — Background Apps',
-    'perf-power':    'Performance — Power Plans',
-    'perf-gaming':   'Performance — Gaming Mode',
-    'diag-health':   'Diagnostics — System Health',
-    'diag-disk':     'Diagnostics — Disk Health',
-    'diag-integrity':'Diagnostics — Windows Integrity',
-    'diag-net':      'Diagnostics — Network Diagnostics',
-    'diag-thermal':  'Diagnostics — Thermal Monitor',
-    'diag-battery':  'Diagnostics — Battery',
-    privacy:         'Privacy Analyzer',
-    security:        'Security Analyzer',
-    restore:         'Restore Center',
-    reports:         'Reports & Benchmarks',
-    settings:        'Settings',
+    dashboard:        'System Overview',
+    'mon-overview':   'System Monitor — Overview',
+    'mon-cpu':        'System Monitor — CPU',
+    'mon-ram':        'System Monitor — RAM',
+    'mon-gpu':        'System Monitor — GPU',
+    'mon-disk':       'System Monitor — Disk I/O',
+    'mon-network':    'System Monitor — Network',
+    'mon-thermal':    'System Monitor — Thermal',
+    'cl-windows':     'Debloat — Windows',
+    'cl-browser':     'Cleaner — Browser Cache',
+    'cl-dev':         'Cleaner — Developer Cache',
+    'cl-large':       'Cleaner — Large Files',
+    'cl-dupes':       'Cleaner — Duplicate Finder',
+    'cl-ssd':         'Cleaner — SSD',
+    'perf-startup':   'Weak PC — Startup Manager',
+    'perf-services':  'Performance — Services',
+    'perf-tasks':     'Performance — Scheduled Tasks',
+    'perf-bgapps':    'Performance — Background Apps',
+    'perf-power':     'Extra — Power Plans',
+    'perf-gaming':    'Games — Gaming Mode',
+    'perf-cpu':       'CPU Tweaks',
+    'perf-gpu':       'GPU Tweaks',
+    'diag-health':    'Information — System Health',
+    'diag-disk':      'Diagnostics — Disk Health',
+    'diag-integrity': 'Diagnostics — Windows Integrity',
+    'diag-net':       'Diagnostics — Network Diagnostics',
+    'diag-thermal':   'Diagnostics — Thermal Monitor',
+    'diag-battery':   'Diagnostics — Battery',
+    'win-ui':         'Windows 10 Tweaks',
+    'win-features':   'Windows 11 Tweaks',
+    'win-services':   'Services Manager',
+    'win-input':      'Input Optimization',
+    'priv-telemetry': 'Privacy — Telemetry',
+    'res-backups':    'Revert — Backups',
+    'res-history':    'Revert — Change History',
+    'res-undo':       'Revert — Undo',
+    'net-adapter':    'Network — Adapter Settings',
+    privacy:          'Privacy Analyzer',
+    security:         'Security Analyzer',
+    restore:          'Restore Center',
+    reports:          'Reports & Benchmarks',
+    settings:         'Settings',
 }
 
 // Which sections need data loaded when first shown
@@ -502,7 +535,7 @@ function loadHealthAnalysis(data) {
 }
 
 // Load on section visit
-sectionLoaders['diag-health'] = async () => {
+getSectionLoaders()['diag-health'] = async () => {
     const data = await invoke('get-health-score')
     if (data) loadHealthAnalysis(data)
 }
