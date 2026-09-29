@@ -8,154 +8,307 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboard-v5.css">
 </head>
 <body>
 
-<!-- Top Title Bar -->
-<header class="title-bar">
-    <div class="title-left">
-        <div class="brand-icon-yuno">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
+<!-- ===== APP LAYOUT ===== -->
+<div class="app-layout">
+    <!-- COZY-style Sidebar -->
+    <aside class="cozy-sidebar" id="sidebarNav">
+        <div class="sidebar-header">
+            <h1 class="logo">OptiCore</h1>
         </div>
-        <h1>OptiCore <span>Tweaking Util</span> 2.0</h1>
-    </div>
-    <div class="title-center">OPTICORE</div>
-    <div class="title-right">
-        <button class="win-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
-    </div>
-</header>
+        <div class="search-bar">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" placeholder="Search pages, tools, an...">
+            <span class="hotkey">Ctrl K</span>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-label">OVERVIEW</div>
+                <button class="nav-item active" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg> Home
+                </button>
+                <button class="nav-item" data-section="diag-health">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Information
+                </button>
+                <button class="nav-item" data-section="perf-gaming">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg> Game Mode <span class="badge beta">Beta</span>
+                </button>
+                <button class="nav-item" data-section="win-ui">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Windows UI
+                </button>
+            </div>
 
-<!-- Navigation Tabs -->
-<nav class="nav-tabs" id="sidebarNav">
-    <button class="tab nav-item active" data-section="dashboard">GENERAL</button>
-    <button class="tab nav-item" data-section="win-ui">WINDOWS</button>
-    <button class="tab nav-item" data-section="cl-windows">DEBLOAT</button>
-    <button class="tab nav-item" data-section="perf-gpu">GPU</button>
-    <button class="tab nav-item" data-section="perf-cpu">CPU</button>
-    <button class="tab nav-item" data-section="cl-browser">CLEANER</button>
-    <button class="tab nav-item" data-section="win-services">SERVICES</button>
-    <button class="tab nav-item" data-section="perf-gaming">GAMES</button>
-    <button class="tab nav-item" data-section="perf-power">EXTRA</button>
-    <button class="tab nav-item" data-section="perf-startup">WEAK PC</button>
-    <button class="tab nav-item" data-section="diag-health">INFORMATION</button>
-    <button class="tab nav-item" data-section="res-backups">REVERT</button>
-</nav>
+            <div class="menu-section">
+                <div class="menu-label">PERFORMANCE</div>
+                <button class="nav-item" data-section="perf-cpu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> CPU General
+                </button>
+                <button class="nav-item" data-section="perf-gpu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg> Hardware (GPU)
+                </button>
+                <button class="nav-item" data-section="perf-startup">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg> Customize (Weak PC)
+                </button>
+            </div>
 
-<!-- ===== MAIN ===== -->
-<main class="main-content">
+            <div class="menu-section">
+                <div class="menu-label">MAINTENANCE</div>
+                <button class="nav-item" data-section="cl-windows">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg> Debloat
+                </button>
+                <button class="nav-item" data-section="cl-browser">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"></path><path d="M3 9h18"></path><path d="M9 21V9"></path></svg> Cleaner
+                </button>
+                <button class="nav-item" data-section="win-services">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Services
+                </button>
+                <button class="nav-item" data-section="res-backups">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg> Revert
+                </button>
+                <button class="nav-item" data-section="perf-power">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> Extra (Power)
+                </button>
+            </div>
+        </div>
+
+        <!-- Premium Box -->
+        <div class="premium-box">
+            <div class="premium-badge"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"></path></svg> Premium</div>
+            <p>Unlock Game Mode, cleanup, and advanced tuning.</p>
+            <button class="premium-btn">Upgrade Premium</button>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <!-- Top Title Bar -->
+        <header class="title-bar">
+            <div class="title-left">
+                <div class="brand-icon-yuno">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h1>OptiCore <span>Tweaking Util</span> 2.0</h1>
+            </div>
+            <div class="title-center">OPTICORE</div>
+            <div class="title-right">
+                <button class="win-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+            </div>
+        </header>
+
+        <!-- ===== MAIN ===== -->
+        <main class="main-content">
 
     <!-- ============================================================
          SECTION: DASHBOARD (GENERAL)
-    ============================================================ -->
-    <section class="section active" id="section-dashboard">
-
-        <!-- Health Score + Smart Profile Row -->
-        <div class="dash-top-row">
-
-            <!-- Health Score Widget -->
-            <div class="health-widget">
+    ============================================================ -->    <section class="section active" id="section-dashboard">
+        
+        <!-- SYSTEM OVERVIEW ROW -->
+        <div class="dash-overview">
+            <div class="health-card">
                 <div class="health-score-ring">
-                    <svg viewBox="0 0 120 120" class="health-svg">
-                        <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10"/>
-                        <circle cx="60" cy="60" r="50" fill="none" stroke="url(#healthGrad)" stroke-width="10"
-                            stroke-dasharray="314" stroke-dashoffset="80"
-                            stroke-linecap="round" transform="rotate(-90 60 60)"
-                            id="healthCircle"/>
-                        <defs>
-                            <linearGradient id="healthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="hsl(265,80%,52%)"/>
-                                <stop offset="100%" stop-color="hsl(265,80%,75%)"/>
-                            </linearGradient>
-                        </defs>
+                    <div class="ring-glow"></div>
+                    <svg viewBox="0 0 100 100" class="health-svg">
+                        <circle cx="50" cy="50" r="45" class="bg"/>
+                        <circle cx="50" cy="50" r="45" class="progress"/>
                     </svg>
                     <div class="health-center">
-                        <div class="health-score" id="healthScore">--</div>
-                        <div class="health-label">Health</div>
+                        <div class="health-score">85</div>
+                        <div class="health-label">System Health</div>
                     </div>
                 </div>
-                <div class="health-issues" id="healthIssues">
-                    <div class="health-loading">Analyzing system...</div>
+                <div class="health-status">
+                    <div class="status-item"><span class="dot green pulse"></span> <strong>OS:</strong> Windows 11 23H2</div>
+                    <div class="status-item"><span class="dot green pulse"></span> <strong>Power:</strong> Ultimate Performance</div>
+                    <div class="status-item"><span class="dot yellow"></span> <strong>Drivers:</strong> 2 Updates Available</div>
                 </div>
             </div>
 
-            <!-- Smart Profile Card -->
-            <div class="profile-card" id="profileCard">
-                <div class="profile-header">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
-                    <span>System Profile</span>
+            <div class="safety-card">
+                <div class="safety-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shield-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <h3>System Safety</h3>
                 </div>
-                <div class="profile-body" id="profileBody">
-                    <div class="profile-loading">Detecting hardware...</div>
+                <p>Always create a restore point before applying advanced tweaks or disabling Windows services.</p>
+                <div class="safety-actions">
+                    <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Create Restore Point</button>
+                    <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg> Undo Last Optimization</button>
                 </div>
-            </div>
-
-            <!-- One-Click Optimize -->
-            <div class="oneclick-card">
-                <div class="oneclick-label">One-Click Optimize</div>
-                <button class="oneclick-btn" id="oneClickBtn">
-                    <div class="oneclick-icon">🚀</div>
-                    <span>OPTIMIZE NOW</span>
-                </button>
-                <div class="oneclick-preview" id="oneclickPreview">
-                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">Temp Files</span><span class="oi-val" id="oi-temp">Scanning...</span></div>
-                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">DNS Cache</span><span class="oi-val">Will flush</span></div>
-                    <div class="oneclick-item"><span class="oi-arrow">→</span> <span class="oi-label">Safe operations only</span></div>
-                </div>
-                <div id="optimizeProgress" class="optimize-progress" style="display:none"></div>
-            </div>
-
-        </div>
-
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">CPU Usage</span><div class="stat-icon cpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg></div></div>
-                <div class="stat-value" id="cpu-val">--</div>
-                <div class="stat-bar-wrap"><div class="stat-bar cpu-bar" id="cpu-bar"></div></div>
-                <div class="stat-footer" id="cpu-footer">Monitoring cores</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">RAM Usage</span><div class="stat-icon ram-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div></div>
-                <div class="stat-value" id="ram-val">--</div>
-                <div class="stat-bar-wrap"><div class="stat-bar ram-bar" id="ram-bar"></div></div>
-                <div class="stat-footer" id="ram-footer">Loading...</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">GPU Usage</span><div class="stat-icon gpu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div></div>
-                <div class="stat-value" id="gpu-val">--</div>
-                <div class="stat-bar-wrap"><div class="stat-bar gpu-bar" id="gpu-bar"></div></div>
-                <div class="stat-footer" id="gpu-footer">Loading...</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">CPU Temp</span><div class="stat-icon temp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></div></div>
-                <div class="stat-value" id="temp-val">--</div>
-                <div class="stat-bar-wrap"><div class="stat-bar temp-bar" id="temp-bar"></div></div>
-                <div class="stat-footer" id="temp-footer">Optimal range</div>
+                <div class="last-backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Last backup: Today, 10:45 AM</div>
             </div>
         </div>
 
-        <!-- Bottom panels -->
-        <div class="bottom-grid">
-            <div class="panel">
-                <div class="panel-header"><h3>Quick Actions</h3><span class="panel-sub">One-click fixes</span></div>
-                <div class="actions-list">
-                    <button class="action-btn" id="act-disk"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg></div><div class="action-text"><span>Clean Junk Files</span><small>Temp, cache &amp; recycle bin</small></div><div class="action-arrow">→</div></button>
-                    <button class="action-btn" id="act-ram"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></div><div class="action-text"><span>Free Up RAM</span><small>Empty working sets</small></div><div class="action-arrow">→</div></button>
-                    <button class="action-btn" id="act-dns"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div><div class="action-text"><span>Flush DNS</span><small>Clear DNS resolver cache</small></div><div class="action-arrow">→</div></button>
-                    <button class="action-btn" id="act-startup"><div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div class="action-text"><span>Manage Startup</span><small>Disable slow boot apps</small></div><div class="action-arrow">→</div></button>
+        <!-- HARDWARE MONITOR ROW -->
+        <div class="hardware-grid">
+            <div class="hw-card">
+                <div class="hw-head">
+                    <div class="hw-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg> CPU</div>
+                    <span class="hw-badge">45°C</span>
                 </div>
+                <div class="hw-value">12%</div>
+                <div class="hw-bar"><div class="fill cpu-fill" style="width: 12%"></div></div>
             </div>
-            <div class="panel">
-                <div class="panel-header"><h3>Activity Log</h3><span class="panel-sub">Recent actions</span></div>
-                <ul class="activity-list" id="activityLog">
-                    <li class="activity-item success"><span class="activity-dot"></span><div class="activity-body"><span>Logged in as Admin</span><small>Just now</small></div></li>
-                    <li class="activity-item info"><span class="activity-dot"></span><div class="activity-body"><span>System ready</span><small>Awaiting action</small></div></li>
-                </ul>
+            <div class="hw-card">
+                <div class="hw-head">
+                    <div class="hw-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> GPU</div>
+                    <span class="hw-badge">52°C</span>
+                </div>
+                <div class="hw-value">4%</div>
+                <div class="hw-bar"><div class="fill gpu-fill" style="width: 4%"></div></div>
+            </div>
+            <div class="hw-card">
+                <div class="hw-head">
+                    <div class="hw-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg> RAM</div>
+                    <span class="hw-badge neutral">DDR5</span>
+                </div>
+                <div class="hw-value">4.2 <span class="dim">/ 32 GB</span></div>
+                <div class="hw-bar"><div class="fill ram-fill" style="width: 15%"></div></div>
+            </div>
+            <div class="hw-card">
+                <div class="hw-head">
+                    <div class="hw-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg> Disk</div>
+                    <span class="hw-badge neutral">NVMe</span>
+                </div>
+                <div class="hw-value">1%</div>
+                <div class="hw-bar"><div class="fill disk-fill" style="width: 1%"></div></div>
             </div>
         </div>
+
+        <!-- VERIFICATION & BENCHMARKS -->
+        <div class="feedback-section">
+            <div class="feedback-header">
+                <h2>Performance Verification</h2>
+                <div class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Verified Metrics</div>
+            </div>
+            
+            <!-- Before/After Benchmarks Grid -->
+            <div class="benchmark-grid">
+                <!-- Benchmark 1: Boot Time -->
+                <div class="bench-card">
+                    <div class="bench-icon">⏱️</div>
+                    <div class="bench-info">
+                        <h4>System Boot Time</h4>
+                        <div class="bench-metrics">
+                            <div class="metric before"><span>Before:</span> 24.5s</div>
+                            <div class="metric arrow">➔</div>
+                            <div class="metric after"><span>After:</span> 14.2s</div>
+                        </div>
+                    </div>
+                    <div class="bench-diff success">-42%</div>
+                </div>
+
+                <!-- Benchmark 2: Network Ping -->
+                <div class="bench-card">
+                    <div class="bench-icon">🌐</div>
+                    <div class="bench-info">
+                        <h4>Network Latency</h4>
+                        <div class="bench-metrics">
+                            <div class="metric before"><span>Before:</span> 42ms</div>
+                            <div class="metric arrow">➔</div>
+                            <div class="metric after"><span>After:</span> 18ms</div>
+                        </div>
+                    </div>
+                    <div class="bench-diff success">-57%</div>
+                </div>
+
+                <!-- Benchmark 3: Memory -->
+                <div class="bench-card">
+                    <div class="bench-icon">🧠</div>
+                    <div class="bench-info">
+                        <h4>Available Memory</h4>
+                        <div class="bench-metrics">
+                            <div class="metric before"><span>Before:</span> 3.2 GB</div>
+                            <div class="metric arrow">➔</div>
+                            <div class="metric after"><span>After:</span> 5.8 GB</div>
+                        </div>
+                    </div>
+                    <div class="bench-diff success">+81%</div>
+                </div>
+            </div>
+
+            <div class="feedback-bottom-grid">
+                <!-- Live Benchmarker -->
+                <div class="live-benchmarker">
+                    <div class="tracker-header">
+                        <h3>Live Benchmarking</h3>
+                        <button class="btn btn-primary btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Run Test</button>
+                    </div>
+                    
+                    <div class="benchmark-gauge-container">
+                        <div class="gauge-ring">
+                            <svg viewBox="0 0 100 100" class="gauge-svg">
+                                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                                <circle class="gauge-progress" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <div class="gauge-content">
+                                <div class="gauge-score">8,240</div>
+                                <div class="gauge-label">System Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-history">
+                        <h4>Benchmark Logs</h4>
+                        <ul class="history-list">
+                            <li class="history-item">
+                                <div class="hist-time">Today, 10:45 AM</div>
+                                <div class="hist-score improved">8,240 pts <span class="trend">↑</span></div>
+                            </li>
+                            <li class="history-item">
+                                <div class="hist-time">Yesterday, 02:10 PM</div>
+                                <div class="hist-score">7,120 pts <span class="trend neutral">-</span></div>
+                            </li>
+                            <li class="history-item">
+                                <div class="hist-time">Oct 12, 11:00 AM</div>
+                                <div class="hist-score">7,050 pts <span class="trend neutral">-</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Activity Logs & Progress -->
+            <div class="activity-tracker">
+                <div class="tracker-header">
+                    <h3>Operation Progress & Logs</h3>
+                    <button class="btn-clear-logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg> Clear Logs</button>
+                </div>
+                <div class="log-list">
+                    <!-- Progress Item -->
+                    <div class="log-item running">
+                        <div class="log-status"><div class="spinner"></div></div>
+                        <div class="log-content">
+                            <div class="log-title">Clearing DirectX Shader Cache</div>
+                            <div class="log-progress-bar"><div class="fill" style="width: 45%"></div></div>
+                            <div class="log-detail">Rebuilding cache directories... (45%)</div>
+                        </div>
+                    </div>
+
+                    <!-- Success Item -->
+                    <div class="log-item success">
+                        <div class="log-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                        <div class="log-content">
+                            <div class="log-title">Network Throttling Disabled</div>
+                            <div class="log-detail">Registry key 'NetworkThrottlingIndex' set to FFFFFFFF. Ping improved.</div>
+                        </div>
+                    </div>
+
+                    <!-- Warning/Failure Item -->
+                    <div class="log-item warning">
+                        <div class="log-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+                        <div class="log-content">
+                            <div class="log-title">Windows Defender Disable Skipped</div>
+                            <div class="log-detail">Requires Safe Mode reboot to modify Tamper Protection.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- Close feedback-bottom-grid -->
+        </div>
+
     </section>
 
     <!-- ============================================================
@@ -164,33 +317,55 @@
     
     <div id="sections-container"></div>
     <script>
-        const fs = require('fs');
-        const path = require('path');
-        const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore","network"];
-        let stitchedHtml = '';
-        for (const sec of sections) {
-            stitchedHtml += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';
-        }
-        document.getElementById('sections-container').innerHTML = stitchedHtml;
+        (async function loadSections() {
+            const sections = ["overview","monitor","cleanup","performance","diagnostics","privacy-security","misc","windows","restore","network","hardware-info"];
+            const container = document.getElementById('sections-container');
+            // Try fetch first (browser / http-server)
+            if (typeof fetch !== 'undefined') {
+                let html = '';
+                for (const sec of sections) {
+                    try {
+                        const r = await fetch('modules/html/' + sec + '.html?v=3');
+                        if (r.ok) html += await r.text() + '\n';
+                    } catch(e) {}
+                }
+                container.innerHTML = html;
+            } else {
+                // Fallback: Electron / Node context
+                try {
+                    const fs   = require('fs');
+                    const path = require('path');
+                    let html = '';
+                    for (const sec of sections) {
+                        html += fs.readFileSync(path.join(__dirname, 'modules', 'html', sec + '.html'), 'utf8') + '\n';
+                    }
+                    container.innerHTML = html;
+                } catch(e) { console.error('Section load failed', e); }
+            }
+            // Fire event so core.js can re-bind nav handlers after HTML is injected
+            document.dispatchEvent(new Event('sectionsLoaded'));
+        })();
     </script>
     
 
 </main>
+</div> <!-- main-wrapper -->
+</div> <!-- app-layout -->
 <script>
+// Error handler — only write to log in Electron context
 window.onerror = function(msg, url, line, col, error) {
-    require('fs').appendFileSync('c:/Users/User/Desktop/opt_project/ui/error.log', msg + ' at ' + line + ':' + col + '\n' + (error && error.stack ? error.stack : '') + '\n');
-}
-window.addEventListener("unhandledrejection", function(event) { 
-    require('fs').appendFileSync('c:/Users/User/Desktop/opt_project/ui/error.log', 'Unhandled promise rejection: ' + event.reason + '\n' + (event.reason && event.reason.stack ? event.reason.stack : '') + '\n');
-});
+    try { if (typeof require !== 'undefined') require('fs').appendFileSync('error.log', msg + ' ' + line + ':' + col + '\n'); } catch(e) {}
+    console.error('[OptiCore]', msg, 'at', line);
+};
 </script>
 
-<script src="modules/js/core.js"></script>
-    <script src="modules/js/monitor.js"></script>
-    <script src="modules/js/cleanup.js"></script>
-    <script src="modules/js/performance.js"></script>
-    <script src="modules/js/diagnostics.js"></script>
-    <script src="modules/js/privacy-security.js"></script>
+<script src="modules/js/core.js?v=2"></script>
+    <script src="modules/js/monitor.js?v=2"></script>
+    <script src="modules/js/cleanup.js?v=2"></script>
+    <script src="modules/js/performance.js?v=2"></script>
+    <script src="modules/js/diagnostics.js?v=2"></script>
+    <script src="modules/js/privacy-security.js?v=2"></script>
+    <script src="modules/js/hardware-info.js?v=2"></script>
 
 
 

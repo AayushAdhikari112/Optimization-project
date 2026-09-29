@@ -245,6 +245,28 @@ ipcMain.handle('get-system-stats', async () => {
 })
 
 // ─────────────────────────────────────────────
+// IPC: Detailed Hardware Info
+// ─────────────────────────────────────────────
+ipcMain.handle('get-hw-cpu', async () => {
+    try {
+        const [cpu, currentLoad, cpuTemp] = await Promise.all([si.cpu(), si.currentLoad(), si.cpuTemperature()]);
+        return { cpu, currentLoad, cpuTemp };
+    } catch { return null; }
+});
+ipcMain.handle('get-hw-gpu', async () => {
+    try {
+        const graphics = await si.graphics();
+        return graphics;
+    } catch { return null; }
+});
+ipcMain.handle('get-hw-memory', async () => {
+    try {
+        const [memLayout, mem] = await Promise.all([si.memLayout(), si.mem()]);
+        return { memLayout, mem };
+    } catch { return null; }
+});
+
+// ─────────────────────────────────────────────
 // IPC: Top processes (CPU + RAM)
 // ─────────────────────────────────────────────
 ipcMain.handle('get-process-list', async () => {

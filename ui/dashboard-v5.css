@@ -1,9 +1,11 @@
 @import url('modules/css/base.css');
-@import url('modules/css/overview.css');
+@import url('modules/css/overview-v2.css');
+@import url('modules/css/sidebar.css?v=2');
 @import url('modules/css/yuno-nav.css');
 @import url('modules/css/monitor.css');
 @import url('modules/css/cleanup.css');
 @import url('modules/css/performance.css');
-@import url('modules/css/diagnostics.css');
+@import url('modules/css/diagnostics.css?v=2');
 @import url('modules/css/privacy-security.css');
+@import url('modules/css/hardware-info.css');
 @import url('modules/css/components.css');

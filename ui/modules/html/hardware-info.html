@@ -1,127 +1,6 @@
-<!-- ============================================================
-     SECTION: INFORMATION — Full System Spec Sheet
-============================================================ -->
-<section class="section" id="section-diag-health">
-
-    <!-- Page Header -->
-    <div class="sysinfo-header">
-        <div>
-            <h2 class="sysinfo-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                System Information
-            </h2>
-            <p class="sysinfo-sub">Deep hardware & driver inventory — live readings where available</p>
-        </div>
-        <div class="sysinfo-actions">
-            <button class="si-btn si-btn-ghost" id="refreshSysInfo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                Refresh
-            </button>
-            <button class="si-btn si-btn-primary" id="exportSysInfo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Export Report
-            </button>
-        </div>
-    </div>
-
-    <!-- Tab Nav -->
-    <div class="si-tabs" id="siTabs">
-        <button class="si-tab active" data-tab="os">🖥 OS</button>
-        <button class="si-tab" data-tab="cpu">⚡ CPU</button>
-        <button class="si-tab" data-tab="gpu">🎮 GPU</button>
-        <button class="si-tab" data-tab="memory">🧠 Memory</button>
-        <button class="si-tab" data-tab="storage">💾 Storage</button>
-        <button class="si-tab" data-tab="motherboard">🔌 Motherboard</button>
-        <button class="si-tab" data-tab="drivers">⚠ Drivers</button>
-        <button class="si-tab" data-tab="network">🌐 Network</button>
-        <button class="si-tab" data-tab="display">🖥 Display</button>
-        <button class="si-tab" data-tab="audio">🔊 Audio</button>
-        <button class="si-tab" data-tab="battery">🔋 Battery</button>
-    </div>
-
-    <!-- ─── TAB: OS ─── -->
-    <div class="si-panel active" id="si-tab-os">
-        <div class="si-section-title">Operating System</div>
-        <div class="si-grid-2">
-            <div class="si-card">
-                <div class="si-card-label">Edition</div>
-                <div class="si-card-value" id="os-edition">Windows 11 Home</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Version / Build</div>
-                <div class="si-card-value" id="os-build">23H2 — Build 22631.4169</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Install Date</div>
-                <div class="si-card-value" id="os-install">March 14, 2024</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Last Windows Update</div>
-                <div class="si-card-value" id="os-updated">Sep 24, 2026</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">System Type</div>
-                <div class="si-card-value">64-bit (x86-64)</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">OEM Manufacturer / Model</div>
-                <div class="si-card-value" id="os-oem">ASUS ROG — GL703GE</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Activation Status</div>
-                <div class="si-card-value"><span class="si-badge si-badge-green">✔ Activated</span></div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">License Type</div>
-                <div class="si-card-value">OEM — Digital License</div>
-            </div>
-        </div>
-
-        <div class="si-section-title" style="margin-top:24px">Security & Firmware</div>
-        <div class="si-grid-3">
-            <div class="si-card si-card-highlight">
-                <div class="si-card-label">Secure Boot</div>
-                <div class="si-card-value"><span class="si-badge si-badge-green">Enabled</span></div>
-            </div>
-            <div class="si-card si-card-highlight">
-                <div class="si-card-label">TPM Version</div>
-                <div class="si-card-value">TPM 2.0</div>
-            </div>
-            <div class="si-card si-card-highlight">
-                <div class="si-card-label">Virtualization (VT-x)</div>
-                <div class="si-card-value"><span class="si-badge si-badge-green">Enabled in BIOS</span></div>
-            </div>
-        </div>
-
-        <div class="si-section-title" style="margin-top:24px">Runtimes & Frameworks</div>
-        <div class="si-runtime-list">
-            <div class="si-runtime-item"><span class="rt-name">.NET Runtime</span><span class="rt-ver">8.0.8</span></div>
-            <div class="si-runtime-item"><span class="rt-name">.NET Framework</span><span class="rt-ver">4.8.1</span></div>
-            <div class="si-runtime-item"><span class="rt-name">Visual C++ 2022</span><span class="rt-ver">14.38.33130</span></div>
-            <div class="si-runtime-item"><span class="rt-name">Visual C++ 2019</span><span class="rt-ver">14.29.30153</span></div>
-            <div class="si-runtime-item"><span class="rt-name">DirectX</span><span class="rt-ver">DirectX 12 (FL 12_1)</span></div>
-        </div>
-
-        <div class="si-section-title" style="margin-top:24px">Virtual Memory</div>
-        <div class="si-grid-2">
-            <div class="si-card">
-                <div class="si-card-label">Page File Location</div>
-                <div class="si-card-value">C:\pagefile.sys</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Page File Size</div>
-                <div class="si-card-value">3,072 MB (managed)</div>
-            </div>
-            <div class="si-card">
-                <div class="si-card-label">Total Virtual Memory</div>
-                <div class="si-card-value">35.0 GB</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ─── TAB: CPU ─── -->
-    <div class="si-panel" id="si-tab-cpu">
-<div class="hw-page-header">
+<!-- ============================================================  CPU  ============================================================ -->
+<section class="section" id="section-hw-cpu">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(99,102,241,0.1));border-color:rgba(139,92,246,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
     </div>
@@ -195,11 +74,11 @@
     <span class="hw-isa hw-isa-red">AVX-512 — Not Supported</span>
     <span class="hw-isa hw-isa-red">SGX — Not Supported</span>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: GPU ─── -->
-    <div class="si-panel" id="si-tab-gpu">
-<div class="hw-page-header">
+<!-- ============================================================  GPU  ============================================================ -->
+<section class="section" id="section-hw-gpu">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(239,68,68,0.05));border-color:rgba(239,68,68,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 7V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2"/><line x1="6" y1="11" x2="6" y2="13"/><line x1="10" y1="11" x2="10" y2="13"/><line x1="14" y1="11" x2="14" y2="13"/><line x1="18" y1="11" x2="18" y2="13"/></svg>
     </div>
@@ -259,11 +138,11 @@
       <div class="hw-stat"><div class="hw-stat-l">Vulkan</div><div class="hw-stat-v">1.3</div></div>
     </div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: MEMORY ─── -->
-    <div class="si-panel" id="si-tab-memory">
-<div class="hw-page-header">
+<!-- ============================================================  MEMORY  ============================================================ -->
+<section class="section" id="section-hw-memory">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(139,92,246,0.05));border-color:rgba(139,92,246,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"/></svg>
     </div>
@@ -317,11 +196,11 @@
     <div class="hw-live-card hw-live-blue"><div class="hw-live-val">1.4 GB</div><div class="hw-live-label">Cached</div></div>
     <div class="hw-live-card hw-live-orange"><div class="hw-live-val">5.1 / 19 GB</div><div class="hw-live-label">Committed</div></div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: STORAGE ─── -->
-    <div class="si-panel" id="si-tab-storage">
-<div class="hw-page-header">
+<!-- ============================================================  STORAGE  ============================================================ -->
+<section class="section" id="section-hw-storage">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(16,185,129,0.05));border-color:rgba(16,185,129,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
     </div>
@@ -368,11 +247,11 @@
       <div class="hw-partition-row"><span class="hw-part-drive">D:\</span><span class="hw-part-label">Data</span><span class="hw-part-fs">NTFS</span><span class="hw-part-free hw-good">340 GB / 931 GB free</span></div>
     </div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: MOTHERBOARD ─── -->
-    <div class="si-panel" id="si-tab-motherboard">
-<div class="hw-page-header">
+<!-- ============================================================  MOTHERBOARD  ============================================================ -->
+<section class="section" id="section-hw-mobo">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.05));border-color:rgba(245,158,11,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 7h.01M12 7h.01M17 7h.01M7 12h.01M17 12h.01M7 17h.01M12 17h.01M17 17h.01"/></svg>
     </div>
@@ -415,11 +294,11 @@
     <div class="hw-stat"><div class="hw-stat-l">WiFi Chip</div><div class="hw-stat-v">Intel 9560 AC</div></div>
     <div class="hw-stat"><div class="hw-stat-l">Bluetooth</div><div class="hw-stat-v">5.0</div></div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: DRIVERS ─── -->
-    <div class="si-panel" id="si-tab-drivers">
-<div class="hw-page-header">
+<!-- ============================================================  DRIVERS  ============================================================ -->
+<section class="section" id="section-hw-drivers">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05));border-color:rgba(239,68,68,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     </div>
@@ -469,11 +348,11 @@
   <div class="hw-rollback-note">
     🛡 <strong>System Restore checkpoint detected</strong> from Sep 20, 2026 — roll back any driver safely via System Properties → System Protection.
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: NETWORK ─── -->
-    <div class="si-panel" id="si-tab-network">
-<div class="hw-page-header">
+<!-- ============================================================  NETWORK  ============================================================ -->
+<section class="section" id="section-hw-network">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(59,130,246,0.05));border-color:rgba(59,130,246,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     </div>
@@ -512,11 +391,11 @@
     <div class="hw-live-card hw-live-green"><div class="hw-live-val hw-good">0%</div><div class="hw-live-label">Packet Loss</div></div>
     <div class="hw-live-card hw-live-purple"><div class="hw-live-val">—</div><div class="hw-live-label">Public IP</div></div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: DISPLAY ─── -->
-    <div class="si-panel" id="si-tab-display">
-<div class="hw-page-header">
+<!-- ============================================================  DISPLAY  ============================================================ -->
+<section class="section" id="section-hw-display">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(16,185,129,0.05));border-color:rgba(16,185,129,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
     </div>
@@ -539,11 +418,11 @@
       <div class="hw-stat"><div class="hw-stat-l">G-Sync</div><div class="hw-stat-v hw-good">Active</div></div>
     </div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: AUDIO ─── -->
-    <div class="si-panel" id="si-tab-audio">
-<div class="hw-page-header">
+<!-- ============================================================  AUDIO  ============================================================ -->
+<section class="section" id="section-hw-audio">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.05));border-color:rgba(245,158,11,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
     </div>
@@ -586,11 +465,11 @@
     <div class="hw-vumeter-label">Input</div>
     <div class="hw-vumeter"><div class="hw-vumeter-bar hw-vumeter-in" style="width:5%"></div></div>
   </div>
-    </div>
+</section>
 
-    <!-- ─── TAB: BATTERY ─── -->
-    <div class="si-panel" id="si-tab-battery">
-<div class="hw-page-header">
+<!-- ============================================================  BATTERY  ============================================================ -->
+<section class="section" id="section-hw-battery">
+  <div class="hw-page-header">
     <div class="hw-page-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(16,185,129,0.05));border-color:rgba(16,185,129,0.3)">
       <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg>
     </div>
@@ -625,37 +504,4 @@
       </div>
     </div>
   </div>
-    </div>
-
 </section>
-
-<script>
-// Tab switching for System Information section
-(function() {
-    const tabs = document.querySelectorAll('#section-diag-health .si-tab');
-    const panels = document.querySelectorAll('#section-diag-health .si-panel');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-            tab.classList.add('active');
-            const target = document.getElementById('si-tab-' + tab.dataset.tab);
-            if (target) target.classList.add('active');
-        });
-    });
-
-    document.getElementById('exportSysInfo')?.addEventListener('click', () => {
-        const report = {
-            generated: new Date().toISOString(),
-            os: { edition: 'Windows 11 Home', build: '22631.4169', version: '23H2' },
-            cpu: { name: 'Intel Core i7-8750H', cores: 6, threads: 12 },
-            gpu: { primary: 'NVIDIA GTX 1060 6GB', driver: '536.99' },
-            memory: { total: '16 GB DDR4', channels: 'Dual', xmp: false },
-            note: 'Full report — export this JSON for support tickets or pre/post-tweak comparison.'
-        };
-        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = 'opticore-sysreport.json'; a.click();
-    });
-})();
-</script>

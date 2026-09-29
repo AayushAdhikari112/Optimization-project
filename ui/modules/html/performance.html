@@ -2,353 +2,810 @@
      SECTION: CPU TWEAKS  (cpu_optimizer.c)
 ============================================================ -->
 <section class="section" id="section-perf-cpu">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
-        </div>
-        <div><h2>CPU Optimization</h2><p>Tune processor throttling, gaming profiles and scheduling via <code>powercfg</code>.</p></div>
-    </div>
-
-    <div class="tweak-list">
-        <!-- apply_cpu_gaming_profile() → PROCTHROTTLEMIN 5, PROCTHROTTLEMAX 100 -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-            <div class="tweak-info">
-                <h3>Apply Gaming Profile</h3>
-                <p>Sets CPU Min/Max throttle (5%–100%) via <code>powercfg PROCTHROTTLEMIN/MAX</code>. Prevents aggressive clock-speed drops during gaming sessions.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 5')">Apply</button>
-        </div>
-
-        <!-- reset_cpu_settings() -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg></div>
-            <div class="tweak-info">
-                <h3>Restore Default CPU Profile</h3>
-                <p>Resets CPU performance state back to Windows safe defaults (5%–100% throttle range). Run after gaming to reduce heat.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 5 && powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX 100 && powercfg -setactive SCHEME_CURRENT')">Reset</button>
-        </div>
-
-        <!-- MMCSS Gaming priority tweak -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div>
-            <div class="tweak-info">
-                <h3>MMCSS Gaming Priority</h3>
-                <p>Sets Multimedia Class Scheduler Service (<code>MMCSS</code>) CPU priority for Games class — reduces micro-stutter in competitive titles.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"GPU Priority\" /t REG_DWORD /d 8 /f && reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\" /v \"Priority\" /t REG_DWORD /d 6 /f')">Apply</button>
-        </div>
-
-        <!-- Disable power throttling -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Power Throttling</h3>
-                <p>Disables Windows Power Throttling which intentionally slows background processes. Improves CPU responsiveness for foreground apps and games.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\" /v PowerThrottlingOff /t REG_DWORD /d 1 /f')">Disable</button>
-        </div>
-
-        <!-- Interrupt Affinity / MSI Mode hint -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Set Interrupt Priority (MSI Util)</h3>
-                <p>Opens MSI Util v3 to enable Message Signaled Interrupts and set device interrupt priority — reduces DPC latency for GPU and NIC.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 10')">Open Tool</button>
-        </div>
-    </div>
+<style>
+        .tweak-grid-premium {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .premium-card {
+            background: rgba(17, 24, 39, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            min-height: 230px;
+            transition: all 0.2s ease;
+        }
+        .premium-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(17, 24, 39, 0.6);
+            transform: translateY(-2px);
+        }
+        .pc-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.08);
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            align-self: flex-start;
+        }
+        .pc-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 10px;
+        }
+        .pc-desc {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            flex: 1;
+        }
+        .pc-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .pc-icons {
+            display: flex;
+            gap: 12px;
+            color: #64748b;
+        }
+        .pc-icons svg {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .pc-icons svg:hover {
+            color: #cbd5e1;
+        }
+        .pc-toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pc-toggle-label {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        
+        /* Modern Toggle Switch */
+        .pc-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .pc-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .pc-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .pc-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .pc-slider {
+            background-color: #3b82f6;
+        }
+        input:checked + .pc-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+<div class="section-hero">
+<div class="section-hero-icon">
+<svg fill="none" stroke="#a78bfa" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="16" x="4" y="4"></rect><rect height="6" width="6" x="9" y="9"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg>
+</div>
+<div>
+<h2>Recommended <span style="font-size: 14px; font-weight: 500; color: #f59e0b; margin-left: 10px; cursor: pointer;">View All &gt;</span></h2>
+<p>Proven optimizations that make your PC faster without changing how Windows works. Safe and balanced for most users.</p>
+</div>
+</div>
+<div class="tweak-grid-premium">
+<!-- Card 1 -->
+<div class="premium-card">
+<div class="pc-pill">FPS &amp; Latency</div>
+<div class="pc-title">Optimize CPU Gaming Profile</div>
+<div class="pc-desc">Sets CPU Min/Max throttle (5%–100%) via powercfg. Prevents aggressive clock-speed drops during gaming sessions.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'opt_tool.exe 5', 'powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN 5 &amp;&amp; powercfg -setactive SCHEME_CURRENT')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="premium-card">
+<div class="pc-pill">FPS &amp; Latency</div>
+<div class="pc-title">MMCSS Gaming Priority</div>
+<div class="pc-desc">Sets Multimedia Class Scheduler Service CPU priority for Games class — reduces micro-stutter in competitive titles.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'reg add \&quot;HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games\&quot; /v \&quot;GPU Priority\&quot; /t REG_DWORD /d 8 /f', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="premium-card">
+<div class="pc-pill">FPS &amp; Latency</div>
+<div class="pc-title">Disable Power Throttling</div>
+<div class="pc-desc">Disables Windows Power Throttling which intentionally slows background processes. Improves CPU responsiveness.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'reg add \&quot;HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling\&quot; /v PowerThrottlingOff /t REG_DWORD /d 1 /f', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="premium-card">
+<div class="pc-pill">Hardware</div>
+<div class="pc-title">Set Interrupt Priority</div>
+<div class="pc-desc">Opens MSI Util v3 to enable Message Signaled Interrupts and set device interrupt priority — reduces DPC latency.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<button class="run-btn" onclick="runOpt(this,'opt_tool.exe 10')" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;">Launch Tool</button>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ============================================================
      SECTION: GPU TWEAKS  (gpu_optimizer.c)
 ============================================================ -->
 <section class="section" id="section-perf-gpu">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-        </div>
-        <div><h2>GPU Optimization</h2><p>Power profiles and hardware scheduling — from <code>gpu_optimizer.c</code> via <code>powercfg</code> and registry.</p></div>
-    </div>
-
-    <div class="tweak-list">
-        <!-- set_gpu_power_profile(true) → High Performance GUID -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-            <div class="tweak-info">
-                <h3>High Performance GPU Profile</h3>
-                <p>Activates High Performance power plan GUID <code>8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c</code> — tells Windows to push maximum GPU clocks.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c')">Apply</button>
-        </div>
-
-        <!-- set_gpu_power_profile(false) → Balanced GUID -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-            <div class="tweak-info">
-                <h3>Balanced GPU Profile</h3>
-                <p>Reverts to Balanced power plan <code>381b4222-f694-41f0-9685-ff5bb260df2e</code> — quieter fans and lower heat for everyday use.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e')">Apply</button>
-        </div>
-
-        <!-- toggle_hags(true) → HwSchMode = 2 -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="tweak-info">
-                <h3>Enable Hardware-Accelerated GPU Scheduling (HAGS)</h3>
-                <p>Sets <code>HwSchMode = 2</code> in <code>HKLM\SYSTEM\...\GraphicsDrivers</code>. Moves GPU memory management to the GPU, reducing CPU overhead and latency.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f')">Enable</button>
-        </div>
-
-        <!-- toggle_hags(false) → HwSchMode = 1 -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Hardware-Accelerated GPU Scheduling</h3>
-                <p>Sets <code>HwSchMode = 1</code> — reverts HAGS to classic CPU-controlled GPU scheduling. Recommended for older drivers or DX11 games with stutters.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 1 /f')">Disable</button>
-        </div>
-
-        <!-- Disable fullscreen optimizations -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Fullscreen Optimizations</h3>
-                <p>Sets <code>DisabledMaximizedWindowedMode</code> globally — forces games into exclusive fullscreen, reducing compositor overhead and input lag.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f && reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_HonorUserFSEBehaviorMode /t REG_DWORD /d 1 /f')">Apply</button>
-        </div>
-    </div>
+<div class="section-hero">
+<div class="section-hero-icon">
+<svg fill="none" stroke="#c4b5fd" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+</div>
+<div><h2>GPU Optimization</h2><p>Power profiles and hardware scheduling — from <code>gpu_optimizer.c</code> via <code>powercfg</code> and registry.</p></div>
+</div>
+<div class="tweak-grid-premium">
+<!-- set_gpu_power_profile(true) → High Performance GUID -->
+<div class="premium-card">
+<div class="pc-pill">Graphics</div>
+<div class="pc-title">High Performance GPU Profile</div>
+<div class="pc-desc">Activates High Performance power plan GUID 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c — tells Windows to push maximum GPU clocks.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- set_gpu_power_profile(false) → Balanced GUID -->
+<div class="premium-card">
+<div class="pc-pill">Graphics</div>
+<div class="pc-title">Balanced GPU Profile</div>
+<div class="pc-desc">Reverts to Balanced power plan 381b4222-f694-41f0-9685-ff5bb260df2e — quieter fans and lower heat for everyday use.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- toggle_hags(true) → HwSchMode = 2 -->
+<div class="premium-card">
+<div class="pc-pill">Graphics</div>
+<div class="pc-title">Enable Hardware-Accelerated GPU Scheduling (HAGS)</div>
+<div class="pc-desc">Sets HwSchMode = 2 in HKLM\SYSTEM\...\GraphicsDrivers. Moves GPU memory management to the GPU, reducing CPU overhead and latency.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- toggle_hags(false) → HwSchMode = 1 -->
+<div class="premium-card">
+<div class="pc-pill">Graphics</div>
+<div class="pc-title">Disable Hardware-Accelerated GPU Scheduling</div>
+<div class="pc-desc">Sets HwSchMode = 1 — reverts HAGS to classic CPU-controlled GPU scheduling. Recommended for older drivers or DX11 games with stutters.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Disable fullscreen optimizations -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Disable Fullscreen Optimizations</div>
+<div class="pc-desc">Sets DisabledMaximizedWindowedMode globally — forces games into exclusive fullscreen, reducing compositor overhead and input lag.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ============================================================
      SECTION: POWER / EXTRA  (power_optimizer.c + screen_optimizer.c)
 ============================================================ -->
 <section class="section" id="section-perf-power">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-        </div>
-        <div><h2>Power &amp; Display (Extra)</h2><p>Power plans via <code>power_optimizer.c</code> and refresh rate via <code>screen_optimizer.c</code>.</p></div>
-    </div>
-
-    <div class="tweak-list">
-        <!-- PROFILE_PERFORMANCE -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-            <div class="tweak-info">
-                <h3>High Performance Power Plan</h3>
-                <p>Activates GUID <code>8c5e7fda…</code> — disables all CPU/GPU sleep states for maximum sustained performance.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c')">Apply</button>
-        </div>
-
-        <!-- PROFILE_BALANCED -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-            <div class="tweak-info">
-                <h3>Balanced Power Plan</h3>
-                <p>Reverts to Windows Balanced plan <code>381b4222…</code> — good for battery life and daily workloads.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e')">Apply</button>
-        </div>
-
-        <!-- PROFILE_BATTERY_SAVER -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path><line x1="6" y1="11" x2="6" y2="14"></line></svg></div>
-            <div class="tweak-info">
-                <h3>Power Saver Plan</h3>
-                <p>Activates Power Saver GUID <code>a1841308…</code> — aggressively throttles CPU/GPU for extended battery life on laptops.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setactive a1841308-3541-4fab-bc81-f71556f20b4a')">Apply</button>
-        </div>
-
-        <!-- toggle_usb_selective_suspend(false) -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></div>
-            <div class="tweak-info">
-                <h3>Disable USB Selective Suspend</h3>
-                <p>Prevents Windows from powering down idle USB ports (<code>powercfg AC+DC index 0</code>). Eliminates controller/headset disconnect issues during gaming.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'powercfg -setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0 && powercfg -setdcvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0 && powercfg -setactive SCHEME_CURRENT')">Disable</button>
-        </div>
-
-        <!-- set_display_refresh_rate — check current -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-            <div class="tweak-info">
-                <h3>Maximize Refresh Rate</h3>
-                <p>Uses <code>screen_optimizer.c → set_display_refresh_rate()</code> to set display to highest supported Hz via <code>ChangeDisplaySettings</code> API.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 9')">Apply Max Hz</button>
-        </div>
-
-        <!-- Disable network throttling index -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Network Throttling</h3>
-                <p>Sets <code>NetworkThrottlingIndex = 0xffffffff</code> and <code>SystemResponsiveness = 0</code> — removes Windows MMCSS network bandwidth cap for gaming.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f && reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\" /v SystemResponsiveness /t REG_DWORD /d 0 /f')">Apply</button>
-        </div>
-    </div>
+<div class="section-hero">
+<div class="section-hero-icon">
+<svg fill="none" stroke="#fbbf24" stroke-width="2" viewbox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+</div>
+<div><h2>Power &amp; Display (Extra)</h2><p>Power plans via <code>power_optimizer.c</code> and refresh rate via <code>screen_optimizer.c</code>.</p></div>
+</div>
+<div class="tweak-grid-premium">
+<!-- PROFILE_PERFORMANCE -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">High Performance Power Plan</div>
+<div class="pc-desc">Activates GUID 8c5e7fda… — disables all CPU/GPU sleep states for maximum sustained performance.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- PROFILE_BALANCED -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Balanced Power Plan</div>
+<div class="pc-desc">Reverts to Windows Balanced plan 381b4222… — good for battery life and daily workloads.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- PROFILE_BATTERY_SAVER -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Power Saver Plan</div>
+<div class="pc-desc">Activates Power Saver GUID a1841308… — aggressively throttles CPU/GPU for extended battery life on laptops.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setactive a1841308-3541-4fab-bc81-f71556f20b4a', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- toggle_usb_selective_suspend(false) -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Disable USB Selective Suspend</div>
+<div class="pc-desc">Prevents Windows from powering down idle USB ports (powercfg AC+DC index 0). Eliminates controller/headset disconnect issues during gaming.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'powercfg -setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0 &amp;&amp; powercfg -setdcvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba308a3 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0 &amp;&amp; powercfg -setactive SCHEME_CURRENT', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- set_display_refresh_rate — check current -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Maximize Refresh Rate</div>
+<div class="pc-desc">Uses screen_optimizer.c → set_display_refresh_rate() to set display to highest supported Hz via ChangeDisplaySettings API.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<button class="run-btn" onclick="runOpt(this,'opt_tool.exe 9')" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;">Apply Max Hz</button>
+</div>
+</div>
+</div>
+<!-- Disable network throttling index -->
+<div class="premium-card">
+<div class="pc-pill">Network</div>
+<div class="pc-title">Disable Network Throttling</div>
+<div class="pc-desc">Sets NetworkThrottlingIndex = 0xffffffff and SystemResponsiveness = 0 — removes Windows MMCSS network bandwidth cap for gaming.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ============================================================
      SECTION: GAMING MODE  (perf-gaming)
 ============================================================ -->
 <section class="section" id="section-perf-gaming">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
-        </div>
-        <div><h2>Gaming Mode</h2><p>One-click bundle of every real gaming optimization from the C backend.</p></div>
-    </div>
+<style>
+        .gaming-hero {
+            display: flex; align-items: center; gap: 20px;
+            margin-bottom: 30px;
+            padding: 24px 30px;
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.1) 0%, transparent 100%);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-left: 4px solid #a855f7;
+            border-radius: 12px;
+        }
+        .gaming-hero-icon {
+            width: 56px; height: 56px;
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+        }
+        .gaming-hero-icon svg { width: 32px; height: 32px; color: #d8b4fe; }
+        .gaming-hero-text h2 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+        .gaming-hero-text p { color: #9ca3af; font-size: 14px; margin: 0; }
 
-    <div class="tweak-list">
-        <!-- Full gaming bundle -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-            <div class="tweak-info">
-                <h3>One-Click Gaming Bundle</h3>
-                <p>Runs: CPU Gaming Profile + High Perf GPU + HAGS ON + Disable Power Throttling + MMCSS Priority + Disable USB Suspend + Disable Network Throttling.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 5 && opt_tool.exe 6 && opt_tool.exe 7')">Launch</button>
-        </div>
+        .gaming-modes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
 
-        <!-- Enable Game Mode -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="tweak-info">
-                <h3>Enable Windows Game Mode</h3>
-                <p>Enables Windows built-in Game Mode which prioritises CPU/GPU resources to the active game process and limits background updates.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AllowAutoGameMode /t REG_DWORD /d 1 /f && reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f')">Enable</button>
-        </div>
+        .gaming-mode-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            min-height: 400px;
+        }
+        .gaming-mode-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .gmc-bg {
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            opacity: 0.15;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .gaming-mode-card:hover .gmc-bg { opacity: 0.3; }
 
-        <!-- Disable Xbox Game Bar (resource hog) -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Xbox Game Bar</h3>
-                <p>Disables Game Bar and DVR (<code>GameDVR_Enabled = 0</code>) — removes overlay, stops background recording and reduces CPU/disk usage in game.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR\" /v AppCaptureEnabled /t REG_DWORD /d 0 /f && reg add \"HKCU\\System\\GameConfigStore\" /v GameDVR_Enabled /t REG_DWORD /d 0 /f')">Disable</button>
-        </div>
+        .gmc-header { display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; z-index: 1; flex: 1; }
+        .gmc-icon {
+            width: 72px; height: 72px;
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            margin-bottom: 8px;
+        }
+        .gmc-icon svg { width: 36px; height: 36px; }
+        
+        .gmc-title-area { display: flex; flex-direction: column; align-items: center; }
+        .gmc-title-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .gmc-title { font-size: 22px; font-weight: 700; color: #fff; margin: 0; }
+        .gmc-desc { color: #9ca3af; font-size: 13px; line-height: 1.6; margin: 0; }
+        
+        .gmc-actions {
+            display: flex; flex-direction: column; gap: 12px;
+            position: relative; z-index: 1;
+            width: 100%;
+            margin-top: auto;
+        }
+        
+        .gmc-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        
+        /* Normal Mode Specifics */
+        .card-normal { border-color: rgba(167, 139, 250, 0.2); }
+        .card-normal:hover { border-color: rgba(167, 139, 250, 0.4); box-shadow: 0 10px 40px rgba(167, 139, 250, 0.1); }
+        .card-normal .gmc-bg { background: radial-gradient(circle at top, rgba(167, 139, 250, 0.3), transparent 60%); }
+        .card-normal .gmc-icon { background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); }
+        .card-normal .gmc-icon svg { color: #c4b5fd; }
+        .card-normal .gmc-btn-primary { background: #8b5cf6; border: 1px solid #7c3aed; color: #fff; }
+        .card-normal .gmc-btn-primary:hover { background: #7c3aed; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
 
-        <!-- Create restore point first -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Create Restore Point First</h3>
-                <p>Uses <code>safety_engine.c → create_restore_point()</code> — creates a Windows system restore point named "Pre-Gaming-Tweaks" before applying changes.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 11')">Backup</button>
-        </div>
-    </div>
+        /* Extreme Mode Specifics */
+        .card-extreme { border-color: rgba(239, 68, 68, 0.3); }
+        .card-extreme:hover { border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 10px 40px rgba(239, 68, 68, 0.15); }
+        .card-extreme .gmc-bg { background: radial-gradient(circle at top, rgba(239, 68, 68, 0.3), transparent 60%); }
+        .card-extreme .gmc-icon { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.1); }
+        .card-extreme .gmc-icon svg { color: #fca5a5; }
+        .card-extreme .gmc-btn-primary { background: linear-gradient(135deg, #ef4444, #b91c1c); border: 1px solid #ef4444; color: #fff; }
+        .card-extreme .gmc-btn-primary:hover { background: linear-gradient(135deg, #dc2626, #991b1b); box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        
+        .gmc-btn-secondary { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; }
+        .gmc-btn-secondary:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+        .badge-max { background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 1px solid rgba(239, 68, 68, 0.3); letter-spacing: 0.5px; }
+        .badge-safe { background: rgba(167, 139, 250, 0.15); color: #c4b5fd; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; border: 1px solid rgba(167, 139, 250, 0.3); letter-spacing: 0.5px; }
+
+        .gmc-feature-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+        .gmc-feature { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; font-size: 11px; color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
+        .gmc-feature svg { width: 14px; height: 14px; color: #10b981; }
+    </style>
+<div class="gaming-hero">
+<div class="gaming-hero-icon">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="12" rx="2" width="20" x="2" y="6"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg>
+</div>
+<div class="gaming-hero-text">
+<h2>OptiCore Gaming Profiles</h2>
+<p>Unleash maximum hardware potential. Choose a profile to instantly reconfigure your PC for gaming.</p>
+</div>
+</div>
+<div class="gaming-modes-grid">
+<!-- Normal Gaming Mode -->
+<div class="gaming-mode-card card-normal">
+<div class="gmc-bg"></div>
+<div class="gmc-header">
+<div class="gmc-icon">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+</div>
+<div class="gmc-title-area">
+<div class="gmc-title-wrap">
+<h3 class="gmc-title">Normal Gaming Mode</h3>
+<span class="badge-safe">SAFE</span>
+</div>
+<p class="gmc-desc">Applies standard, safe gaming optimizations. Enables Windows Game Mode, sets CPU to high performance during gameplay, prioritises game processes, and disables background telemetry.</p>
+<div class="gmc-feature-list">
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Windows Game Mode</div>
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> CPU High Perf</div>
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Telemetry Block</div>
+</div>
+</div>
+</div>
+<div class="gmc-actions">
+<button class="gmc-btn gmc-btn-primary" onclick="runOpt(this,'opt_tool.exe normal_gaming_enable')">
+<svg fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;" viewbox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Enable Profile
+                </button>
+<button class="gmc-btn gmc-btn-secondary" onclick="runOpt(this,'opt_tool.exe normal_gaming_disable')">
+<svg fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;" viewbox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="3"></rect></svg>
+                    Restore
+                </button>
+</div>
+</div>
+<!-- Extreme Gaming Mode -->
+<div class="gaming-mode-card card-extreme">
+<div class="gmc-bg"></div>
+<div class="gmc-header">
+<div class="gmc-icon">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+</div>
+<div class="gmc-title-area">
+<div class="gmc-title-wrap">
+<h3 class="gmc-title">Extreme Gaming Mode</h3>
+<span class="badge-max">MAX FPS</span>
+</div>
+<p class="gmc-desc">Aggressive bare-bones mode. Disables Explorer.exe (desktop UI), shuts down all non-essential Windows services (Print Spooler, Bluetooth, Windows Update), and allocates 100% hardware priority strictly to the game.</p>
+<div class="gmc-feature-list">
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Explorer UI Killed</div>
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> 40+ Services Stopped</div>
+<div class="gmc-feature"><svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> 100% CPU Priority</div>
+</div>
+</div>
+</div>
+<div class="gmc-actions">
+<button class="gmc-btn gmc-btn-primary" onclick="runOpt(this,'opt_tool.exe extreme_gaming_enable')">
+<svg fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;" viewbox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Enable Extreme Mode
+                </button>
+<button class="gmc-btn gmc-btn-secondary" onclick="runOpt(this,'opt_tool.exe extreme_gaming_disable')">
+<svg fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;" viewbox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="3"></rect></svg>
+                    Restore System
+                </button>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ============================================================
      SECTION: STARTUP / WEAK PC  (startup_manager.c)
 ============================================================ -->
 <section class="section" id="section-perf-startup">
-    <div class="section-hero">
-        <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        </div>
-        <div><h2>Weak PC / Startup Manager</h2><p>Low-resource optimizations + startup app control via <code>startup_manager.c</code> registry enumeration.</p></div>
-    </div>
-
-    <div class="tweak-list">
-        <!-- run_startup_manager() -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M3 3h18v18H3z"></path><path d="M3 9h18M9 21V9"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Scan Startup Apps</h3>
-                <p>Reads <code>HKCU\...\Run</code> and <code>HKLM\...\Run</code> registry keys — lists every program that launches at Windows startup and may slow boot.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 2')">Scan</button>
-        </div>
-
-        <!-- run_memory_optimizer() -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Free Up RAM (Empty Working Sets)</h3>
-                <p>Calls <code>EmptyWorkingSet()</code> on every running process via <code>EnumProcesses</code> — flushes RAM pages back to disk, reclaiming physical memory immediately.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'opt_tool.exe 3')">Free RAM</button>
-        </div>
-
-        <!-- Disable visual effects -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
-            <div class="tweak-info">
-                <h3>Disable Visual Effects (Best Performance)</h3>
-                <p>Sets <code>VisualFXSetting = 2</code> — disables animations, shadows, transparency and Aero effects. Best for low-end PCs under 4GB RAM.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f')">Apply</button>
-        </div>
-
-        <!-- Reduce paging file pressure -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
-            <div class="tweak-info">
-                <h3>Optimize Paging File</h3>
-                <p>Sets <code>LargeSystemCache = 0</code> and <code>DisablePagingExecutive = 1</code> — keeps kernel in RAM instead of paging to disk, boosting low-RAM system responsiveness.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v LargeSystemCache /t REG_DWORD /d 0 /f && reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\" /v DisablePagingExecutive /t REG_DWORD /d 1 /f')">Apply</button>
-        </div>
-
-        <!-- Disable unnecessary services -->
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"></path></svg></div>
-            <div class="tweak-info">
-                <h3>Disable SysMain (Superfetch)</h3>
-                <p>Stops and disables <code>SysMain</code> service — on low-RAM systems (&lt;8GB) Superfetch causes constant HDD thrashing. Free up disk I/O immediately.</p>
-            </div>
-            <button class="run-btn" onclick="runOpt(this,'sc stop SysMain && sc config SysMain start= disabled')">Disable</button>
-        </div>
-    </div>
+<div class="section-hero">
+<div class="section-hero-icon">
+<svg fill="none" stroke="#22d3ee" stroke-width="2" viewbox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+</div>
+<div><h2>Weak PC / Startup Manager</h2><p>Low-resource optimizations + startup app control via <code>startup_manager.c</code> registry enumeration.</p></div>
+</div>
+<div class="tweak-grid-premium">
+<!-- run_startup_manager() -->
+<div class="premium-card">
+<div class="pc-pill">Optimization</div>
+<div class="pc-title">Scan Startup Apps</div>
+<div class="pc-desc">Reads HKCU\...\Run and HKLM\...\Run registry keys — lists every program that launches at Windows startup and may slow boot.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<button class="run-btn" onclick="runOpt(this,'opt_tool.exe 2')" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;">Scan</button>
+</div>
+</div>
+</div>
+<!-- run_memory_optimizer() -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Free Up RAM (Empty Working Sets)</div>
+<div class="pc-desc">Calls EmptyWorkingSet() on every running process via EnumProcesses — flushes RAM pages back to disk, reclaiming physical memory immediately.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<button class="run-btn" onclick="runOpt(this,'opt_tool.exe 3')" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;">Free RAM</button>
+</div>
+</div>
+</div>
+<!-- Disable visual effects -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Disable Visual Effects (Best Performance)</div>
+<div class="pc-desc">Sets VisualFXSetting = 2 — disables animations, shadows, transparency and Aero effects. Best for low-end PCs under 4GB RAM.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Reduce paging file pressure -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Optimize Paging File</div>
+<div class="pc-desc">Sets LargeSystemCache = 0 and DisablePagingExecutive = 1 — keeps kernel in RAM instead of paging to disk, boosting low-RAM system responsiveness.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, '', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- Disable unnecessary services -->
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Disable SysMain (Superfetch)</div>
+<div class="pc-desc">Stops and disables SysMain service — on low-RAM systems (&lt;8GB) Superfetch causes constant HDD thrashing. Free up disk I/O immediately.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'sc stop SysMain &amp;&amp; sc config SysMain start= disabled', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ============================================================
      SECTION: OTHER PERF (bgapps, services, tasks — stubs)
 ============================================================ -->
 <section class="section" id="section-perf-services">
-    <div class="section-hero">
-        <div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-        <div><h2>Services Optimizer</h2><p>Manage Windows background services for performance gains.</p></div>
-    </div>
-    <div class="tweak-list">
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
-            <div class="tweak-info"><h3>SysMain (Superfetch)</h3><p>Preloads frequently used apps into RAM. Disable if on SSD with &lt;8GB RAM.</p></div>
-            <button class="run-btn" onclick="runOpt(this,'sc stop SysMain && sc config SysMain start= disabled')">Disable</button>
-        </div>
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-            <div class="tweak-info"><h3>Windows Search (WSearch)</h3><p>Stops file indexing service. Reduces disk I/O if you rarely use Windows search.</p></div>
-            <button class="run-btn" onclick="runOpt(this,'sc stop WSearch && sc config WSearch start= disabled')">Disable</button>
-        </div>
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
-            <div class="tweak-info"><h3>Windows Update (Disable Bandwidth Drain)</h3><p>Pauses automatic Windows Update delivery to free up CPU and network during gaming sessions.</p></div>
-            <button class="run-btn" onclick="runOpt(this,'sc stop wuauserv && sc config wuauserv start= disabled')">Pause</button>
-        </div>
-        <div class="tweak-item">
-            <div class="tweak-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg></div>
-            <div class="tweak-info"><h3>Connected Devices Platform (CDPSvc)</h3><p>Disables timeline sync and cross-device clipboard. Reduces background CPU wakeups.</p></div>
-            <button class="run-btn" onclick="runOpt(this,'sc stop CDPSvc && sc config CDPSvc start= disabled')">Disable</button>
-        </div>
-    </div>
+<div class="section-hero">
+<div class="section-hero-icon"><svg fill="none" stroke="#60a5fa" stroke-width="2" viewbox="0 0 24 24"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg></div>
+<div><h2>Services Optimizer</h2><p>Manage Windows background services for performance gains.</p></div>
+</div>
+<div class="tweak-grid-premium">
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">SysMain (Superfetch)</div>
+<div class="pc-desc">Preloads frequently used apps into RAM. Disable if on SSD with &lt;8GB RAM.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'sc stop SysMain &amp;&amp; sc config SysMain start= disabled', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Windows Search (WSearch)</div>
+<div class="pc-desc">Stops file indexing service. Reduces disk I/O if you rarely use Windows search.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'sc stop WSearch &amp;&amp; sc config WSearch start= disabled', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Windows Update (Disable Bandwidth Drain)</div>
+<div class="pc-desc">Pauses automatic Windows Update delivery to free up CPU and network during gaming sessions.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<button class="run-btn" onclick="runOpt(this,'sc stop wuauserv &amp;&amp; sc config wuauserv start= disabled')" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;">Pause</button>
+</div>
+</div>
+</div>
+<div class="premium-card">
+<div class="pc-pill">System</div>
+<div class="pc-title">Connected Devices Platform (CDPSvc)</div>
+<div class="pc-desc">Disables timeline sync and cross-device clipboard. Reduces background CPU wakeups.</div>
+<div class="pc-footer">
+<div class="pc-icons">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>
+</div>
+<div class="pc-toggle-wrap">
+<span class="pc-toggle-label">Activate</span>
+<label class="pc-switch">
+<input onchange="runOptToggle(this, 'sc stop CDPSvc &amp;&amp; sc config CDPSvc start= disabled', '')" type="checkbox"/>
+<span class="pc-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section class="section" id="section-perf-bgapps"><div class="section-hero"><div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div><h2>Background Apps</h2><p>Control background app permissions.</p></div></div><div style="padding:20px;color:var(--text3);">Background Apps section — managed via Windows Settings → Privacy → Background Apps.</div></section>
-<section class="section" id="section-perf-tasks"><div class="section-hero"><div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><div><h2>Scheduled Tasks</h2><p>View and disable resource-hungry scheduled tasks.</p></div></div><div style="padding:20px;color:var(--text3);">Open Task Scheduler for full control.</div></section>
-
+<section class="section" id="section-perf-bgapps"><div class="section-hero"><div class="section-hero-icon"><svg fill="none" stroke="#a78bfa" stroke-width="2" viewbox="0 0 24 24"><rect height="14" rx="2" width="20" x="2" y="3"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg></div><div><h2>Background Apps</h2><p>Control background app permissions.</p></div></div><div style="padding:20px;color:var(--text3);">Background Apps section — managed via Windows Settings → Privacy → Background Apps.</div></section>
+<section class="section" id="section-perf-tasks"><div class="section-hero"><div class="section-hero-icon"><svg fill="none" stroke="#fbbf24" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg></div><div><h2>Scheduled Tasks</h2><p>View and disable resource-hungry scheduled tasks.</p></div></div><div style="padding:20px;color:var(--text3);">Open Task Scheduler for full control.</div></section>

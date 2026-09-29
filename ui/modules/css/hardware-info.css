@@ -1,0 +1,238 @@
+/* ================================================================
+   HARDWARE INFO — Premium Section Styles
+================================================================ */
+
+/* Page Header */
+.hw-page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.hw-page-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    border: 1px solid;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.hw-page-icon svg { width: 22px; height: 22px; }
+.hw-page-title { font-size: 22px; font-weight: 800; color: #fff; margin: 0 0 4px 0; }
+.hw-page-sub { font-size: 13px; color: #9ca3af; margin: 0; }
+.hw-refresh-btn {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600;
+    background: #1f2023; color: #9ca3af;
+    border: 1px solid #2a2b2f; cursor: pointer;
+    transition: all 0.2s;
+}
+.hw-refresh-btn:hover { color: #fff; border-color: #4b5563; }
+.hw-refresh-btn svg { width: 13px; height: 13px; }
+
+/* Hero Card */
+.hw-hero-card {
+    background: linear-gradient(145deg, #161719, #111214);
+    border: 1px solid #232427;
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+.hw-hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+.hw-hero-icon {
+    font-size: 28px;
+    background: #1a1b1e;
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; flex-shrink: 0;
+}
+.hw-hero-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.hw-hero-meta { font-size: 12px; color: #9ca3af; }
+.hw-live-pill {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: #10b981;
+    padding: 4px 10px; border-radius: 20px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+.hw-live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #10b981;
+    animation: hwPulse 1.5s ease-in-out infinite;
+}
+@keyframes hwPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+/* Section Label */
+.hw-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #6b7280;
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1f2023;
+}
+
+/* Stats Grid */
+.hw-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.hw-stat {
+    background: #131314;
+    border: 1px solid #1f2023;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.hw-stat-l { font-size: 10px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+.hw-stat-v { font-size: 13px; font-weight: 600; color: #e5e7eb; }
+.hw-good { color: #10b981 !important; }
+.hw-warn { color: #f59e0b !important; }
+
+/* Live Cards */
+.hw-live-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.hw-live-card {
+    border-radius: 12px;
+    border: 1px solid;
+    padding: 16px;
+}
+.hw-live-blue   { background: rgba(59,130,246,0.06);   border-color: rgba(59,130,246,0.15); }
+.hw-live-red    { background: rgba(239,68,68,0.06);    border-color: rgba(239,68,68,0.15); }
+.hw-live-green  { background: rgba(16,185,129,0.06);   border-color: rgba(16,185,129,0.15); }
+.hw-live-purple { background: rgba(139,92,246,0.06);   border-color: rgba(139,92,246,0.15); }
+.hw-live-orange { background: rgba(245,158,11,0.06);   border-color: rgba(245,158,11,0.15); }
+.hw-live-val { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.hw-live-label { font-size: 11px; color: #9ca3af; font-weight: 600; margin-bottom: 8px; }
+
+/* Bar */
+.hw-bar { height: 4px; background: #1f2023; border-radius: 2px; overflow: hidden; }
+.hw-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+/* Per-Core Table */
+.hw-core-table { background: #131314; border: 1px solid #1f2023; border-radius: 12px; overflow: hidden; }
+.hw-core-header, .hw-core-row { display: grid; grid-template-columns: 60px 100px 80px 1fr; gap: 0; padding: 9px 16px; align-items: center; font-size: 12px; border-bottom: 1px solid #1a1b1e; }
+.hw-core-header { background: #0e0f10; color: #6b7280; font-weight: 700; text-transform: uppercase; font-size: 10px; }
+.hw-core-row { color: #e5e7eb; }
+.hw-core-row:last-child { border-bottom: none; }
+.hw-core-row:hover { background: #161719; }
+.hw-core-bar { height: 6px; background: #1f2023; border-radius: 3px; overflow: hidden; }
+.hw-core-bar div { height: 100%; background: linear-gradient(90deg,#8b5cf6,#a78bfa); border-radius: 3px; }
+
+/* ISA Badges */
+.hw-isa-flex { display: flex; flex-wrap: wrap; gap: 8px; }
+.hw-isa { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.hw-isa-green { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
+.hw-isa-red   { background: rgba(239,68,68,0.1);  color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+
+/* GPU Blocks */
+.hw-gpu-block { background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 20px; }
+.hw-gpu-primary { border-color: rgba(139,92,246,0.25); }
+.hw-gpu-badge-row { display: flex; }
+
+/* Badges */
+.hw-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.hw-badge-green  { background: rgba(16,185,129,0.1);  color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
+.hw-badge-yellow { background: rgba(245,158,11,0.1);  color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+.hw-badge-red    { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+.hw-badge-blue   { background: rgba(59,130,246,0.1);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+
+/* XMP Warning */
+.hw-xmp-warn {
+    padding: 12px 16px; margin-bottom: 16px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    font-size: 13px; color: #f59e0b; line-height: 1.5;
+}
+
+/* RAM Sticks */
+.hw-stick-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 0; }
+.hw-stick-card { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 16px 20px; }
+.hw-stick-slot-badge { display: inline-block; background: #8b5cf6; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 8px; }
+.hw-stick-model { font-size: 13px; font-weight: 600; color: #e5e7eb; font-family: 'Consolas', monospace; }
+
+/* Drive Cards */
+.hw-drive-card { background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 20px; }
+.hw-drive-top { display: flex; align-items: flex-start; gap: 14px; }
+.hw-drive-icon { font-size: 28px; flex-shrink: 0; }
+.hw-drive-name { font-size: 15px; font-weight: 700; color: #e5e7eb; margin-bottom: 3px; }
+.hw-drive-sub { font-size: 12px; color: #9ca3af; }
+
+/* Wear Bar */
+.hw-wear-bar-wrap { margin: 16px 0 8px; }
+.hw-wear-label { font-size: 11px; color: #9ca3af; margin-bottom: 6px; }
+.hw-wear-bar { height: 6px; background: #1f2023; border-radius: 3px; overflow: hidden; }
+.hw-wear-bar div { height: 100%; border-radius: 3px; }
+
+/* Partition List */
+.hw-partition-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f2023; }
+.hw-partition-row { display: flex; gap: 12px; align-items: center; font-size: 12px; padding: 6px 0; }
+.hw-part-drive { font-weight: 700; color: #8b5cf6; width: 30px; flex-shrink: 0; }
+.hw-part-label { color: #e5e7eb; flex: 1; }
+.hw-part-fs { background: #1f2023; color: #9ca3af; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+.hw-part-free { font-weight: 600; }
+
+/* BIOS Alert */
+.hw-bios-update-alert {
+    margin: 16px 0;
+    padding: 12px 16px;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px;
+    font-size: 13px; color: #60a5fa; line-height: 1.5;
+}
+.hw-link { color: #8b5cf6; text-decoration: none; font-weight: 600; }
+.hw-link:hover { text-decoration: underline; }
+
+/* Driver Table */
+.hw-driver-legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.hw-driver-group { margin-bottom: 20px; }
+.hw-driver-group-title { font-size: 13px; font-weight: 700; color: #e5e7eb; margin-bottom: 8px; }
+.hw-driver-table { border: 1px solid #1f2023; border-radius: 10px; overflow: hidden; }
+.hw-driver-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 1fr; padding: 9px 16px; font-size: 12px; border-bottom: 1px solid #1a1b1e; align-items: center; color: #e5e7eb; gap: 4px; }
+.hw-driver-row:last-child { border-bottom: none; }
+.hw-driver-head { background: #0e0f10; color: #6b7280; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.hw-driver-row:not(.hw-driver-head) { background: #131314; }
+.hw-driver-row:not(.hw-driver-head):hover { background: #1a1b1e; }
+.hw-rollback-note { margin-top: 16px; padding: 12px 16px; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15); border-radius: 10px; font-size: 13px; color: #6ee7b7; line-height: 1.5; }
+
+/* Network */
+.hw-net-adapter-card { background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 20px; }
+.hw-signal-bars { display: flex; align-items: flex-end; gap: 3px; height: 22px; }
+.hw-sig { width: 5px; border-radius: 2px; background: #2a2b2f; }
+.hw-sig:nth-child(1){height:6px} .hw-sig:nth-child(2){height:10px}
+.hw-sig:nth-child(3){height:14px} .hw-sig:nth-child(4){height:18px} .hw-sig:nth-child(5){height:22px}
+.hw-sig-on { background: #10b981; }
+
+/* Audio */
+.hw-audio-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.hw-audio-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #131314; border: 1px solid #1f2023; border-radius: 10px; }
+.hw-audio-active { border-color: rgba(139,92,246,0.3); }
+.hw-audio-icon { font-size: 24px; }
+
+/* VU Meter */
+.hw-vumeter-wrap { display: flex; flex-direction: column; gap: 8px; }
+.hw-vumeter-label { font-size: 11px; color: #9ca3af; font-weight: 600; }
+.hw-vumeter { height: 8px; background: #1f2023; border-radius: 4px; overflow: hidden; }
+.hw-vumeter-bar { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+.hw-vumeter-out { background: linear-gradient(90deg,#8b5cf6,#a78bfa); }
+.hw-vumeter-in  { background: linear-gradient(90deg,#10b981,#34d399); }
+
+/* Battery Widget */
+.hw-battery-widget { display: flex; gap: 32px; align-items: center; background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 24px; }
+.hw-batt-gauge { position: relative; flex-shrink: 0; }
+.hw-batt-ring-svg { width: 120px; height: 120px; }
+.hw-batt-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.hw-batt-pct { font-size: 28px; font-weight: 900; color: #10b981; line-height: 1; }
+.hw-batt-lbl { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+.hw-batt-details { flex: 1; }
+.hw-health-bar-wrap { }
+.hw-health-bar-label { font-size: 12px; color: #9ca3af; margin-bottom: 8px; }
+.hw-health-bar { height: 8px; background: #1f2023; border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+.hw-health-bar div { height: 100%; border-radius: 4px; }
+.hw-health-bar-text { font-size: 12px; color: #9ca3af; }

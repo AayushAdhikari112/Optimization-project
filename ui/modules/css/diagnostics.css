@@ -1,23 +1,220 @@
 /* ================================================================
-   DIAGNOSTICS — Health Analysis
+   SYSTEM INFORMATION — Full Spec Sheet
 ================================================================ */
-.health-analysis-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    display: flex; flex-direction: column; gap: 16px;
+
+/* Header */
+.sysinfo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 20px;
 }
-.ha-score-row {
-    display: flex; align-items: center; gap: 20px;
-    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+.sysinfo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 6px 0;
 }
-.ha-score-big {
-    font-size: 56px; font-weight: 900;
-    background: linear-gradient(135deg,hsl(162,78%,42%),hsl(162,78%,68%));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    line-height: 1;
+.sysinfo-title svg { width: 22px; height: 22px; color: #8b5cf6; }
+.sysinfo-sub { color: #9ca3af; font-size: 13px; margin: 0; }
+.sysinfo-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+.si-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; transition: all 0.2s;
 }
+.si-btn svg { width: 14px; height: 14px; }
+.si-btn-ghost { background: #1f2023; color: #9ca3af; border: 1px solid #2a2b2f; }
+.si-btn-ghost:hover { color: #fff; border-color: #4b5563; }
+.si-btn-primary { background: linear-gradient(90deg,#8b5cf6,#6d28d9); color: #fff; box-shadow: 0 4px 12px rgba(139,92,246,0.25); }
+.si-btn-primary:hover { box-shadow: 0 6px 16px rgba(139,92,246,0.4); transform: translateY(-1px); }
+
+/* Tabs */
+.si-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    margin-bottom: 24px;
+    background: #0e0f10;
+    border: 1px solid #232427;
+    border-radius: 12px;
+    padding: 6px;
+}
+.si-tab {
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600;
+    color: #9ca3af; background: transparent;
+    border: none; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
+}
+.si-tab:hover { color: #fff; background: #1f2023; }
+.si-tab.active { background: #8b5cf6; color: #fff; box-shadow: 0 2px 8px rgba(139,92,246,0.4); }
+
+/* Panels */
+.si-panel { display: none; }
+.si-panel.active { display: block; }
+
+/* Section Titles */
+.si-section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #6b7280;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid #1f2023;
+}
+
+/* Grid Layouts */
+.si-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.si-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+/* Info Cards */
+.si-card {
+    background: #131314;
+    border: 1px solid #1f2023;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+.si-card-highlight { border-color: rgba(139,92,246,0.25); }
+.si-card-label { font-size: 11px; color: #6b7280; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.si-card-value { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+
+/* Live Cards */
+.si-live { border-color: rgba(59,130,246,0.15); }
+.si-live-val { color: #fff; font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.si-mini-bar { height: 4px; background: #1f2023; border-radius: 2px; overflow: hidden; }
+.si-mini-fill { height: 100%; border-radius: 2px; }
+
+/* Badges */
+.si-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.si-badge-green { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
+.si-badge-yellow { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+.si-badge-red { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+.si-badge-blue { background: rgba(59,130,246,0.1); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+
+.si-good { color: #10b981 !important; }
+
+/* Hero stat row */
+.si-hero-stat { display: flex; align-items: center; gap: 16px; }
+.si-hero-icon { font-size: 32px; background: #1a1b1e; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0; }
+.si-hero-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.si-hero-sub { font-size: 12px; color: #9ca3af; }
+
+/* ISA Badges */
+.si-isa-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.si-isa-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+/* Runtimes */
+.si-runtime-list { display: flex; flex-direction: column; gap: 8px; }
+.si-runtime-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #131314; border: 1px solid #1f2023; border-radius: 8px; font-size: 13px; }
+.rt-name { color: #e5e7eb; font-weight: 500; }
+.rt-ver { color: #8b5cf6; font-weight: 600; font-family: 'Consolas', monospace; font-size: 12px; }
+
+/* GPU Cards */
+.si-gpu-cards { display: flex; flex-direction: column; gap: 16px; }
+.si-gpu-card { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 20px; }
+.si-gpu-primary { border-color: rgba(139,92,246,0.3); }
+.si-gpu-header { margin-bottom: 4px; }
+.si-gpu-badge { display: inline-flex; margin-bottom: 10px; }
+
+/* RAM Sticks */
+.si-stick-list { display: flex; flex-direction: column; gap: 16px; }
+.si-stick { display: flex; gap: 16px; background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 20px; }
+.si-stick-slot { background: #8b5cf6; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; height: fit-content; white-space: nowrap; }
+.si-stick-info { flex: 1; }
+.si-stick-model { font-size: 14px; font-weight: 600; color: #e5e7eb; margin-bottom: 4px; font-family: 'Consolas', monospace; }
+
+.si-xmp-alert {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    font-size: 13px; color: #f59e0b; line-height: 1.5;
+}
+
+/* Drive Cards */
+.si-drive-list { display: flex; flex-direction: column; gap: 16px; }
+.si-drive-card { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 20px; }
+.si-drive-header { display: flex; align-items: flex-start; gap: 14px; }
+.si-drive-icon { font-size: 28px; }
+.si-drive-name { font-size: 15px; font-weight: 700; color: #e5e7eb; margin-bottom: 3px; }
+.si-drive-sub { font-size: 12px; color: #9ca3af; }
+.si-smart-badge { margin-left: auto; }
+.si-partition-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f2023; display: flex; flex-direction: column; gap: 6px; }
+.si-partition { display: flex; gap: 16px; font-size: 12px; align-items: center; }
+.si-part-label { color: #e5e7eb; font-weight: 600; flex: 1; }
+.si-part-fs { color: #9ca3af; background: #1f2023; padding: 2px 8px; border-radius: 4px; }
+.si-part-free { color: #10b981; font-weight: 600; }
+
+/* BIOS alert */
+.si-bios-alert {
+    margin-top: 16px; padding: 12px 16px;
+    background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px; font-size: 13px; color: #60a5fa; line-height: 1.5;
+}
+.si-link { color: #8b5cf6; text-decoration: none; font-weight: 600; }
+.si-link:hover { text-decoration: underline; }
+
+/* Drivers */
+.si-driver-legend { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.si-driver-group { margin-bottom: 24px; }
+.si-driver-group-title { font-size: 13px; font-weight: 700; color: #e5e7eb; margin-bottom: 10px; }
+.si-driver-table { border: 1px solid #1f2023; border-radius: 10px; overflow: hidden; }
+.si-driver-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 1fr; gap: 0; padding: 10px 16px; font-size: 12px; border-bottom: 1px solid #1f2023; align-items: center; }
+.si-driver-row:last-child { border-bottom: none; }
+.si-driver-header { background: #0e0f10; color: #6b7280; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.si-driver-row:not(.si-driver-header) { background: #131314; color: #e5e7eb; }
+.si-driver-row:not(.si-driver-header):hover { background: #1a1b1e; }
+
+.si-rollback-note {
+    margin-top: 20px; padding: 12px 16px;
+    background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15);
+    border-radius: 10px; font-size: 13px; color: #6ee7b7; line-height: 1.5;
+}
+
+/* Network */
+.si-net-card { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.si-net-header { display: flex; align-items: flex-start; gap: 14px; }
+.si-net-icon { font-size: 28px; }
+.si-signal-bars { display: flex; align-items: flex-end; gap: 3px; height: 22px; margin-left: auto; }
+.si-bar { width: 5px; border-radius: 2px; background: #2a2b2f; }
+.si-bar:nth-child(1) { height: 6px; } .si-bar:nth-child(2) { height: 10px; }
+.si-bar:nth-child(3) { height: 14px; } .si-bar:nth-child(4) { height: 18px; }
+.si-bar:nth-child(5) { height: 22px; }
+.si-bar.active { background: #10b981; }
+
+/* Display */
+.si-monitor-list { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 20px; }
+.si-monitor-card { display: flex; align-items: center; gap: 14px; }
+.si-monitor-icon { font-size: 32px; }
+
+/* Audio */
+.si-audio-list { display: flex; flex-direction: column; gap: 10px; }
+.si-audio-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #131314; border: 1px solid #1f2023; border-radius: 10px; }
+.si-audio-default { border-color: rgba(139,92,246,0.3); }
+.si-audio-icon { font-size: 24px; }
+
+/* Battery */
+.si-battery-widget { display: flex; gap: 32px; align-items: center; padding: 24px; background: #131314; border: 1px solid #1f2023; border-radius: 12px; }
+.si-battery-gauge { text-align: center; flex-shrink: 0; }
+.si-batt-percent { font-size: 48px; font-weight: 900; color: #10b981; line-height: 1; }
+.si-batt-label { font-size: 11px; color: #9ca3af; margin-top: 4px; text-transform: uppercase; }
+.si-battery-health-bar-wrap { flex: 1; }
+.si-battery-health-label { font-size: 12px; color: #9ca3af; margin-bottom: 10px; }
+.si-battery-health-bar { height: 8px; background: #1f2023; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+.si-battery-health-fill { height: 100%; background: linear-gradient(90deg,#10b981,#34d399); border-radius: 4px; box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+.si-battery-health-text { font-size: 13px; color: #9ca3af; }
+
+
+/* ================================================================
+   Legacy styles (kept for backward compat)
+================================================================ */
+.health-analysis-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.ha-score-row { display: flex; align-items: center; gap: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.ha-score-big { font-size: 56px; font-weight: 900; background: linear-gradient(135deg,hsl(162,78%,42%),hsl(162,78%,68%)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
 .ha-score-label { font-size: 16px; font-weight: 600; color: var(--text2); }
 .ha-score-label small { display: block; font-size: 12px; font-weight: 400; color: var(--text3); margin-top: 4px; }
 .ha-issue { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: hsla(38,96%,54%,0.08); border-radius: 6px; font-size: 13px; color: hsl(38,96%,65%); }
@@ -26,74 +223,3 @@
 .ha-good-item::before { content: '✓'; }
 .ha-loading { color: var(--text3); font-size: 13px; }
 .ha-issues, .ha-good { display: flex; flex-direction: column; gap: 6px; }
-
-
-/* ================================================================
-   DISK HEALTH
-================================================================ */
-.drive-opt-actions { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 12px; }
-.drive-opt-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 18px;
-    background: linear-gradient(135deg,hsl(235,65%,42%),hsl(235,65%,52%));
-    border: none; border-radius: 6px;
-    color: #fff; font-size: 12.5px; font-weight: 600;
-    cursor: pointer; transition: all var(--transition);
-}
-.drive-opt-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-
-/* ================================================================
-   INTEGRITY
-================================================================ */
-.integrity-cards { display: flex; flex-direction: column; gap: 14px; }
-.integrity-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 22px;
-    display: flex; flex-direction: column; gap: 12px;
-}
-.ic-header { display: flex; align-items: center; gap: 14px; }
-.ic-icon { font-size: 28px; }
-.ic-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-.ic-sub   { font-size: 12px; color: var(--text2); }
-.ic-warning {
-    padding: 8px 14px;
-    background: hsla(38,96%,54%,0.08); border: 1px solid hsla(38,96%,54%,0.2);
-    border-radius: 6px; font-size: 12.5px; color: hsl(38,96%,65%);
-}
-.ic-output {
-    background: #000;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 6px; padding: 12px;
-    font-family: 'Consolas', monospace; font-size: 11px;
-    color: hsl(162,78%,55%);
-    max-height: 200px; overflow-y: auto;
-    white-space: pre-wrap; word-break: break-all;
-}
-
-
-/* ================================================================
-   BATTERY
-================================================================ */
-.battery-info { display: flex; flex-direction: column; gap: 12px; }
-.battery-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-}
-.bat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-.bat-icon { font-size: 32px; }
-.bat-label { font-size: 15px; font-weight: 600; }
-.bat-sub   { font-size: 12px; color: var(--text2); }
-.bat-grid  { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.bat-stat  { }
-.bat-stat-label { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
-.bat-stat-val   { font-size: 15px; font-weight: 600; }
-.bat-bar-wrap { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; margin-top: 12px; overflow: hidden; }
-.bat-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg,hsl(162,78%,30%),hsl(162,78%,55%)); transition: width 0.5s ease; }
-.bat-no-battery { padding: 32px; text-align: center; color: var(--text3); font-size: 13px; }
-
-

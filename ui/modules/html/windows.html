@@ -85,3 +85,270 @@
         </div>
     </div>
 </section>
+
+<!-- ============================================================
+     SECTION: WINDOWS UI
+============================================================ -->
+<section class="section" id="section-win-ui">
+    <div class="section-hero">
+        <div class="section-hero-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </div>
+        <div>
+            <h2>Windows UI & Settings</h2>
+            <p>Comprehensive customization for visual effects, background activity, and system maintenance.</p>
+        </div>
+    </div>
+
+    <!-- Tab Nav (reusing SI tabs style) -->
+    <div class="si-tabs" id="winUiTabs" style="margin-top: 20px;">
+        <button class="si-tab active" data-tab="visual">✨ Visual Effects</button>
+        <button class="si-tab" data-tab="notif">🔔 Notifications</button>
+        <button class="si-tab" data-tab="startup">🚀 Startup</button>
+        <button class="si-tab" data-tab="power">⚡ Power Settings</button>
+        <button class="si-tab" data-tab="storage">💾 Storage</button>
+        <button class="si-tab" data-tab="privacy">🕵️ Privacy & Services</button>
+        <button class="si-tab" data-tab="memory">🧠 Memory</button>
+
+    </div>
+
+    <!-- TAB: Visual Effects -->
+    <div class="si-panel active" id="winui-tab-visual" style="margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Visuals</div>
+                <div class="pc-title">Turn Off Animations</div>
+                <div class="pc-desc">Disables window minimize/maximize, fading menus, and taskbar animations for a snappier feel.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap">
+                        <span class="pc-toggle-label">Activate</span>
+                        <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Control Panel\\Desktop\" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f', '')"><span class="pc-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Visuals</div>
+                <div class="pc-title">Disable Transparency</div>
+                <div class="pc-desc">Turns off transparency effects and window shadows to free up GPU resources.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap">
+                        <span class="pc-toggle-label">Activate</span>
+                        <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Visuals</div>
+                <div class="pc-title">Adjust for Best Performance</div>
+                <div class="pc-desc">Sets Windows visual effects strictly to "Adjust for best performance".</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap">
+                        <span class="pc-toggle-label">Activate</span>
+                        <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f', '')"><span class="pc-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Notifications -->
+    <div class="si-panel" id="winui-tab-notif" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Background</div>
+                <div class="pc-title">Disable App Notifications</div>
+                <div class="pc-desc">Turns off all app notifications, tips, and suggestions that run in the background.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications\" /v ToastEnabled /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Background</div>
+                <div class="pc-title">Turn Off Background Apps</div>
+                <div class="pc-desc">Prevents UWP/Store apps from running in the background when not in use.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">UI</div>
+                <div class="pc-title">Disable Widgets & News</div>
+                <div class="pc-desc">Disables the Taskbar Widgets, News Feeds, and Focus Assist clutter.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh\" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Startup -->
+    <div class="si-panel" id="winui-tab-startup" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Startup</div>
+                <div class="pc-title">Startup Manager</div>
+                <div class="pc-desc">Open the built-in Windows Task Manager to manually disable unnecessary startup programs.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'taskmgr /3')">Open</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">System</div>
+                <div class="pc-title">Disable Fast Startup</div>
+                <div class="pc-desc">Turns off Windows Fast Startup. This can fix driver issues, random wakes, and memory leaks.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power\" /v HiberbootEnabled /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Power Settings -->
+    <div class="si-panel" id="winui-tab-power" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Power</div>
+                <div class="pc-title">High Performance Plan</div>
+                <div class="pc-desc">Switches the active Windows power plan to High Performance mode.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c', 'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Power</div>
+                <div class="pc-title">Never Sleep</div>
+                <div class="pc-desc">Adjusts sleep and display timeouts to never turn off automatically when plugged in.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg -change -standby-timeout-ac 0 && powercfg -change -monitor-timeout-ac 0', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Storage and Cleanup -->
+    <div class="si-panel" id="winui-tab-storage" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Disk</div>
+                <div class="pc-title">Storage Sense</div>
+                <div class="pc-desc">Enable Storage Sense to automatically clean up temporary files and empty the recycle bin.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy\" /v 01 /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Disk</div>
+                <div class="pc-title">Clear Temp & Recycle Bin</div>
+                <div class="pc-desc">Force delete all files in the Temp folder and empty the Recycle Bin instantly.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'powershell.exe -Command \"Clear-RecycleBin -Force; Remove-Item $env:TEMP\\* -Recurse -Force -ErrorAction SilentlyContinue\"')">Run</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Disk</div>
+                <div class="pc-title">SSD TRIM / Defrag</div>
+                <div class="pc-desc">Run SSD TRIM (Retrim) and defragment HDDs automatically.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'defrag C: /O')">Run TRIM</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Privacy -->
+    <div class="si-panel" id="winui-tab-privacy" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Privacy</div>
+                <div class="pc-title">Disable Location & Ad ID</div>
+                <div class="pc-desc">Turns off location tracking and the personalized advertising ID for apps.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location\" /v Value /t REG_SZ /d Deny /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Services</div>
+                <div class="pc-title">Disable Print Spooler</div>
+                <div class="pc-desc">If you don't use a printer, disable the Print Spooler service to save memory.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'sc config Spooler start= disabled', 'sc config Spooler start= auto')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: Memory -->
+    <div class="si-panel" id="winui-tab-memory" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Memory</div>
+                <div class="pc-title">Page File Optimization</div>
+                <div class="pc-desc">Set Virtual Memory (Page File) to system managed on the fastest drive.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'wmic computersystem where name=\"%computername%\" set AutomaticManagedPagefile=True', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">System</div>
+                <div class="pc-title">Enable Game Mode</div>
+                <div class="pc-desc">Force enable Windows Game Mode globally.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Graphics</div>
+                <div class="pc-title">HAGS (GPU Scheduling)</div>
+                <div class="pc-desc">Turn on Hardware-Accelerated GPU Scheduling to reduce latency.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<script>
+    // Tab Switching Logic for Windows UI
+    const winUiTabs = document.querySelectorAll('#winUiTabs .si-tab');
+    winUiTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active from tabs
+            winUiTabs.forEach(t => t.classList.remove('active'));
+            // Add active to clicked tab
+            tab.classList.add('active');
+            
+            // Hide all panels
+            const targetId = 'winui-tab-' + tab.dataset.tab;
+            document.querySelectorAll('#section-win-ui .si-panel').forEach(p => {
+                if (p.id === targetId) {
+                    p.style.display = 'block';
+                    p.classList.add('active');
+                } else {
+                    p.style.display = 'none';
+                    p.classList.remove('active');
+                }
+            });
+        });
+    });
+</script>

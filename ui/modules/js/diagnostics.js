@@ -33,4 +33,32 @@ async function loadBattery() {
     `
 }
 
+// ─── Tab Navigation ────────────────────────────────────────────
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.si-tab');
+    if (!btn) return;
+    
+    const tabsContainer = btn.closest('.si-tabs');
+    if (!tabsContainer) return;
+    
+    const section = btn.closest('.section');
+    if (!section) return;
 
+    tabsContainer.querySelectorAll('.si-tab').forEach(t => t.classList.remove('active'));
+
+    section.querySelectorAll('.si-panel').forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none'; // Ensure display none is respected if inline
+    });
+    
+    btn.classList.add('active');
+    
+    const targetId = btn.getAttribute('data-tab');
+    // Try both prefixes for panels (si-tab- and winui-tab-)
+    let targetPanel = document.getElementById('si-tab-' + targetId) || document.getElementById('winui-tab-' + targetId);
+    
+    if (targetPanel) {
+        targetPanel.classList.add('active');
+        targetPanel.style.display = 'block';
+    }
+});

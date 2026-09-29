@@ -16,7 +16,7 @@ try {
 
 async function invoke(channel, ...args) {
     if (ipc) return ipc.invoke(channel, ...args)
-    require('fs').appendFileSync('c:/Users/User/Desktop/opt_project/ui/debug.log', 'IPC IS NULL for channel ' + channel + '\n');
+    console.warn('[OptiCore IPC] IPC IS NULL for channel:', channel);
     return null
 }
 
@@ -39,6 +39,29 @@ window.runOpt = function(btn, cmd) {
         btn.textContent = orig;
         btn.disabled = false;
     }
+}
+
+// ─── Toggle Switch Helper ─────────────────────────────────────────
+window.runOptToggle = function(checkbox, enableCmd, disableCmd) {
+    const label = checkbox.closest('.pc-toggle-wrap').querySelector('.pc-toggle-label');
+    const cmd = checkbox.checked ? enableCmd : disableCmd;
+    if (checkbox.checked) {
+        label.textContent = 'Deactivate';
+        label.style.color = '#3b82f6';
+    } else {
+        label.textContent = 'Activate';
+        label.style.color = '#cbd5e1';
+    }
+    
+    if (!cmd) return; // e.g., if there's no reset command available
+    
+    // Simulate a button for runOpt
+    const dummyBtn = {
+        textContent: '',
+        style: {},
+        disabled: false
+    };
+    window.runOpt(dummyBtn, cmd);
 }
 
 
@@ -113,6 +136,16 @@ const sectionTitles = {
     restore:          'Restore Center',
     reports:          'Reports & Benchmarks',
     settings:         'Settings',
+    'hw-cpu':         'Hardware — CPU',
+    'hw-gpu':         'Hardware — GPU',
+    'hw-memory':      'Hardware — Memory',
+    'hw-storage':     'Hardware — Storage',
+    'hw-mobo':        'Hardware — Motherboard',
+    'hw-drivers':     'Hardware — Driver Inventory',
+    'hw-network':     'Hardware — Network',
+    'hw-display':     'Hardware — Display',
+    'hw-audio':       'Hardware — Audio',
+    'hw-battery':     'Hardware — Battery',
 }
 
 // Which sections need data loaded when first shown
@@ -154,7 +187,17 @@ function getSectionLoaders() {
 
 const loadedSections = new Set()
 
-function navigateTo(sectionId) {
+// Promise that resolves once section HTML has been injected into the DOM
+let _sectionsReadyResolve;
+const sectionsReady = new Promise(res => { _sectionsReadyResolve = res; });
+document.addEventListener('sectionsLoaded', () => _sectionsReadyResolve());
+// If sections were already injected synchronously (Electron), resolve immediately
+if (document.getElementById('sections-container')?.children.length > 0) _sectionsReadyResolve();
+
+async function navigateTo(sectionId) {
+    // Wait for async section HTML to land in the DOM
+    await sectionsReady;
+
     // Remove active from all navs
     document.querySelectorAll('.nav-item, .nav-sub').forEach(el => el.classList.remove('active'))
 
