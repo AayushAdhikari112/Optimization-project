@@ -101,15 +101,16 @@
     </div>
 
     <!-- Tab Nav (reusing SI tabs style) -->
-    <div class="si-tabs" id="winUiTabs" style="margin-top: 20px;">
+    <div class="si-tabs" id="winUiTabs" style="margin-top: 20px; flex-wrap: wrap; row-gap: 8px;">
         <button class="si-tab active" data-tab="visual">✨ Visual Effects</button>
         <button class="si-tab" data-tab="notif">🔔 Notifications</button>
         <button class="si-tab" data-tab="startup">🚀 Startup</button>
-        <button class="si-tab" data-tab="power">⚡ Power Settings</button>
+        <button class="si-tab" data-tab="power">⚡ Power</button>
         <button class="si-tab" data-tab="storage">💾 Storage</button>
-        <button class="si-tab" data-tab="privacy">🕵️ Privacy & Services</button>
+        <button class="si-tab" data-tab="privacy">🕵️ Privacy & Security</button>
         <button class="si-tab" data-tab="memory">🧠 Memory</button>
-
+        <button class="si-tab" data-tab="display">🖥️ Display/Graphics</button>
+        <button class="si-tab" data-tab="gaming">🎮 Gaming</button>
     </div>
 
     <!-- TAB: Visual Effects -->
@@ -130,7 +131,7 @@
             <div class="premium-card">
                 <div class="pc-pill">Visuals</div>
                 <div class="pc-title">Disable Transparency</div>
-                <div class="pc-desc">Turns off transparency effects and window shadows to free up GPU resources.</div>
+                <div class="pc-desc">Turns off Personalization Transparency effects and window shadows to free up GPU resources.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap">
@@ -142,7 +143,7 @@
             <div class="premium-card">
                 <div class="pc-pill">Visuals</div>
                 <div class="pc-title">Adjust for Best Performance</div>
-                <div class="pc-desc">Sets Windows visual effects strictly to "Adjust for best performance".</div>
+                <div class="pc-desc">Sets Windows visual effects in Advanced System Settings strictly to "Adjust for best performance".</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap">
@@ -167,21 +168,30 @@
                 </div>
             </div>
             <div class="premium-card">
+                <div class="pc-pill">Notifications</div>
+                <div class="pc-title">Focus/Do Not Disturb</div>
+                <div class="pc-desc">Enable Focus Mode / Do Not Disturb automatically while gaming to block interruptions.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\QuietHours\" /v Enabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Startup</div>
+                <div class="pc-title">Startup App Notifications</div>
+                <div class="pc-desc">Turns off notifications about apps that run at startup to keep the action center clean.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\" /v EnableXamlStartMenu /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
                 <div class="pc-pill">Background</div>
                 <div class="pc-title">Turn Off Background Apps</div>
                 <div class="pc-desc">Prevents UWP/Store apps from running in the background when not in use.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications\" /v GlobalUserDisabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
-                </div>
-            </div>
-            <div class="premium-card">
-                <div class="pc-pill">UI</div>
-                <div class="pc-title">Disable Widgets & News</div>
-                <div class="pc-desc">Disables the Taskbar Widgets, News Feeds, and Focus Assist clutter.</div>
-                <div class="pc-footer">
-                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh\" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
                 </div>
             </div>
         </div>
@@ -192,11 +202,11 @@
         <div class="tweak-grid-premium">
             <div class="premium-card">
                 <div class="pc-pill">Startup</div>
-                <div class="pc-title">Startup Manager</div>
-                <div class="pc-desc">Open the built-in Windows Task Manager to manually disable unnecessary startup programs.</div>
+                <div class="pc-title">Disable Non-Essential Apps</div>
+                <div class="pc-desc">Open Apps > Startup in Task Manager to disable anything non-essential. Keep only what you strictly need.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'taskmgr /3')">Open</button></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'taskmgr /3')">Open Startup</button></div>
                 </div>
             </div>
             <div class="premium-card">
@@ -216,8 +226,8 @@
         <div class="tweak-grid-premium">
             <div class="premium-card">
                 <div class="pc-pill">Power</div>
-                <div class="pc-title">High Performance Plan</div>
-                <div class="pc-desc">Switches the active Windows power plan to High Performance mode.</div>
+                <div class="pc-title">Best Performance Mode</div>
+                <div class="pc-desc">Switches the active Windows power mode/plan to Best Performance for maximum frames.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg -setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c', 'powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e')"><span class="pc-slider"></span></label></div>
@@ -225,11 +235,20 @@
             </div>
             <div class="premium-card">
                 <div class="pc-pill">Power</div>
-                <div class="pc-title">Never Sleep</div>
-                <div class="pc-desc">Adjusts sleep and display timeouts to never turn off automatically when plugged in.</div>
+                <div class="pc-title">Never Sleep/Hibernate</div>
+                <div class="pc-desc">Adjusts screen, sleep, and hibernate timeouts to "Never" turn off automatically.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg -change -standby-timeout-ac 0 && powercfg -change -monitor-timeout-ac 0', '')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg -change -standby-timeout-ac 0 && powercfg -change -monitor-timeout-ac 0 && powercfg -change -hibernate-timeout-ac 0', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Power</div>
+                <div class="pc-title">Disable Energy Saver</div>
+                <div class="pc-desc">Turns off Windows Energy saver to prevent aggressive throttling on low battery.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\EnergyEstimation\\TaggedEnergy\" /v DisableEnergySaver /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
                 </div>
             </div>
         </div>
@@ -240,53 +259,119 @@
         <div class="tweak-grid-premium">
             <div class="premium-card">
                 <div class="pc-pill">Disk</div>
-                <div class="pc-title">Storage Sense</div>
-                <div class="pc-desc">Enable Storage Sense to automatically clean up temporary files and empty the recycle bin.</div>
+                <div class="pc-title">Storage Sense & Scheduling</div>
+                <div class="pc-desc">Turn ON for infrequent cleanup or OFF for manual cleanup. Configure schedules for Temp files, Recycle Bin, and Downloads.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy\" /v 01 /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:storagesense')">Open Settings</button></div>
                 </div>
             </div>
             <div class="premium-card">
                 <div class="pc-pill">Disk</div>
-                <div class="pc-title">Clear Temp & Recycle Bin</div>
-                <div class="pc-desc">Force delete all files in the Temp folder and empty the Recycle Bin instantly.</div>
+                <div class="pc-title">Temporary Files</div>
+                <div class="pc-desc">Clear periodically—but UNCHECK DirectX Shader Cache! Removing it forces games to rebuild shaders, causing stutter.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'powershell.exe -Command \"Clear-RecycleBin -Force; Remove-Item $env:TEMP\\* -Recurse -Force -ErrorAction SilentlyContinue\"')">Run</button></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:storagesense')">View Temp Files</button></div>
                 </div>
             </div>
             <div class="premium-card">
-                <div class="pc-pill">Disk</div>
-                <div class="pc-title">SSD TRIM / Defrag</div>
-                <div class="pc-desc">Run SSD TRIM (Retrim) and defragment HDDs automatically.</div>
+                <div class="pc-pill">Cleanup</div>
+                <div class="pc-title">Cleanup Recommendations</div>
+                <div class="pc-desc">Review large/unused files and unused apps. It's safe to review manually, but don't blindly accept everything.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'defrag C: /O')">Run TRIM</button></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:storagesense')">Review Files</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Optimization</div>
+                <div class="pc-title">Drive Optimization</div>
+                <div class="pc-desc">Windows runs TRIM on SSDs on schedule. NEVER manually force a full "defragment" pass on an SSD (only useful for old HDDs).</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'dfrgui.exe')">Optimize Drives</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Volumes</div>
+                <div class="pc-title">Disks & Volumes</div>
+                <div class="pc-desc">See space per drive. Ensure your SSD (C:) isn't nearly full, as a nearly-full SSD slows down noticeably.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:disksandvolumes')">Check Space</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">System</div>
+                <div class="pc-title">Save Locations</div>
+                <div class="pc-desc">Point new apps/games to your SSD (C:) rather than the HDD (D:) for faster load times and to reduce stutter.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:savelocations')">Save Locations</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Advanced</div>
+                <div class="pc-title">Disable Hibernation</div>
+                <div class="pc-desc">If you don't use Fast Startup, disable hibernation to delete hiberfil.sys and free several GBs of SSD space.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap">
+                        <span class="pc-toggle-label">Activate</span>
+                        <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'powercfg /hibernate off', 'powercfg /hibernate on')"><span class="pc-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Advanced</div>
+                <div class="pc-title">Recycle Bin Size</div>
+                <div class="pc-desc">Right-click Recycle Bin > Properties and reduce max size if it's eating significant SSD space unnecessarily.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'explorer.exe ::{645FF040-5081-101B-9F08-00AA002F954E}')">Open Bin</button></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TAB: Privacy -->
+    <!-- TAB: Privacy & Security -->
     <div class="si-panel" id="winui-tab-privacy" style="display:none; margin-top:20px;">
         <div class="tweak-grid-premium">
             <div class="premium-card">
-                <div class="pc-pill">Privacy</div>
-                <div class="pc-title">Disable Location & Ad ID</div>
-                <div class="pc-desc">Turns off location tracking and the personalized advertising ID for apps.</div>
+                <div class="pc-pill">Security</div>
+                <div class="pc-title">Memory Integrity (Core Isolation)</div>
+                <div class="pc-desc">Turns OFF Memory Integrity under Core Isolation. Highly recommended to disable for gaming performance.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location\" /v Value /t REG_SZ /d Deny /f', '')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity\" /v Enabled /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
                 </div>
             </div>
             <div class="premium-card">
-                <div class="pc-pill">Services</div>
-                <div class="pc-title">Disable Print Spooler</div>
-                <div class="pc-desc">If you don't use a printer, disable the Print Spooler service to save memory.</div>
+                <div class="pc-pill">Privacy</div>
+                <div class="pc-title">Disable Nearby Sharing</div>
+                <div class="pc-desc">Turns off Nearby sharing if unused to free up Bluetooth/Wi-Fi bandwidth.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'sc config Spooler start= disabled', 'sc config Spooler start= auto')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\CDP\" /v NearShareChannelUserAuthzPolicy /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Privacy</div>
+                <div class="pc-title">Diagnostics & Feedback</div>
+                <div class="pc-desc">Set diagnostic data collection to "Required only" to stop sending optional telemetry.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection\" /v AllowTelemetry /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Privacy</div>
+                <div class="pc-title">Background App Permissions</div>
+                <div class="pc-desc">Turn off unnecessary background app permissions from Settings > Apps > Installed apps.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:privacy-backgroundapps')">Open Settings</button></div>
                 </div>
             </div>
         </div>
@@ -297,35 +382,72 @@
         <div class="tweak-grid-premium">
             <div class="premium-card">
                 <div class="pc-pill">Memory</div>
-                <div class="pc-title">Page File Optimization</div>
-                <div class="pc-desc">Set Virtual Memory (Page File) to system managed on the fastest drive.</div>
+                <div class="pc-title">Close Background Apps</div>
+                <div class="pc-desc">Open Task Manager. Sort by memory usage and close any heavy background apps.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'wmic computersystem where name=\"%computername%\" set AutomaticManagedPagefile=True', '')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'taskmgr /2')">Task Manager</button></div>
                 </div>
             </div>
             <div class="premium-card">
-                <div class="pc-pill">System</div>
-                <div class="pc-title">Enable Game Mode</div>
-                <div class="pc-desc">Force enable Windows Game Mode globally.</div>
+                <div class="pc-pill">Memory</div>
+                <div class="pc-title">Manual Pagefile Size</div>
+                <div class="pc-desc">Disable "Automatically manage" for Virtual Memory. Set a manual/fixed pagefile size instead for stability.</div>
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
-                </div>
-            </div>
-            <div class="premium-card">
-                <div class="pc-pill">Graphics</div>
-                <div class="pc-title">HAGS (GPU Scheduling)</div>
-                <div class="pc-desc">Turn on Hardware-Accelerated GPU Scheduling to reduce latency.</div>
-                <div class="pc-footer">
-                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f', '')"><span class="pc-slider"></span></label></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'SystemPropertiesAdvanced.exe')">Open Advanced</button></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- TAB: Display/Graphics -->
+    <div class="si-panel" id="winui-tab-display" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">Graphics</div>
+                <div class="pc-title">HAGS (GPU Scheduling)</div>
+                <div class="pc-desc">Turn ON Hardware-Accelerated GPU Scheduling to reduce latency and improve performance.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers\" /v HwSchMode /t REG_DWORD /d 2 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Graphics</div>
+                <div class="pc-title">Set Game to Correct GPU</div>
+                <div class="pc-desc">Open Display > Graphics and manually assign your game to use the High Performance GPU.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><button class="run-btn" style="padding: 6px 16px; border-radius: 6px; font-size: 12px; height: 28px;" onclick="runOpt(this,'start ms-settings:display-advancedgraphics')">Graphics Settings</button></div>
+                </div>
+            </div>
+            <div class="premium-card">
+                <div class="pc-pill">Compatibility</div>
+                <div class="pc-title">Disable Fullscreen Optimizations</div>
+                <div class="pc-desc">Right-click your game .exe > Properties > Compatibility > check "Disable fullscreen optimizations".</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span style="font-size: 12px; color: #a1a1aa; padding-right: 10px;">Manual Step</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- TAB: Gaming -->
+    <div class="si-panel" id="winui-tab-gaming" style="display:none; margin-top:20px;">
+        <div class="tweak-grid-premium">
+            <div class="premium-card">
+                <div class="pc-pill">System</div>
+                <div class="pc-title">Enable Game Mode</div>
+                <div class="pc-desc">Force enable Windows Game Mode globally from the Settings > Gaming section.</div>
+                <div class="pc-footer">
+                    <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                    <div class="pc-toggle-wrap"><span class="pc-toggle-label">Activate</span><label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\GameBar\" /v AutoGameModeEnabled /t REG_DWORD /d 1 /f', '')"><span class="pc-slider"></span></label></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
