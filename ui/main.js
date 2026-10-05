@@ -111,7 +111,7 @@ function createWindow() {
         icon: path.join(__dirname, 'icon.png'),
     })
     win.on('page-title-updated', e => e.preventDefault())
-    win.loadFile('index.html')
+    win.loadFile('dashboard.html')
 }
 
 app.whenReady().then(() => {
@@ -130,6 +130,7 @@ app.on('window-all-closed', () => {
 // ─────────────────────────────────────────────
 ipcMain.handle('is-admin', () => isAdmin())
 ipcMain.handle('request-admin', () => relaunchAsAdmin())
+ipcMain.handle('minimize-window', event => BrowserWindow.fromWebContents(event.sender)?.minimize())
 
 // ─────────────────────────────────────────────
 // IPC: Extended real-time system stats

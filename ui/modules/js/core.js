@@ -102,14 +102,14 @@ const sectionTitles = {
     'mon-disk':       'System Monitor — Disk I/O',
     'mon-network':    'System Monitor — Network',
     'mon-thermal':    'System Monitor — Thermal',
-    'cl-windows':     'Debloat — Windows',
-    'cl-browser':     'Cleaner — Browser Cache',
+    'cl-windows':     'Disk & System Cleanup',
+    'cl-browser':     'Network & TCP/IP Reset',
     'cl-dev':         'Cleaner — Developer Cache',
     'cl-large':       'Cleaner — Large Files',
     'cl-dupes':       'Cleaner — Duplicate Finder',
     'cl-ssd':         'Cleaner — SSD',
     'perf-startup':   'Weak PC — Startup Manager',
-    'perf-services':  'Performance — Services',
+    'perf-services':  'Services Manager',
     'perf-tasks':     'Performance — Scheduled Tasks',
     'perf-bgapps':    'Performance — Background Apps',
     'perf-power':     'Extra — Power Plans',
@@ -155,7 +155,7 @@ function getSectionLoaders() {
     sectionLoaders = {
         'mon-overview':  loadMonitorOverview,
         'mon-cpu':       (typeof loadCpuSection !== 'undefined' ? loadCpuSection : () => {}),
-        'mon-ram':       () => {},
+        'mon-ram':       loadCpuSection,
         'mon-gpu':       (typeof loadGpuMonitor !== 'undefined' ? loadGpuMonitor : () => {}),
         'mon-disk':      (typeof loadDiskIO !== 'undefined' ? loadDiskIO : () => {}),
         'mon-network':   (typeof loadNetworkMonitor !== 'undefined' ? loadNetworkMonitor : () => {}),
@@ -186,6 +186,19 @@ function getSectionLoaders() {
 }
 
 const loadedSections = new Set()
+const appLayout = document.getElementById('appLayout')
+const mobileNavToggle = document.getElementById('mobileNavToggle')
+const navScrim = document.getElementById('navScrim')
+
+function setMobileNavOpen(open) {
+    appLayout?.classList.toggle('nav-open', open)
+    mobileNavToggle?.setAttribute('aria-expanded', String(open))
+    mobileNavToggle?.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation')
+    if (mobileNavToggle) mobileNavToggle.title = open ? 'Close navigation' : 'Open navigation'
+}
+
+mobileNavToggle?.addEventListener('click', () => setMobileNavOpen(!appLayout?.classList.contains('nav-open')))
+navScrim?.addEventListener('click', () => setMobileNavOpen(false))
 
 // Promise that resolves once section HTML has been injected into the DOM
 let _sectionsReadyResolve;
@@ -235,7 +248,10 @@ document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', function (e) {
         e.preventDefault()
         const s = this.dataset.section
-        if (s) navigateTo(s)
+        if (s) {
+            navigateTo(s)
+            setMobileNavOpen(false)
+        }
     })
 })
 
@@ -244,7 +260,10 @@ document.querySelectorAll('.nav-sub').forEach(sub => {
     sub.addEventListener('click', function (e) {
         e.preventDefault()
         const s = this.dataset.section
-        if (s) navigateTo(s)
+        if (s) {
+            navigateTo(s)
+            setMobileNavOpen(false)
+        }
     })
 })
 
@@ -255,6 +274,68 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
         const items = this.nextElementSibling
         if (items) items.classList.toggle('open')
     })
+})
+
+const pageSearch = document.getElementById('pageSearch')
+if (pageSearch) {
+    pageSearch.addEventListener('input', () => {
+        const query = pageSearch.value.trim().toLowerCase()
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.hidden = query !== '' && !item.textContent.toLowerCase().includes(query)
+        })
+    })
+    document.addEventListener('keydown', event => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+            event.preventDefault()
+            pageSearch.focus()
+            pageSearch.select()
+        }
+        if (event.key === 'Escape' && document.activeElement === pageSearch) {
+            pageSearch.value = ''
+            pageSearch.dispatchEvent(new Event('input'))
+            pageSearch.blur()
+        }
+    })
+}
+
+document.getElementById('sidebarHealthBtn')?.addEventListener('click', () => navigateTo('diag-health'))
+document.getElementById('openRestoreCenterBtn')?.addEventListener('click', () => navigateTo('restore'))
+document.getElementById('minimizeWindowBtn')?.addEventListener('click', () => invoke('minimize-window'))
+
+document.getElementById('createCheckpointBtn')?.addEventListener('click', async function () {
+    const button = this
+    const status = document.getElementById('checkpointStatus')
+    button.disabled = true
+    try {
+        const saved = await invoke('create-restore-snapshot', {
+            type: 'manual',
+            description: 'Dashboard checkpoint',
+            data: { createdAt: new Date().toISOString() },
+        })
+        if (!saved) throw new Error('Checkpoint could not be saved')
+        if (status) status.textContent = `Checkpoint saved locally at ${new Date().toLocaleTimeString()}.`
+        addLog('Local checkpoint saved', 'success')
+    } catch (error) {
+        if (status) status.textContent = error.message || 'Checkpoint could not be saved.'
+    } finally {
+        button.disabled = false
+    }
+})
+
+document.getElementById('refreshHealthBtn')?.addEventListener('click', async function () {
+    const button = this
+    const status = document.getElementById('healthCheckTime')
+    button.disabled = true
+    if (status) status.textContent = 'Updating simulated metrics...'
+    try {
+        await fetchStats()
+        await refreshHealthScore()
+        if (status) status.textContent = `Demo preview refreshed at ${new Date().toLocaleTimeString()}.`
+    } catch {
+        if (status) status.textContent = 'Demo preview could not be refreshed.'
+    } finally {
+        button.disabled = false
+    }
 })
 
 // Dashboard quick actions that navigate
@@ -270,19 +351,58 @@ document.getElementById('act-dns')?.addEventListener('click',  () => dashAction(
 // ─── Live Stats Polling ───────────────────────────────────────
 let latestStats = null
 let lastHealthRefresh = 0
+let mockCycle = 0
+
+function createMockStats() {
+    const cycle = mockCycle++
+    const ramPct = 43 + (cycle % 4)
+    return {
+        cpu: 22 + ((cycle * 3) % 13),
+        ramPct,
+        ramUsed: (32 * ramPct / 100).toFixed(1),
+        ramTotal: '32.0',
+        commitMem: '15.4',
+        standby: '4.2',
+        swapUsed: '0.0',
+        swapTotal: '8.0',
+        diskPct: 64,
+        diskTotal: '1024',
+        cpuTemp: 48 + (cycle % 4),
+        gpuTemp: 42 + (cycle % 3),
+        gpuName: 'GeForce RTX 4070',
+        gpuLoad: 11 + ((cycle * 2) % 9),
+        vramUsed: 2350,
+        vramTotal: 12288,
+        netRxSec: 96 + ((cycle * 31) % 110),
+        netTxSec: 18 + ((cycle * 11) % 42),
+        uptimeSec: 86400 * 3 + 3660 * 5 + cycle * 3,
+        procCount: 184 + (cycle % 6),
+        osInfo: { platform: 'Windows', distro: 'Windows 11 Pro', release: '24H2', arch: 'x64' },
+    }
+}
+
+function createMockProcessList() {
+    return {
+        total: 186,
+        running: 72,
+        list: [
+            { pid: 4820, name: 'OptiCore UI', cpu: 8.2, mem: 0.38, memPct: 1.2 },
+            { pid: 3164, name: 'Browser', cpu: 6.4, mem: 1.24, memPct: 3.9 },
+            { pid: 1088, name: 'Desktop Window Manager', cpu: 3.1, mem: 0.29, memPct: 0.9 },
+            { pid: 2260, name: 'File Explorer', cpu: 1.8, mem: 0.16, memPct: 0.5 },
+            { pid: 3940, name: 'System Monitor', cpu: 1.2, mem: 0.22, memPct: 0.7 },
+        ],
+    }
+}
 
 async function fetchStats() {
-    try {
-        const data = await invoke('get-system-stats')
-        if (!data) return
-        latestStats = data
-        renderStats(data)
-        // Refresh health score every 30s
-        if (Date.now() - lastHealthRefresh > 30000) {
-            lastHealthRefresh = Date.now()
-            refreshHealthScore()
-        }
-    } catch (e) { console.warn('Stats fetch error', e) }
+    const data = createMockStats()
+    latestStats = data
+    renderStats(data)
+    if (Date.now() - lastHealthRefresh > 30000) {
+        lastHealthRefresh = Date.now()
+        refreshHealthScore()
+    }
 }
 
 function renderStats(data) {
@@ -292,6 +412,32 @@ function renderStats(data) {
     const setW = (id, pct) => { const el = document.getElementById(id); if (el) el.style.width = Math.min(pct, 100) + '%' }
 
     // ── Dashboard stat cards ──
+    set('cpuOverviewValue', data.cpu + '%')
+    setW('cpuOverviewBar', data.cpu)
+    set('cpuTempBadge', data.cpuTemp ? data.cpuTemp + ' °C' : 'Unavailable')
+    set('ramOverviewUsed', data.ramUsed + ' GB')
+    set('ramOverviewTotal', data.ramTotal)
+    set('ramPctBadge', data.ramPct + '% used')
+    setW('ramOverviewBar', data.ramPct)
+    set('diskOverviewValue', data.diskPct + '%')
+    setW('diskOverviewBar', data.diskPct)
+    set('diskTotalBadge', data.diskTotal + ' GB total')
+    set('processSummary', data.procCount)
+    set('uptimeSummary', formatUptime(data.uptimeSec))
+    set('snapshotRx', data.netRxSec + ' KB/s')
+    set('snapshotTx', data.netTxSec + ' KB/s')
+    if (data.osInfo) {
+        set('osInfo', [data.osInfo.distro || data.osInfo.platform, data.osInfo.release].filter(Boolean).join(' '))
+    }
+
+    if (data.gpuLoad !== null && data.gpuLoad !== undefined) {
+        set('gpuOverviewValue', data.gpuLoad + '%')
+        setW('gpuOverviewBar', data.gpuLoad)
+    } else {
+        set('gpuOverviewValue', 'Unavailable')
+    }
+    set('gpuTempBadge', data.gpuTemp ? data.gpuTemp + ' °C' : 'Unavailable')
+
     set('cpu-val', data.cpu + '%')
     setW('cpu-bar', data.cpu)
     const cpuFoot = document.getElementById('cpu-footer')
@@ -299,10 +445,7 @@ function renderStats(data) {
 
     set('ram-val', data.ramPct + '%')
     setW('ram-bar', data.ramPct)
-    
-    if (document.getElementById('section-mon-ram')?.classList.contains('active')) {
-        updateRamLive(data)
-    }
+
     if (document.getElementById('section-mon-gpu')?.classList.contains('active')) {
         updateGpuMonitorLive(data)
     }
@@ -430,8 +573,12 @@ function formatUptime(sec) {
     return h + 'h ' + m + 'm'
 }
 
-// Initial + poll
-fetchStats()
+// Wait until the later monitor script has registered its gauge helpers.
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fetchStats, { once: true })
+} else {
+    fetchStats()
+}
 setInterval(fetchStats, 3000)
 
 
@@ -455,8 +602,7 @@ async function loadMonitorOverview() {
 }
 
 async function refreshProcessList() {
-    const data = await invoke('get-process-list')
-    if (!data) return
+    const data = createMockProcessList()
 
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val }
     set('si-procs', data.total || '--')
@@ -475,16 +621,14 @@ async function refreshProcessList() {
 }
 
 async function loadThreadHandleCount() {
-    const data = await invoke('get-thread-handle-count')
-    if (!data) return
+    const data = { threads: 2148, handles: 42860 }
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val }
     set('si-threads', data.threads.toLocaleString())
     set('si-handles', data.handles.toLocaleString())
 }
 
 async function loadCpuSection() {
-    const data = await invoke('get-process-list')
-    if (!data) return
+    const data = createMockProcessList()
     const tbody = document.getElementById('cpuProcBody')
     if (!tbody) return
     tbody.innerHTML = ''
@@ -526,9 +670,28 @@ if (scanBtn) {
 
 
 // ─── Health Score ─────────────────────────────────────────────
+function createMockHealthScore() {
+    const stats = latestStats || createMockStats()
+    let score = 100
+    const issues = []
+    const good = []
+
+    if (stats.cpu > 80) { score -= 15; issues.push(`High CPU usage: ${stats.cpu}%`) }
+    else if (stats.cpu > 50) { score -= 5; issues.push(`Moderate CPU usage: ${stats.cpu}%`) }
+    else good.push('CPU usage is healthy')
+    if (stats.ramPct > 85) { score -= 20; issues.push(`Critical RAM pressure: ${stats.ramPct}%`) }
+    else if (stats.ramPct > 70) { score -= 10; issues.push(`High RAM usage: ${stats.ramPct}%`) }
+    else good.push('RAM usage is within normal range')
+    if (stats.diskPct > 90) { score -= 20; issues.push('Disk almost full (>90%)') }
+    else if (stats.diskPct > 80) { score -= 10; issues.push('Disk getting full (>80%)') }
+    else good.push('Disk space is adequate')
+    if (stats.procCount > 300) { score -= 5; issues.push(`Many processes running: ${stats.procCount}`) }
+    else good.push(`Process count normal: ${stats.procCount}`)
+    return { score, issues, good, cpuPct: stats.cpu, ramPct: stats.ramPct, diskPct: stats.diskPct }
+}
+
 async function refreshHealthScore() {
-    const data = await invoke('get-health-score')
-    if (!data) return
+    const data = createMockHealthScore()
 
     // Dashboard widget
     const scoreEl  = document.getElementById('healthScore')
@@ -537,9 +700,9 @@ async function refreshHealthScore() {
 
     if (scoreEl) scoreEl.textContent = data.score
     if (circle) {
-        const circumference = 2 * Math.PI * 50 // r=50
+        const circumference = 2 * Math.PI * 45
         circle.style.strokeDashoffset = circumference - (data.score / 100) * circumference
-        const color = data.score >= 80 ? 'url(#healthGrad)' : data.score >= 60 ? 'var(--text)' : 'var(--text)'
+        const color = data.score >= 80 ? 'var(--green)' : data.score >= 60 ? 'var(--warn)' : 'var(--danger)'
         circle.setAttribute('stroke', color)
     }
 
@@ -578,15 +741,20 @@ function loadHealthAnalysis(data) {
 }
 
 // Load on section visit
-getSectionLoaders()['diag-health'] = async () => {
-    const data = await invoke('get-health-score')
-    if (data) loadHealthAnalysis(data)
-}
+getSectionLoaders()['diag-health'] = () => loadHealthAnalysis(createMockHealthScore())
 
 
 // ─── Smart Profile ────────────────────────────────────────────
 async function loadSmartProfile() {
-    const data = await invoke('get-smart-profile')
+    const data = {
+        cpu: 'Intel Core i7-13700K',
+        cores: 16,
+        ram: '32 GB DDR5',
+        storage: '1 TB NVMe SSD',
+        gpu: 'NVIDIA GeForce RTX 4070',
+        os: 'Windows 11 Pro 24H2',
+        profile: 'Demo workstation',
+    }
     const el   = document.getElementById('profileBody')
     if (!el) return
     if (!data) { el.innerHTML = '<div class="profile-loading">Could not detect hardware.</div>'; return }
