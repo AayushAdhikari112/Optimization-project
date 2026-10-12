@@ -168,11 +168,6 @@ body {
     align-items: center;
     gap: 4px;
 }
-.cozy-sidebar .badge.beta::before {
-    content: "🔥";
-    font-size: 10px;
-}
-
 /* Premium Box */
 .cozy-sidebar .premium-box {
     background: linear-gradient(160deg, #141517, #0b0c0d);

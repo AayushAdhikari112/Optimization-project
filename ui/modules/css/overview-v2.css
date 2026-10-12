@@ -44,8 +44,8 @@
 .safety-header .shield-icon {
     width: 22px;
     height: 22px;
-    color: #8b5cf6;
-    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.4));
+    color: var(--primary);
+    filter: drop-shadow(0 0 6px rgba(50, 107, 86, 0.35));
 }
 
 .safety-card h3 {
@@ -86,12 +86,12 @@
 }
 
 .btn-primary {
-    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    background: linear-gradient(90deg, var(--primary), var(--accent3));
+    color: var(--on-primary);
+    box-shadow: 0 4px 12px rgba(50, 107, 86, 0.25);
 }
 .btn-primary:hover {
-    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
+    box-shadow: 0 6px 16px rgba(50, 107, 86, 0.35);
     transform: translateY(-1px);
 }
 
@@ -261,9 +261,9 @@
     border: 1px solid rgba(239, 68, 68, 0.2);
 }
 .hw-badge.neutral {
-    background: rgba(139, 92, 246, 0.1);
-    color: #a78bfa;
-    border-color: rgba(139, 92, 246, 0.2);
+    background: rgba(50, 107, 86, 0.12);
+    color: var(--primary);
+    border-color: rgba(50, 107, 86, 0.2);
 }
 
 .hw-value {
@@ -295,7 +295,7 @@
 }
 .cpu-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
 .gpu-fill { background: linear-gradient(90deg, #ef4444, #f87171); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
-.ram-fill { background: linear-gradient(90deg, #8b5cf6, #a78bfa); box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); }
+.ram-fill { background: linear-gradient(90deg, var(--primary), var(--accent3)); box-shadow: 0 0 10px rgba(50, 107, 86, 0.5); }
 .disk-fill { background: linear-gradient(90deg, #10b981, #34d399); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
 
 /* Feedback & Verification */
@@ -374,7 +374,7 @@
 }
 .metric.before { color: #9ca3af; }
 .metric.before span { color: #6b7280; font-weight: 500; }
-.metric.after span { color: #8b5cf6; font-weight: 500; }
+.metric.after span { color: var(--primary); font-weight: 500; }
 .metric.arrow { color: #4b5563; }
 .bench-diff {
     position: absolute;
@@ -518,10 +518,10 @@
     fill: none; stroke: #232427; stroke-width: 8;
 }
 .gauge-progress {
-    fill: none; stroke: #8b5cf6; stroke-width: 8;
+    fill: none; stroke: var(--primary); stroke-width: 8;
     stroke-dasharray: 283; stroke-dashoffset: 60;
     stroke-linecap: round;
-    filter: drop-shadow(0 0 10px rgba(139,92,246,0.6));
+    filter: drop-shadow(0 0 10px rgba(50,107,86,0.45));
 }
 .gauge-content {
     position: absolute;

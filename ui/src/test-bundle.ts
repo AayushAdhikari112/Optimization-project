@@ -1,0 +1,8 @@
+export { stripAnsiAndNoise, parseProgressPercentage, parseWingetList } from './main/winget/parser'
+export { mapWingetExitCode } from './main/winget/exit-codes'
+export { validateCatalog, validateCatalogApp, validatePresetBundle, WINGET_ID_REGEX } from './shared/schema'
+export { CatalogLoader } from './main/catalog/catalog-loader'
+export { JobQueue } from './main/queue/job-queue'
+export { MockWinget } from './main/winget/mock-winget'
+export { ConfigManager } from './main/config/config'
+export { Router } from './renderer/router'

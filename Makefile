@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
-LDFLAGS = -lpsapi -lws2_32 -ladvapi32
+CFLAGS = -Wall -Wextra -D_WIN32_WINNT=0x0601 -Iinclude
+LDFLAGS = -lpsapi -lws2_32 -ladvapi32 -lpdh
 
 SRC_DIR = src
 OBJ_DIR = build

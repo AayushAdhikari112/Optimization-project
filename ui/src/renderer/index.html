@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self';"
+  />
+  <title>OptiCore Suite — Maintenance</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Accessibility Live Region for Status Announcements -->
+  <div id="aria-live-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Root App Shell -->
+  <div class="app-layout" id="app-root">
+    <!-- Left Primary Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main Navigation">
+      <div class="sidebar-brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+            <polyline points="2 17 12 22 22 17" />
+            <polyline points="2 12 12 17 22 12" />
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">OptiCore</span>
+          <span class="brand-tag">Suite</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul class="nav-list" id="sidebar-nav-items">
+          <!-- Dynamically populated by sidebar.ts -->
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-pill" id="system-status-indicator" title="Admin elevation status">
+          <span class="status-dot"></span>
+          <span class="status-label">Standard User</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="main-viewport" id="main-viewport" role="main">
+      <div id="content-container" class="content-container">
+        <!-- Rendered by Router & Subpages -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Slide-out Details Drawer Container -->
+  <div id="details-drawer-root" class="drawer-overlay hidden" aria-hidden="true"></div>
+
+  <!-- Slide-out Queue Panel Container -->
+  <div id="queue-panel-root" class="queue-panel-container hidden" aria-hidden="true"></div>
+
+  <!-- Floating Multi-select Action Bar Container -->
+  <div id="action-bar-root" class="action-bar-container hidden" aria-live="polite"></div>
+
+  <!-- Renderer Bundled Logic -->
+  <script src="index.js"></script>
+</body>
+</html>

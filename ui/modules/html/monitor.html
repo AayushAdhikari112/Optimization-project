@@ -90,6 +90,7 @@
                 <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Available</span><strong class="mem-stat-value" id="ram-free" >-- GB</strong></div><div class="mem-stat-badge" id="ram-free-badge" >--%</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-free-bar" ></div></div></div>
                 <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Commit</span><strong class="mem-stat-value" id="ram-commit" >-- GB</strong></div><div class="mem-stat-badge" >Commit</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-commit-bar" ></div></div></div>
                 <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Standby</span><strong class="mem-stat-value" id="ram-standby" >-- GB</strong></div><div class="mem-stat-badge" >Standby</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-standby-bar" ></div></div></div>
+                <div class="mem-stat-card"><div class="mem-stat-card-top"><div class="mem-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"></path></svg></div><div class="mem-stat-info"><span class="mem-stat-label">Modified</span><strong class="mem-stat-value" id="ram-modified">-- GB</strong></div><div class="mem-stat-badge">Modified</div></div><div class="mem-stat-bar-wrap"><div class="mem-stat-bar" id="ram-modified-bar"></div></div></div>
             </div>
         </div>
         <div class="panel" style="margin-top:20px">
@@ -97,8 +98,19 @@
             <div class="proc-table-wrap"><table class="proc-table"><thead><tr><th>Process</th><th>RAM (GB)</th><th>RAM %</th></tr></thead><tbody id="ramProcBody"></tbody></table></div>
         </div>
         <div class="mem-action-panel">
-            <div class="mem-action-info"><div class="mem-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><div class="mem-action-title">Memory Optimization</div><div class="mem-action-desc">Empties working sets of all running processes. Safe to run — apps keep running and reclaim memory as needed.</div></div></div>
-            <div class="mem-action-right"><button class="mem-optimize-btn" id="optimize-ram-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>Optimize Memory Now</button></div>
+            <div class="mem-action-heading"><div class="mem-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><div><div class="mem-action-title">Memory Optimization</div><div class="mem-action-desc">Flush modified pages, trim working sets, and reclaim low-priority standby memory.</div></div></div>
+            <div class="mem-optimization-controls">
+                <div class="mem-clean-options">
+                    <label class="mem-option-toggle"><input id="ram-aggressive-toggle" type="checkbox"><span>Aggressive</span></label>
+                    <span class="mem-aggressive-warning" id="ram-aggressive-warning" hidden>May cause brief slowdowns while apps reload data.</span>
+                </div>
+                <button class="mem-optimize-btn" id="optimize-ram-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg><span id="optimize-ram-label">Optimize Memory</span></button>
+                <div class="mem-admin-prompt" id="ram-admin-prompt" hidden><span>Run as administrator to optimize memory.</span><button id="ram-restart-admin" class="mem-admin-restart" type="button">Restart as admin</button></div>
+            </div>
+            <div class="mem-clean-result" id="ram-clean-result" aria-live="polite" aria-atomic="true">Ready to optimize.</div>
+            <div class="mem-service-note" id="ram-native-note" hidden></div>
+            <div class="mem-clean-meta"><span id="ram-last-cleaned">Last cleaned: Never</span><label class="mem-option-toggle mem-auto-toggle"><input id="ram-auto-clean-toggle" type="checkbox"><span>Auto-clean</span></label><span id="ram-auto-clean-state">Off</span><label class="mem-auto-threshold">Below <input id="ram-auto-threshold" type="number" min="5" max="50" value="15" aria-label="Auto-clean available memory threshold">% available</label><span id="ram-last-auto-clean">Last auto-clean: Never</span></div>
+            <div class="mem-step-results" id="ram-step-results" aria-live="polite"></div>
         </div>
     </section>
 <section class="section" id="section-mon-gpu">
@@ -303,13 +315,35 @@
         </div>
     </section>
 <section class="section" id="section-mon-disk">
-        <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div><div><h2>Disk I/O</h2><p>Real-time read/write throughput, disk usage per drive.</p></div></div>
-        <div class="big-stat-row">
-            <div class="big-stat-card"><div class="bsc-label">Read (ops/s)</div><div class="bsc-val" id="disk-read-val">--</div></div>
-            <div class="big-stat-card"><div class="bsc-label">Write (ops/s)</div><div class="bsc-val" id="disk-write-val">--</div></div>
-            <div class="big-stat-card"><div class="bsc-label">Total I/O</div><div class="bsc-val" id="disk-tio-val">--</div></div>
-            <div class="big-stat-card"><div class="bsc-label">Disk Fill</div><div class="bsc-val" id="disk-fill-val">--</div></div>
+        <div class="section-hero disk-hero">
+            <div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg></div>
+            <div><h2>Disk I/O</h2><p>Real-time read/write throughput, disk usage per drive.</p></div>
+            <button class="disk-refresh-btn" id="disk-refresh-btn" type="button" aria-label="Refresh disk statistics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7v5h-5"></path><path d="M4 17v-5h5"></path><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"></path></svg><span>Refresh</span></button>
         </div>
+        <div class="disk-stat-row">
+            <article class="disk-stat-card"><div class="disk-stat-label">Read</div><div class="disk-stat-value" id="disk-read-val">--</div><div class="disk-stat-foot"><span id="disk-read-rate">-- MB/s</span><span class="disk-stat-glyph disk-blue">↓</span></div></article>
+            <article class="disk-stat-card"><div class="disk-stat-label">Write</div><div class="disk-stat-value" id="disk-write-val">--</div><div class="disk-stat-foot"><span id="disk-write-rate">-- MB/s</span><span class="disk-stat-glyph disk-amber">↑</span></div></article>
+            <article class="disk-stat-card"><div class="disk-stat-label">Total I/O</div><div class="disk-stat-value" id="disk-tio-val">--</div><div class="disk-stat-foot"><span id="disk-total-rate">-- MB/s</span><span class="disk-stat-glyph disk-green">↕</span></div></article>
+            <article class="disk-stat-card"><div class="disk-stat-label">Disk Fill</div><div class="disk-stat-value" id="disk-fill-val">--</div><div class="disk-stat-foot"><span id="disk-fill-detail">Storage usage</span><span class="disk-stat-glyph disk-violet">◉</span></div></article>
+        </div>
+        <div class="disk-insights-grid">
+            <article class="disk-panel disk-chart-panel">
+                <div class="disk-panel-head"><span>Throughput · Last 60 s (MB/s)</span><div class="disk-chart-legend"><span><i class="legend-read"></i>Read</span><span><i class="legend-write"></i>Write</span></div></div>
+                <canvas id="disk-throughput-chart" aria-label="Disk read and write throughput over the last 60 seconds" role="img"></canvas>
+                <div class="disk-chart-empty" id="disk-chart-empty" hidden>Collecting disk samples...</div>
+            </article>
+            <article class="disk-panel disk-health-panel">
+                <div class="disk-panel-head"><span>Disk Health</span><span class="disk-health-status" id="disk-health-status">Monitoring</span></div>
+                <div class="disk-health-metric"><div><span>Active time</span><strong id="disk-active-time">--</strong></div><div class="disk-health-track"><i id="disk-active-bar"></i></div></div>
+                <div class="disk-health-metric"><div><span>Avg response</span><strong id="disk-response-time">--</strong></div><div class="disk-health-track"><i id="disk-response-bar"></i></div></div>
+                <div class="disk-health-metric"><div><span>Queue length</span><strong id="disk-queue-length">--</strong></div><div class="disk-health-track"><i id="disk-queue-bar"></i></div></div>
+            </article>
+        </div>
+        <div class="disk-subsection"><div class="disk-subsection-title">Drives</div><div class="disk-drive-grid" id="disk-drive-grid"><div class="disk-empty-state">Detecting volumes...</div></div></div>
+        <article class="disk-panel disk-activity-panel">
+            <div class="disk-panel-head disk-activity-heading"><span>Top Disk Activity (MB/s)</span><span id="disk-activity-updated">Waiting for first sample</span></div>
+            <div class="disk-activity-table-wrap"><table class="disk-activity-table"><thead><tr><th>Process</th><th>Read</th><th>Write</th><th>Total</th><th aria-label="Relative activity"></th></tr></thead><tbody id="disk-activity-body"><tr><td colspan="5" class="disk-empty-state">Collecting process activity...</td></tr></tbody></table></div>
+        </article>
     </section>
 <section class="section" id="section-mon-network">
         <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div><div><h2>Network Monitor</h2><p>Live bandwidth usage, adapter info, gateway, ping, and DNS latency.</p></div></div>

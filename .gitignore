@@ -4,3 +4,5 @@ ui/node_modules/
 ui/dist/
 *.exe
 *.o
+*.log
+ui/config.json

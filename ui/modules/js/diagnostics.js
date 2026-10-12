@@ -44,17 +44,22 @@ document.addEventListener('click', (e) => {
     const section = btn.closest('.section');
     if (!section) return;
 
-    tabsContainer.querySelectorAll('.si-tab').forEach(t => t.classList.remove('active'));
+    tabsContainer.querySelectorAll('.si-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+        t.removeAttribute('aria-current');
+    });
 
     section.querySelectorAll('.si-panel').forEach(p => {
         p.classList.remove('active');
-        p.style.display = 'none'; // Ensure display none is respected if inline
+        p.style.display = 'none';
     });
     
     btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('aria-current', 'page');
     
     const targetId = btn.getAttribute('data-tab');
-    // Try both prefixes for panels (si-tab- and winui-tab-)
     let targetPanel = document.getElementById('si-tab-' + targetId) || document.getElementById('winui-tab-' + targetId);
     
     if (targetPanel) {

@@ -90,31 +90,320 @@
      SECTION: WINDOWS UI
 ============================================================ -->
 <section class="section" id="section-win-ui">
+    <style>
+        #section-win-ui {
+            --win-bg: #0d1117;
+            --win-panel: rgba(17, 20, 26, 0.96);
+            --win-panel-strong: rgba(18, 23, 30, 0.98);
+            --win-panel-soft: rgba(24, 30, 38, 0.96);
+            --win-border: rgba(255,255,255,0.07);
+            --win-border-strong: rgba(88, 255, 197, 0.45);
+            --win-text: #f2f5f9;
+            --win-text-soft: #9ea7b3;
+            --win-green: #4fe6af;
+            --win-green-strong: #36d9a2;
+            --win-green-bg: rgba(79, 230, 175, 0.12);
+            --win-muted: #1f2a33;
+        }
+
+        #section-win-ui .section-hero {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 22px 28px;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, rgba(17, 21, 29, 0.96), rgba(19, 26, 35, 0.94));
+            border: 1px solid rgba(112, 145, 185, 0.22);
+            border-radius: 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+        }
+
+        #section-win-ui .section-hero-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: rgba(110, 143, 192, 0.12);
+            border: 1px solid rgba(110, 143, 192, 0.22);
+            flex-shrink: 0;
+        }
+
+        #section-win-ui .section-hero-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: #90caf9;
+        }
+
+        #section-win-ui .section-hero h2 {
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--win-text);
+        }
+
+        #section-win-ui .section-hero p {
+            margin: 8px 0 0;
+            color: var(--win-text-soft);
+            font-size: 15px;
+            line-height: 1.52;
+        }
+
+        #section-win-ui .si-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 18px;
+            background: rgba(14, 18, 23, 0.96);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+        }
+
+        #section-win-ui .si-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: transparent;
+            color: #dfe7f0;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+        }
+
+        #section-win-ui .si-tab:hover {
+            background: rgba(255,255,255,0.02);
+            color: #ffffff;
+        }
+
+        #section-win-ui .si-tab.active {
+            background: linear-gradient(180deg, rgba(17, 29, 24, 0.96), rgba(12, 20, 18, 0.96));
+            border-color: rgba(79, 230, 175, 0.48);
+            color: #4fe6af;
+            box-shadow: inset 0 -2px 0 rgba(79, 230, 175, 0.9);
+        }
+
+        #section-win-ui .si-panel {
+            margin-top: 18px;
+        }
+
+        #section-win-ui .win-ui-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 4px 0 14px;
+            margin-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: #4fe6af;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        #section-win-ui .win-ui-count {
+            color: #a7b0bc;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            text-transform: none;
+        }
+
+        #section-win-ui .si-panel .tweak-grid-premium {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            width: 100%;
+        }
+
+        #section-win-ui .premium-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 220px;
+            padding: 18px 18px 16px;
+            background: linear-gradient(180deg, rgba(19, 23, 29, 0.97), rgba(14, 17, 22, 0.96));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        #section-win-ui .premium-card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        #section-win-ui .pc-pill {
+            display: inline-flex;
+            align-items: center;
+            align-self: flex-start;
+            margin-bottom: 16px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #dfe7f0;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        #section-win-ui .pc-title {
+            margin: 0 0 10px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #f4f7fb;
+            line-height: 1.2;
+        }
+
+        #section-win-ui .pc-desc {
+            margin: 0;
+            color: #a7b0bc;
+            font-size: 14px;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        #section-win-ui .pc-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            padding-top: 6px;
+        }
+
+        #section-win-ui .pc-icons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.02);
+            color: #cfd8e3;
+        }
+
+        #section-win-ui .pc-icons svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        #section-win-ui .pc-toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        #section-win-ui .pc-toggle-label {
+            font-size: 12px;
+            color: #b2bac5;
+            font-weight: 600;
+        }
+
+        #section-win-ui .pc-switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+
+        #section-win-ui .pc-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        #section-win-ui .pc-slider {
+            position: absolute;
+            inset: 0;
+            background: #d5d9df;
+            border-radius: 999px;
+            transition: 0.2s ease;
+        }
+
+        #section-win-ui .pc-slider:before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 3px;
+            left: 3px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+            transition: 0.2s ease;
+        }
+
+        #section-win-ui input:checked + .pc-slider {
+            background: linear-gradient(180deg, #4fe6af, #2ecb9a);
+        }
+
+        #section-win-ui input:checked + .pc-slider:before {
+            transform: translateX(22px);
+        }
+
+        @media (max-width: 980px) {
+            #section-win-ui .si-panel .tweak-grid-premium {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 680px) {
+            #section-win-ui .section-hero {
+                padding: 18px 18px;
+            }
+
+            #section-win-ui .section-hero h2 {
+                font-size: 26px;
+            }
+
+            #section-win-ui .si-panel .tweak-grid-premium {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
     <div class="section-hero">
         <div class="section-hero-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         </div>
         <div>
-            <h2>Windows UI & Settings</h2>
+            <h2>Windows UI &amp; Settings</h2>
             <p>Comprehensive customization for visual effects, background activity, and system maintenance.</p>
         </div>
     </div>
 
-    <!-- Tab Nav (reusing SI tabs style) -->
     <div class="si-tabs" id="winUiTabs" style="margin-top: 20px; flex-wrap: wrap; row-gap: 8px;">
-        <button class="si-tab active" data-tab="visual">✨ Visual Effects</button>
-        <button class="si-tab" data-tab="notif">🔔 Notifications</button>
-        <button class="si-tab" data-tab="startup">🚀 Startup</button>
-        <button class="si-tab" data-tab="power">⚡ Power</button>
-        <button class="si-tab" data-tab="storage">💾 Storage</button>
-        <button class="si-tab" data-tab="privacy">🕵️ Privacy & Security</button>
-        <button class="si-tab" data-tab="memory">🧠 Memory</button>
-        <button class="si-tab" data-tab="display">🖥️ Display/Graphics</button>
-        <button class="si-tab" data-tab="gaming">🎮 Gaming</button>
+        <button class="si-tab active" data-tab="visual">Visual Effects</button>
+        <button class="si-tab" data-tab="notif">Notifications</button>
+        <button class="si-tab" data-tab="startup">Startup</button>
+        <button class="si-tab" data-tab="power">Power</button>
+        <button class="si-tab" data-tab="storage">Storage</button>
+        <button class="si-tab" data-tab="privacy">Privacy &amp; Security</button>
+        <button class="si-tab" data-tab="memory">Memory</button>
+        <button class="si-tab" data-tab="display">Display/Graphics</button>
+        <button class="si-tab" data-tab="gaming">Gaming</button>
     </div>
 
-    <!-- TAB: Visual Effects -->
     <div class="si-panel active" id="winui-tab-visual" style="margin-top:20px;">
+        <div class="win-ui-header-row">
+            <span class="win-ui-kicker">Visual Effects</span>
+            <span class="win-ui-count">3 tweaks • 0 active</span>
+        </div>
         <div class="tweak-grid-premium">
             <div class="premium-card">
                 <div class="pc-pill">Visuals</div>
@@ -123,7 +412,7 @@
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap">
-                        <span class="pc-toggle-label">Activate</span>
+                        <span class="pc-toggle-label">Off</span>
                         <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Control Panel\\Desktop\" /v UserPreferencesMask /t REG_BINARY /d 9012078010000000 /f', '')"><span class="pc-slider"></span></label>
                     </div>
                 </div>
@@ -135,7 +424,7 @@
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap">
-                        <span class="pc-toggle-label">Activate</span>
+                        <span class="pc-toggle-label">Off</span>
                         <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize\" /v EnableTransparency /t REG_DWORD /d 0 /f', '')"><span class="pc-slider"></span></label>
                     </div>
                 </div>
@@ -147,7 +436,7 @@
                 <div class="pc-footer">
                     <div class="pc-icons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
                     <div class="pc-toggle-wrap">
-                        <span class="pc-toggle-label">Activate</span>
+                        <span class="pc-toggle-label">Off</span>
                         <label class="pc-switch"><input type="checkbox" onchange="runOptToggle(this, 'reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects\" /v VisualFXSetting /t REG_DWORD /d 2 /f', '')"><span class="pc-slider"></span></label>
                     </div>
                 </div>

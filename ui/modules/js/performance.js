@@ -1,5 +1,53 @@
+function updateUtilityPresetLabel() {
+    const current = localStorage.getItem('opticore.utilityPreset') || 'none'
+    const label = document.getElementById('utilityPresetCurrent')
+    if (!label) return
+    const labels = {
+        gaming: 'Gaming profile',
+        privacy: 'Privacy profile',
+        minimal: 'Minimal profile',
+        cleanup: 'Cleanup profile',
+        none: 'No preset selected',
+    }
+    label.textContent = 'Current preset: ' + (labels[current] || labels.none)
+}
+
+function applyUtilityPreset(preset) {
+    const presetMap = {
+        gaming: {
+            title: 'Gaming',
+            actions: ['Disables background telemetry noise', 'Prioritizes performance mode', 'Keeps startup bloat low'],
+        },
+        privacy: {
+            title: 'Privacy',
+            actions: ['Tightens telemetry and ads tracking', 'Removes unnecessary background activity', 'Keeps diagnostics focused'],
+        },
+        minimal: {
+            title: 'Minimal',
+            actions: ['Cuts background apps', 'Keeps only critical services', 'Preserves stability and low noise'],
+        },
+        cleanup: {
+            title: 'Cleanup',
+            actions: ['Targets caches and temp folders', 'Prepares app leftovers cleanup', 'Schedules maintenance for later'],
+        },
+    }
+
+    const profile = presetMap[preset] || presetMap.gaming
+    localStorage.setItem('opticore.utilityPreset', preset)
+    updateUtilityPresetLabel()
+    addLog(`Applied ${profile.title} utility preset`, 'info')
+
+    const menu = document.querySelectorAll('.utility-preset-btn')
+    menu.forEach(btn => {
+        const active = btn.dataset.preset === preset
+        btn.classList.toggle('active', active)
+        btn.textContent = active ? `✓ ${btn.dataset.presetLabel}` : btn.dataset.presetLabel
+    })
+}
+
 // ─── Startup Manager ─────────────────────────────────────────
 async function loadStartupItems() {
+    updateUtilityPresetLabel()
     const tbody = document.getElementById('startupBody')
     const count  = document.getElementById('startup-count')
     if (!tbody) return
@@ -52,6 +100,13 @@ async function loadStartupItems() {
     })
 }
 
+document.querySelectorAll('.utility-preset-btn').forEach(btn => {
+    btn.dataset.presetLabel = btn.textContent.trim()
+    btn.addEventListener('click', () => applyUtilityPreset(btn.dataset.preset))
+})
+
+window.applyUtilityPreset = applyUtilityPreset
+updateUtilityPresetLabel()
 
 // ─── Services ────────────────────────────────────────────────
 async function loadServices() {
@@ -101,7 +156,7 @@ async function loadServices() {
 async function loadPowerPlans() {
     const data = await invoke('get-power-plan')
     const el   = document.getElementById('powerCurrent')
-    if (el && data) el.textContent = '⚡ Active: ' + (data.active || 'Unknown')
+    if (el && data) el.textContent = 'Active: ' + (data.active || 'Unknown')
 
     // Highlight active card
     document.querySelectorAll('.power-card').forEach(card => card.classList.remove('active'))

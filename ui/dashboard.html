@@ -7,7 +7,17 @@
     <meta name="description" content="OptiCore — Full-featured PC optimization, diagnostics, and monitoring suite.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        try {
+            const theme = localStorage.getItem('opticore.theme');
+            const density = localStorage.getItem('opticore.density');
+            const motion = localStorage.getItem('opticore.motion');
+            if (theme && theme !== 'system') document.documentElement.dataset.theme = theme;
+            if (density === 'compact') document.documentElement.dataset.density = density;
+            if (motion === 'reduce') document.documentElement.dataset.motion = motion;
+        } catch {}
+    </script>
     <link rel="stylesheet" href="dashboard-v5.css">
 </head>
 <body>
@@ -61,7 +71,7 @@
                 </button>
             </div>
 
-            <div class="menu-section">
+            <div class="menu-section maintenance-menu">
                 <div class="menu-label">MAINTENANCE</div>
                 <button class="nav-item" data-section="cl-windows">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg> Disk cleanup
@@ -78,8 +88,14 @@
                 <button class="nav-item" data-section="perf-power">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg> Extra (Power)
                 </button>
+                </div>
+                <div class="menu-section">
+                    <div class="menu-label">PREFERENCES</div>
+                    <button class="nav-item" data-section="settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0-1.51-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a2 2 0 0 0-1.51 1z"></path></svg> Settings
+                    </button>
+                </div>
             </div>
-        </div>
 
         <!-- System health shortcut -->
         <div class="premium-box">
@@ -205,6 +221,17 @@
             <div id="healthCheckTime" class="snapshot-status" role="status">Demo data only. System telemetry is disabled.</div>
         </div>
 
+        <div class="system-snapshot" style="margin-top:18px;">
+            <div class="snapshot-header">
+                <div>
+                    <h2>Recommended actions</h2>
+                    <p>Plain-language suggestions based on your usage profile.</p>
+                </div>
+            </div>
+            <div id="dashboardActionPanel" style="display:grid;gap:10px;margin-top:14px;"></div>
+            <div id="smartSuggestions" style="display:grid;gap:10px;margin-top:14px;"></div>
+        </div>
+
     </section>
 
     <!-- ============================================================
@@ -266,7 +293,10 @@ window.onerror = function(msg, url, line, col, error) {
 </script>
 
 <script src="modules/js/core.js?v=4"></script>
+    <script src="modules/js/settings.js?v=1"></script>
     <script src="modules/js/monitor.js?v=2"></script>
+    <script src="modules/js/memory-helpers.js?v=1"></script>
+    <script src="modules/js/memory-optimization.js?v=1"></script>
     <script src="modules/js/cleanup.js?v=2"></script>
     <script src="modules/js/performance.js?v=2"></script>
     <script src="modules/js/diagnostics.js?v=2"></script>

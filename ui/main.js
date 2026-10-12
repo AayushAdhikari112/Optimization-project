@@ -13,14 +13,23 @@ const os      = require('os')
 const crypto  = require('crypto')
 const si      = require('systeminformation')
 
+const APP_DATA_DIR = path.join(os.homedir(), 'AppData', 'Roaming', 'OptiCore')
+const APP_TEMP_DIR = path.join(os.tmpdir(), 'OptiCore')
+
+fs.mkdirSync(APP_DATA_DIR, { recursive: true })
+fs.mkdirSync(APP_TEMP_DIR, { recursive: true })
+app.setPath('userData', APP_DATA_DIR)
+app.setPath('sessionData', APP_DATA_DIR)
+app.setPath('temp', APP_TEMP_DIR)
+app.setAppLogsPath(path.join(APP_DATA_DIR, 'logs'))
+
 // ─────────────────────────────────────────────
 // Admin elevation (re-launch as admin on Windows)
 // ─────────────────────────────────────────────
 function isAdmin() {
-    try {
-        execSync('net session', { stdio: 'ignore' })
-        return true
-    } catch { return false }
+    return new Promise(resolve => {
+        exec('net session', { windowsHide: true }, error => resolve(!error))
+    })
 }
 
 function relaunchAsAdmin() {
@@ -131,6 +140,176 @@ app.on('window-all-closed', () => {
 ipcMain.handle('is-admin', () => isAdmin())
 ipcMain.handle('request-admin', () => relaunchAsAdmin())
 ipcMain.handle('minimize-window', event => BrowserWindow.fromWebContents(event.sender)?.minimize())
+
+// ─────────────────────────────────────────────
+// IPC: Native memory service
+// ─────────────────────────────────────────────
+const MEMORY_CLEAN_INTERVAL_MS = 10000
+const MEMORY_LOG_FILE = path.join(app.getPath('userData'), 'memory-optimization.log')
+const MEMORY_STATE_FILE = path.join(app.getPath('userData'), 'memory-optimization-state.json')
+let lastMemoryCleanAt = Date.parse(readMemoryState().lastCleanedAt || '') || 0
+let memoryCleanRunning = false
+
+function nativeMemoryToolPath() {
+    const candidates = [
+        path.resolve(__dirname, '..', 'build', 'opt_tool.exe'),
+        path.join(app.getAppPath(), 'build', 'opt_tool.exe'),
+        path.join(process.resourcesPath || '', 'opt_tool.exe'),
+    ]
+    return candidates.find(candidate => fs.existsSync(candidate)) || null
+}
+
+function runNativeMemory(args, onProgress, timeoutMs = 10000) {
+    return new Promise(resolve => {
+        const executable = nativeMemoryToolPath()
+        if (!executable) return resolve({ error: 'Native memory service is not built. Build the C application first.' })
+
+        let stdoutBuffer = ''
+        let plainOutput = ''
+        let result = null
+        let stderr = ''
+        let settled = false
+        let timedOut = false
+        const child = spawn(executable, args, { windowsHide: true })
+        const timer = setTimeout(() => { timedOut = true; child.kill() }, timeoutMs)
+        const finish = value => {
+            if (settled) return
+            settled = true
+            clearTimeout(timer)
+            resolve(value)
+        }
+        const consumeLine = line => {
+            if (!line.trim()) return
+            try {
+                const message = JSON.parse(line)
+                if (message.type === 'progress') onProgress?.(message.step)
+                else result = message
+            } catch { plainOutput = line.trim() }
+        }
+
+        child.stdout.on('data', chunk => {
+            stdoutBuffer += chunk.toString()
+            const lines = stdoutBuffer.split(/\r?\n/)
+            stdoutBuffer = lines.pop()
+            lines.forEach(consumeLine)
+        })
+        child.stderr.on('data', chunk => { stderr += chunk.toString() })
+        child.on('error', error => finish({ error: error.message }))
+        child.on('close', (code, signal) => {
+            consumeLine(stdoutBuffer)
+            if (timedOut || signal === 'SIGTERM') return finish({ error: 'Native memory service timed out.' })
+            finish({ code, data: result, stdout: plainOutput, stderr: stderr.trim() })
+        })
+    })
+}
+
+function readMemoryState() {
+    try { return JSON.parse(fs.readFileSync(MEMORY_STATE_FILE, 'utf8')) }
+    catch { return {} }
+}
+
+function writeMemoryCleanLog(result, timestamp) {
+    const record = { timestamp, steps: result.perStep || [], freedBytes: result.freedBytes || 0, errors: (result.perStep || []).filter(step => step.error) }
+    try {
+        fs.appendFileSync(MEMORY_LOG_FILE, JSON.stringify(record) + '\n')
+        fs.writeFileSync(MEMORY_STATE_FILE, JSON.stringify({ lastCleanedAt: timestamp }, null, 2))
+    } catch (error) {
+        console.error('Could not write memory optimization log:', error)
+    }
+}
+
+function writeRejectedMemoryAttempt(error) {
+    const timestamp = new Date().toISOString()
+    const step = { step: 'Preflight', status: 'failed', error }
+    try {
+        fs.appendFileSync(MEMORY_LOG_FILE, JSON.stringify({ timestamp, steps: [step], freedBytes: 0, errors: [step] }) + '\n')
+    } catch (writeError) {
+        console.error('Could not write memory optimization log:', writeError)
+    }
+}
+
+ipcMain.handle('memory-get-state', async () => {
+    const native = await runNativeMemory(['--memory-admin'], null, 4000)
+    const isElevated = native.code === 0 ? native.stdout === 'true' : await isAdmin()
+    return {
+        isElevated,
+        nativeReady: native.code === 0,
+        lastCleanedAt: readMemoryState().lastCleanedAt || null,
+    }
+})
+
+ipcMain.handle('memory-get-stats', async () => {
+    const native = await runNativeMemory(['--memory-stats'], null, 5000)
+    if (native.code === 0 && native.data) return { ...native.data, source: 'native' }
+
+    try {
+        const memory = await si.mem()
+        const totalBytes = memory.total || 0
+        const availableBytes = memory.available || memory.free || 0
+        const usedBytes = Math.max(0, totalBytes - availableBytes)
+        return {
+            totalBytes,
+            usedBytes,
+            availableBytes,
+            commitBytes: (memory.used || usedBytes) + (memory.swapused || 0),
+            commitLimitBytes: totalBytes + (memory.swaptotal || 0),
+            standbyBytes: memory.buffcache || 0,
+            modifiedBytes: 0,
+            freeBytes: memory.free || availableBytes,
+            source: 'fallback',
+            serviceError: native.error || native.stderr || 'Native memory counters are unavailable.',
+        }
+    } catch (error) {
+        return { error: error.message, serviceError: native.error || native.stderr }
+    }
+})
+
+ipcMain.handle('memory-clean', async (event, options = {}) => {
+    const now = Date.now()
+    if (memoryCleanRunning) return { success: false, rateLimited: true, error: 'A memory optimization is already running.' }
+    if (now - lastMemoryCleanAt < MEMORY_CLEAN_INTERVAL_MS)
+        return { success: false, rateLimited: true, error: 'Please wait before optimizing memory again.' }
+
+    memoryCleanRunning = true
+    try {
+        const elevationProbe = await runNativeMemory(['--memory-admin'], null, 4000)
+        if (elevationProbe.error || elevationProbe.code !== 0) {
+            const error = elevationProbe.error || 'Native memory service could not check administrator access.'
+            writeRejectedMemoryAttempt(error)
+            return { success: false, perStep: [{ step: 'Native memory service', status: 'failed', error }] }
+        }
+        if (elevationProbe.stdout !== 'true') {
+            const error = 'Run as administrator to optimize memory.'
+            writeRejectedMemoryAttempt(error)
+            return { success: false, notElevated: true, error }
+        }
+
+        lastMemoryCleanAt = Date.now()
+        const args = ['--memory-clean']
+        if (options.workingSets === false) args.push('--no-working-sets')
+        if (options.modifiedList === false) args.push('--no-modified-list')
+        if (options.standbyList === false) args.push('--standby=none')
+        else if (options.lowPriorityStandbyOnly === false) args.push('--standby=full')
+        if (options.fileCache === true) args.push('--file-cache')
+
+        const native = await runNativeMemory(args, step => {
+            if (!event.sender.isDestroyed()) event.sender.send('memory-clean-progress', step)
+        }, 20000)
+        const result = native.data || {
+            success: false,
+            perStep: [{ step: 'Native memory service', status: 'failed', error: native.error || native.stderr || 'Memory optimization failed.' }],
+            error: native.error || native.stderr,
+        }
+        if (result.before && result.after)
+            result.freedBytes = Math.max(0, (result.after.availableBytes || 0) - (result.before.availableBytes || 0))
+        const timestamp = new Date().toISOString()
+        writeMemoryCleanLog(result, timestamp)
+        result.timestamp = timestamp
+        return result
+    } finally {
+        memoryCleanRunning = false
+    }
+})
 
 // ─────────────────────────────────────────────
 // IPC: Extended real-time system stats
@@ -309,13 +488,67 @@ ipcMain.handle('get-thread-handle-count', async () => {
 // ─────────────────────────────────────────────
 // IPC: Disk I/O stats
 // ─────────────────────────────────────────────
+let cachedDiskActivity = { sampledAt: 0, disk: null, processes: [] }
+
 ipcMain.handle('get-disk-io', async () => {
     try {
-        const io = await si.disksIO()
+        const now = Date.now()
+        const [io, filesystems, devices] = await Promise.all([
+            si.disksIO(),
+            si.fsSize(),
+            si.blockDevices(),
+        ])
+
+        if (now - cachedDiskActivity.sampledAt > 4000) {
+            const counters = await ps(`
+                $disk = Get-CimInstance Win32_PerfFormattedData_PerfDisk_PhysicalDisk -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq '_Total' } | Select-Object -First 1
+                $processes = @(Get-CimInstance Win32_PerfFormattedData_PerfProc_Process -ErrorAction SilentlyContinue | Where-Object { $_.IDProcess -gt 0 -and $_.Name -notin @('_Total', 'Idle') } | Sort-Object IODataBytesPersec -Descending | Select-Object -First 8 @{Name='name';Expression={$_.Name -replace '#[0-9]+$',''}}, @{Name='readBytesPerSec';Expression={[double]$_.IOReadBytesPersec}}, @{Name='writeBytesPerSec';Expression={[double]$_.IOWriteBytesPersec}}, @{Name='totalBytesPerSec';Expression={[double]$_.IODataBytesPersec}})
+                [pscustomobject]@{ disk = $disk; processes = $processes } | ConvertTo-Json -Compress -Depth 4
+            `, 8000)
+            try {
+                const parsed = JSON.parse(counters)
+                cachedDiskActivity = {
+                    sampledAt: now,
+                    disk: parsed.disk || null,
+                    processes: Array.isArray(parsed.processes) ? parsed.processes : parsed.processes ? [parsed.processes] : [],
+                }
+            } catch {
+                cachedDiskActivity = { sampledAt: now, disk: null, processes: [] }
+            }
+        }
+
+        const usableFilesystems = (filesystems || []).filter(volume => volume.size > 0 && volume.mount)
+        const totalBytes = usableFilesystems.reduce((sum, volume) => sum + (volume.size || 0), 0)
+        const usedBytes = usableFilesystems.reduce((sum, volume) => sum + (volume.used || 0), 0)
+        const driveList = usableFilesystems.map(volume => {
+            const device = (devices || []).find(item => item.mount && item.mount.toLowerCase() === volume.mount.toLowerCase())
+            return {
+                mount: volume.mount,
+                label: device?.label || volume.label || volume.mount,
+                model: device?.model || device?.name || '',
+                protocol: device?.protocol || device?.physical || volume.type || device?.type || '',
+                sizeBytes: volume.size || 0,
+                usedBytes: volume.used || 0,
+                usePercent: Number(volume.use) || 0,
+            }
+        })
+        const disk = cachedDiskActivity.disk || {}
+        const numberOrNull = value => value !== null && value !== undefined && Number.isFinite(Number(value)) ? Number(value) : null
         return {
-            readSec:  io ? (io.rIO_sec || 0).toFixed(0) : 0,
-            writeSec: io ? (io.wIO_sec || 0).toFixed(0) : 0,
-            tIO:      io ? (io.tIO_sec || 0).toFixed(0) : 0,
+            readOps: numberOrNull(io?.rIO_sec),
+            writeOps: numberOrNull(io?.wIO_sec),
+            totalOps: numberOrNull(io?.tIO_sec),
+            readMBps: numberOrNull(disk.DiskReadBytesPersec) === null ? null : Number(disk.DiskReadBytesPersec) / 1e6,
+            writeMBps: numberOrNull(disk.DiskWriteBytesPersec) === null ? null : Number(disk.DiskWriteBytesPersec) / 1e6,
+            activePercent: numberOrNull(disk.PercentDiskTime),
+            responseMs: numberOrNull(disk.AvgDisksecPerTransfer) === null ? null : Number(disk.AvgDisksecPerTransfer) * 1000,
+            queueLength: numberOrNull(disk.CurrentDiskQueueLength),
+            fillPercent: totalBytes ? usedBytes / totalBytes * 100 : null,
+            usedBytes,
+            totalBytes,
+            drives: driveList,
+            processes: cachedDiskActivity.processes,
+            sampledAt: now,
         }
     } catch { return { readSec: 0, writeSec: 0, tIO: 0 } }
 })
@@ -558,16 +791,14 @@ ipcMain.handle('get-dev-caches', async () => {
     const local   = process.env.LOCALAPPDATA || path.join(home, 'AppData', 'Local')
 
     const caches = [
-        { id: 'npm',    label: 'npm cache',      path: path.join(appData, 'npm-cache') },
+            { id: 'npm',    label: 'npm cache',      path: path.join(local, 'npm-cache') },
         { id: 'yarn',   label: 'Yarn cache',      path: path.join(local,   'Yarn', 'Cache') },
         { id: 'pnpm',   label: 'pnpm store',      path: path.join(local,   'pnpm', 'store') },
         { id: 'pip',    label: 'pip cache',        path: path.join(local,   'pip', 'Cache') },
         { id: 'gradle', label: 'Gradle caches',   path: path.join(home,    '.gradle', 'caches') },
         { id: 'maven',  label: 'Maven repository', path: path.join(home,   '.m2', 'repository') },
-        { id: 'nuget',  label: 'NuGet cache',      path: path.join(local,   'NuGet', 'Cache') },
-        { id: 'docker', label: 'Docker images',    path: path.join(local,   'Docker', 'wsl') },
+            { id: 'nuget',  label: 'NuGet cache',      path: path.join(home,    '.nuget', 'packages') },
         { id: 'cargo',  label: 'Cargo cache',      path: path.join(home,    '.cargo', 'registry') },
-        { id: 'android',label: 'Android SDK',      path: path.join(local,   'Android', 'sdk') },
     ]
 
     const results = await Promise.all(
@@ -613,8 +844,23 @@ ipcMain.handle('get-browser-caches', async () => {
 
     const results = await Promise.all(
         browsers.map(async b => {
-            const cacheSize = await getDirSizeGB(b.cache)
-            return { ...b, cacheSize, exists: fs.existsSync(b.cache) }
+            let cachePaths = [b.cache]
+            if (b.id === 'firefox') {
+                try {
+                    cachePaths = fs.readdirSync(b.cache, { withFileTypes: true })
+                        .filter(entry => entry.isDirectory())
+                        .map(entry => path.join(b.cache, entry.name, 'cache2'))
+                } catch { cachePaths = [] }
+            }
+            cachePaths = cachePaths.filter(cachePath => fs.existsSync(cachePath))
+            const sizes = await Promise.all(cachePaths.map(getDirSizeGB))
+            return {
+                ...b,
+                cache: cachePaths[0] || null,
+                cachePaths,
+                cacheSize: sizes.reduce((sum, size) => sum + size, 0),
+                exists: cachePaths.length > 0,
+            }
         })
     )
     return results.filter(r => r.exists)
@@ -1157,8 +1403,18 @@ ipcMain.handle('get-health-score', async () => {
 ipcMain.handle('clean-path', async (_, { dirPath, label }) => {
     if (!dirPath || !fs.existsSync(dirPath)) return { success: false, error: 'Path not found' }
     saveRestoreSnapshot({ type: 'cleanup', description: `Cleaned: ${label}`, data: { dirPath } })
-    await ps(`Remove-Item -Path '${dirPath}\\*' -Recurse -Force -ErrorAction SilentlyContinue`)
+    const escapedPath = String(dirPath).replace(/'/g, "''")
+    const result = await ps(`$target='${escapedPath}'; try { Get-ChildItem -LiteralPath $target -Force -ErrorAction Stop | Remove-Item -Recurse -Force -ErrorAction Stop; 'CLEAN_OK' } catch { 'CLEAN_ERROR: ' + $_.Exception.Message }`, 120000)
+    if (result !== 'CLEAN_OK' && !result.startsWith('CLEAN_OK'))
+        return { success: false, error: result.replace(/^CLEAN_ERROR:\s*/, '') || 'Could not clean this location.' }
+    saveRestoreSnapshot({ type: 'cleanup', description: `Cleaned: ${label}`, data: { dirPath } })
     return { success: true }
+})
+
+ipcMain.handle('empty-recycle-bin', async () => {
+    const result = await ps("Clear-RecycleBin -Force -ErrorAction Stop; 'RECYCLE_BIN_CLEARED'", 60000)
+    if (result === 'RECYCLE_BIN_CLEARED') return { success: true }
+    return { success: false, error: 'Windows could not empty the Recycle Bin. Try running the app as administrator.' }
 })
 
 // ─────────────────────────────────────────────

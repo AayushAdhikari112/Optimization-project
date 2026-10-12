@@ -2,10 +2,14 @@
   "name": "opticore-ui",
   "version": "1.0.0",
   "description": "OptiCore Login UI",
-  "main": "main.js",
+  "main": "dist/main/index.js",
   "scripts": {
-    "start": "electron .",
-    "build": "npx @electron/packager . OptiCore --platform=win32 --arch=x64 --out=dist --overwrite"
+    "dev": "npm run build && electron .",
+    "start": "npm run dev",
+    "demo": "npm run build && electron . --demo",
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test tests/*.test.cjs",
+    "package": "npm run build && electron-packager . OptiCore --platform=win32 --arch=x64 --out=release --overwrite"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +17,11 @@
   "type": "commonjs",
   "devDependencies": {
     "@electron/packager": "^20.3.0",
+    "@types/node": "^22.15.30",
+    "esbuild": "^0.25.5",
     "electron": "^44.4.5",
-    "electron-packager": "^17.1.2"
+    "electron-packager": "^17.1.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "systeminformation": "^5.33.1"

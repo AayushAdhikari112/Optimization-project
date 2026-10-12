@@ -49,7 +49,8 @@
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
 }
 .hw-hero-icon {
-    font-size: 28px;
+    font-size: 0;
+    line-height: 0;
     background: #1a1b1e;
     width: 52px; height: 52px;
     display: flex; align-items: center; justify-content: center;
@@ -104,7 +105,7 @@
 .hw-live-blue   { background: rgba(59,130,246,0.06);   border-color: rgba(59,130,246,0.15); }
 .hw-live-red    { background: rgba(239,68,68,0.06);    border-color: rgba(239,68,68,0.15); }
 .hw-live-green  { background: rgba(16,185,129,0.06);   border-color: rgba(16,185,129,0.15); }
-.hw-live-purple { background: rgba(139,92,246,0.06);   border-color: rgba(139,92,246,0.15); }
+.hw-live-purple { background: rgba(35,197,138,0.06);   border-color: rgba(35,197,138,0.15); }
 .hw-live-orange { background: rgba(245,158,11,0.06);   border-color: rgba(245,158,11,0.15); }
 .hw-live-val { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
 .hw-live-label { font-size: 11px; color: #9ca3af; font-weight: 600; margin-bottom: 8px; }
@@ -121,7 +122,7 @@
 .hw-core-row:last-child { border-bottom: none; }
 .hw-core-row:hover { background: #161719; }
 .hw-core-bar { height: 6px; background: #1f2023; border-radius: 3px; overflow: hidden; }
-.hw-core-bar div { height: 100%; background: linear-gradient(90deg,#8b5cf6,#a78bfa); border-radius: 3px; }
+.hw-core-bar div { height: 100%; background: linear-gradient(90deg,#326b56,#4be3ab); border-radius: 3px; }
 
 /* ISA Badges */
 .hw-isa-flex { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -131,7 +132,7 @@
 
 /* GPU Blocks */
 .hw-gpu-block { background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 20px; }
-.hw-gpu-primary { border-color: rgba(139,92,246,0.25); }
+.hw-gpu-primary { border-color: rgba(35,197,138,0.25); }
 .hw-gpu-badge-row { display: flex; }
 
 /* Badges */
@@ -153,13 +154,13 @@
 /* RAM Sticks */
 .hw-stick-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 0; }
 .hw-stick-card { background: #131314; border: 1px solid #1f2023; border-radius: 12px; padding: 16px 20px; }
-.hw-stick-slot-badge { display: inline-block; background: #8b5cf6; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 8px; }
+.hw-stick-slot-badge { display: inline-block; background: #326b56; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 8px; }
 .hw-stick-model { font-size: 13px; font-weight: 600; color: #e5e7eb; font-family: 'Consolas', monospace; }
 
 /* Drive Cards */
 .hw-drive-card { background: #131314; border: 1px solid #1f2023; border-radius: 14px; padding: 20px; }
 .hw-drive-top { display: flex; align-items: flex-start; gap: 14px; }
-.hw-drive-icon { font-size: 28px; flex-shrink: 0; }
+.hw-drive-icon { font-size: 0; line-height: 0; flex-shrink: 0; }
 .hw-drive-name { font-size: 15px; font-weight: 700; color: #e5e7eb; margin-bottom: 3px; }
 .hw-drive-sub { font-size: 12px; color: #9ca3af; }
 
@@ -172,7 +173,7 @@
 /* Partition List */
 .hw-partition-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f2023; }
 .hw-partition-row { display: flex; gap: 12px; align-items: center; font-size: 12px; padding: 6px 0; }
-.hw-part-drive { font-weight: 700; color: #8b5cf6; width: 30px; flex-shrink: 0; }
+.hw-part-drive { font-weight: 700; color: #326b56; width: 30px; flex-shrink: 0; }
 .hw-part-label { color: #e5e7eb; flex: 1; }
 .hw-part-fs { background: #1f2023; color: #9ca3af; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
 .hw-part-free { font-weight: 600; }
@@ -186,7 +187,7 @@
     border-radius: 10px;
     font-size: 13px; color: #60a5fa; line-height: 1.5;
 }
-.hw-link { color: #8b5cf6; text-decoration: none; font-weight: 600; }
+.hw-link { color: #326b56; text-decoration: none; font-weight: 600; }
 .hw-link:hover { text-decoration: underline; }
 
 /* Driver Table */
@@ -212,15 +213,33 @@
 /* Audio */
 .hw-audio-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
 .hw-audio-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #131314; border: 1px solid #1f2023; border-radius: 10px; }
-.hw-audio-active { border-color: rgba(139,92,246,0.3); }
-.hw-audio-icon { font-size: 24px; }
+.hw-audio-active { border-color: rgba(35,197,138,0.3); }
+.hw-audio-icon { font-size: 0; line-height: 0; }
 
 /* VU Meter */
 .hw-vumeter-wrap { display: flex; flex-direction: column; gap: 8px; }
 .hw-vumeter-label { font-size: 11px; color: #9ca3af; font-weight: 600; }
 .hw-vumeter { height: 8px; background: #1f2023; border-radius: 4px; overflow: hidden; }
 .hw-vumeter-bar { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
-.hw-vumeter-out { background: linear-gradient(90deg,#8b5cf6,#a78bfa); }
+.hw-vumeter-out { background: linear-gradient(90deg,#326b56,#4be3ab); }
+
+.hw-live-purple,
+.hw-core-bar div,
+.hw-gpu-primary,
+.hw-stick-slot-badge,
+.hw-part-drive,
+.hw-link,
+.hw-audio-active,
+.hw-vumeter-out {
+  border-color: rgba(50, 107, 86, 0.3) !important;
+}
+
+.hw-live-purple { background: rgba(50, 107, 86, 0.08) !important; }
+.hw-core-bar div { background: linear-gradient(90deg,#326b56,#4be3ab) !important; }
+.hw-stick-slot-badge { background: #326b56 !important; }
+.hw-part-drive,
+.hw-link { color: #326b56 !important; }
+.hw-audio-active { border-color: rgba(50, 107, 86, 0.3) !important; }
 .hw-vumeter-in  { background: linear-gradient(90deg,#10b981,#34d399); }
 
 /* Battery Widget */

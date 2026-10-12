@@ -1,5 +1,5 @@
 // ─── RAM Gauge ────────────────────────────────────────────────
-function updateRamGauge(pct, usedGB, totalGB, commitGB, standbyGB) {
+function updateRamGauge(pct, usedGB, totalGB, commitGB, standbyGB, modifiedGB, availableGB) {
     const circle = document.getElementById('ramGaugeCircle')
     if (!circle) return
 
@@ -22,7 +22,8 @@ function updateRamGauge(pct, usedGB, totalGB, commitGB, standbyGB) {
 
     const total = parseFloat(totalGB) || 16
     const used  = parseFloat(usedGB)  || (total * pct / 100)
-    const free  = (total - used).toFixed(1)
+    const available = Number(availableGB)
+    const free  = (Number.isFinite(available) ? available : total - used).toFixed(1)
 
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val }
     const setW = (id, w) => { const el = document.getElementById(id); if (el) el.style.width = w + '%' }
@@ -32,17 +33,21 @@ function updateRamGauge(pct, usedGB, totalGB, commitGB, standbyGB) {
     set('ram-used',       parseFloat(used).toFixed(1) + ' GB')
     set('ram-free',       free + ' GB')
     set('ram-used-badge', pct + '%')
-    set('ram-free-badge', Math.round(100 - pct) + '%')
+    set('ram-free-badge', Math.round((parseFloat(free) / total) * 100) + '%')
     setW('ram-used-bar', pct)
-    setW('ram-free-bar', 100 - pct)
+    setW('ram-free-bar', (parseFloat(free) / total) * 100)
 
     if (commitGB) {
         set('ram-commit', parseFloat(commitGB).toFixed(1) + ' GB')
         setW('ram-commit-bar', Math.min((parseFloat(commitGB) / parseFloat(total)) * 100, 100))
     }
-    if (standbyGB) {
+    if (standbyGB !== undefined && standbyGB !== null) {
         set('ram-standby', parseFloat(standbyGB).toFixed(1) + ' GB')
         setW('ram-standby-bar', Math.min((parseFloat(standbyGB) / parseFloat(total)) * 100, 100))
+    }
+    if (modifiedGB !== undefined && modifiedGB !== null) {
+        set('ram-modified', parseFloat(modifiedGB).toFixed(1) + ' GB')
+        setW('ram-modified-bar', Math.min((parseFloat(modifiedGB) / parseFloat(total)) * 100, 100))
     }
 
     // Health badge (not in HTML v2 directly but update status badge)
@@ -56,14 +61,261 @@ function updateRamGauge(pct, usedGB, totalGB, commitGB, standbyGB) {
 
 
 // ─── Disk I/O Section ─────────────────────────────────────────
-async function loadDiskIO() {
-    const data = await invoke('get-disk-io')
-    if (!data) return
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val }
-    set('disk-read-val',  data.readSec)
-    set('disk-write-val', data.writeSec)
-    set('disk-tio-val',   data.tIO)
-    if (latestStats) set('disk-fill-val', latestStats.diskPct + '%')
+const diskSamples = []
+let diskMonitorTimer = null
+let diskMonitorLoading = false
+const DISK_HISTORY_LIMIT = 30
+
+function diskText(id, value) {
+    const element = document.getElementById(id)
+    if (element) element.textContent = value
+}
+
+function diskFormatNumber(value, fractionDigits = 0) {
+    return Number.isFinite(Number(value))
+        ? Number(value).toLocaleString(undefined, { maximumFractionDigits: fractionDigits, minimumFractionDigits: fractionDigits })
+        : '--'
+}
+
+function diskFormatBytes(bytes) {
+    const value = Math.max(0, Number(bytes) || 0)
+    const unit = value >= 1e12 ? 'TB' : 'GB'
+    const divisor = unit === 'TB' ? 1e12 : 1e9
+    return `${(value / divisor).toFixed(1)} ${unit}`
+}
+
+function renderDiskDrives(drives = []) {
+    const grid = document.getElementById('disk-drive-grid')
+    if (!grid) return
+    grid.replaceChildren()
+    if (!drives.length) {
+        const empty = document.createElement('div')
+        empty.className = 'disk-empty-state'
+        empty.textContent = 'No mounted volumes detected.'
+        grid.appendChild(empty)
+        return
+    }
+
+    drives.slice(0, 8).forEach(drive => {
+        const card = document.createElement('article')
+        card.className = 'disk-drive-card'
+        const head = document.createElement('div')
+        head.className = 'disk-drive-head'
+        const icon = document.createElement('div')
+        icon.className = 'disk-drive-icon'
+        icon.textContent = String(drive.mount || '?').replace(/[\\/]/g, '').slice(0, 2) || '?'
+        const identity = document.createElement('div')
+        identity.className = 'disk-drive-identity'
+        const name = document.createElement('strong')
+        name.textContent = drive.label || drive.mount || 'Volume'
+        const detail = document.createElement('span')
+        detail.textContent = [drive.model, drive.protocol].filter(Boolean).join(' · ') || drive.mount || 'Mounted volume'
+        const percent = document.createElement('b')
+        percent.textContent = `${Math.round(drive.usePercent || 0)}%`
+        identity.append(name, detail)
+        head.append(icon, identity, percent)
+        const track = document.createElement('div')
+        track.className = 'disk-drive-track'
+        const fill = document.createElement('i')
+        fill.style.width = `${Math.min(100, Math.max(0, Number(drive.usePercent) || 0))}%`
+        track.appendChild(fill)
+        const footer = document.createElement('div')
+        footer.className = 'disk-drive-footer'
+        footer.textContent = `${diskFormatBytes(drive.usedBytes)} used of ${diskFormatBytes(drive.sizeBytes)}`
+        card.append(head, track, footer)
+        grid.appendChild(card)
+    })
+}
+
+function renderDiskProcesses(processes = []) {
+    const body = document.getElementById('disk-activity-body')
+    if (!body) return
+    body.replaceChildren()
+    if (!processes.length) {
+        const row = document.createElement('tr')
+        const cell = document.createElement('td')
+        cell.colSpan = 5
+        cell.className = 'disk-empty-state'
+        cell.textContent = 'Per-process I/O counters are unavailable.'
+        row.appendChild(cell)
+        body.appendChild(row)
+        return
+    }
+
+    const maxTotal = Math.max(...processes.map(process => Number(process.totalBytesPerSec) || 0), 1)
+    processes.forEach(process => {
+        const row = document.createElement('tr')
+        const name = document.createElement('td')
+        name.className = 'disk-process-name'
+        name.textContent = process.name || 'Unknown process'
+        const read = document.createElement('td')
+        read.textContent = `${diskFormatNumber((Number(process.readBytesPerSec) || 0) / 1e6, 1)}`
+        const write = document.createElement('td')
+        write.textContent = `${diskFormatNumber((Number(process.writeBytesPerSec) || 0) / 1e6, 1)}`
+        const totalValue = Number(process.totalBytesPerSec) || 0
+        const total = document.createElement('td')
+        total.textContent = diskFormatNumber(totalValue / 1e6, 1)
+        const barCell = document.createElement('td')
+        const bar = document.createElement('div')
+        bar.className = 'disk-process-track'
+        const fill = document.createElement('i')
+        fill.style.width = `${Math.min(100, totalValue / maxTotal * 100)}%`
+        bar.appendChild(fill)
+        barCell.appendChild(bar)
+        row.append(name, read, write, total, barCell)
+        body.appendChild(row)
+    })
+}
+
+function drawDiskChart() {
+    const canvas = document.getElementById('disk-throughput-chart')
+    if (!canvas) return
+    const rect = canvas.getBoundingClientRect()
+    if (!rect.width || !rect.height) return
+    const ratio = window.devicePixelRatio || 1
+    canvas.width = Math.round(rect.width * ratio)
+    canvas.height = Math.round(rect.height * ratio)
+    const context = canvas.getContext('2d')
+    context.setTransform(ratio, 0, 0, ratio, 0, 0)
+    const width = rect.width
+    const height = rect.height
+    const inset = { left: 34, right: 6, top: 10, bottom: 20 }
+    const plotWidth = width - inset.left - inset.right
+    const plotHeight = height - inset.top - inset.bottom
+    const maxValue = Math.max(1, ...diskSamples.flatMap(sample => [sample.read, sample.write]))
+
+    context.clearRect(0, 0, width, height)
+    context.font = '10px "IBM Plex Sans", sans-serif'
+    context.textBaseline = 'middle'
+    for (let line = 0; line <= 3; line++) {
+        const y = inset.top + plotHeight * line / 3
+        context.strokeStyle = 'rgba(255,255,255,0.07)'
+        context.beginPath()
+        context.moveTo(inset.left, y)
+        context.lineTo(width - inset.right, y)
+        context.stroke()
+        context.fillStyle = '#78828a'
+        context.fillText((maxValue * (1 - line / 3)).toFixed(1), 0, y)
+    }
+    context.fillStyle = '#78828a'
+    context.fillText('60s ago', inset.left, height - 7)
+    context.fillText('now', width - 27, height - 7)
+    if (diskSamples.length < 2) return
+
+    const drawSeries = (key, color, fillColor) => {
+        context.beginPath()
+        diskSamples.forEach((sample, index) => {
+            const timelineIndex = DISK_HISTORY_LIMIT - diskSamples.length + index
+            const x = inset.left + (plotWidth * timelineIndex / (DISK_HISTORY_LIMIT - 1))
+            const y = inset.top + plotHeight * (1 - sample[key] / maxValue)
+            if (index === 0) context.moveTo(x, y)
+            else context.lineTo(x, y)
+        })
+        context.strokeStyle = color
+        context.lineWidth = 2
+        context.lineJoin = 'round'
+        context.stroke()
+        if (fillColor) {
+            const firstTimelineIndex = DISK_HISTORY_LIMIT - diskSamples.length
+            const lastTimelineIndex = DISK_HISTORY_LIMIT - 1
+            context.lineTo(inset.left + plotWidth * lastTimelineIndex / (DISK_HISTORY_LIMIT - 1), inset.top + plotHeight)
+            context.lineTo(inset.left + plotWidth * firstTimelineIndex / (DISK_HISTORY_LIMIT - 1), inset.top + plotHeight)
+            context.closePath()
+            context.fillStyle = fillColor
+            context.fill()
+        }
+    }
+    drawSeries('read', '#62a8ff', 'rgba(98,168,255,0.11)')
+    drawSeries('write', '#f3bd55', null)
+}
+
+function renderDiskIO(data) {
+    const read = data.readOps == null ? NaN : Number(data.readOps)
+    const write = data.writeOps == null ? NaN : Number(data.writeOps)
+    const totalOps = data.totalOps == null ? NaN : Number(data.totalOps)
+    diskText('disk-read-val', Number.isFinite(read) ? `${diskFormatNumber(read)} ops/s` : '--')
+    diskText('disk-write-val', Number.isFinite(write) ? `${diskFormatNumber(write)} ops/s` : '--')
+    diskText('disk-tio-val', Number.isFinite(totalOps) ? `${diskFormatNumber(totalOps)} ops/s` : '--')
+    diskText('disk-read-rate', data.readMBps === null ? '-- MB/s' : `${diskFormatNumber(data.readMBps, 1)} MB/s`)
+    diskText('disk-write-rate', data.writeMBps === null ? '-- MB/s' : `${diskFormatNumber(data.writeMBps, 1)} MB/s`)
+    const totalMBps = data.readMBps === null || data.writeMBps === null ? null : data.readMBps + data.writeMBps
+    diskText('disk-total-rate', totalMBps === null ? '-- MB/s' : `${diskFormatNumber(totalMBps, 1)} MB/s`)
+
+    if (data.fillPercent !== null) {
+        diskText('disk-fill-val', `${Math.round(data.fillPercent)}%`)
+        diskText('disk-fill-detail', `${diskFormatBytes(data.usedBytes)} of ${diskFormatBytes(data.totalBytes)}`)
+    }
+    const active = data.activePercent == null ? NaN : Number(data.activePercent)
+    diskText('disk-active-time', Number.isFinite(active) ? `${Math.min(100, Math.max(0, active)).toFixed(0)}%` : '--')
+    const activeBar = document.getElementById('disk-active-bar')
+    if (activeBar) activeBar.style.width = `${Math.min(100, Math.max(0, active || 0))}%`
+    const response = data.responseMs == null ? NaN : Number(data.responseMs)
+    diskText('disk-response-time', Number.isFinite(response) ? `${response.toFixed(1)} ms` : '--')
+    const responseBar = document.getElementById('disk-response-bar')
+    if (responseBar) responseBar.style.width = `${Math.min(100, Math.max(0, response || 0) * 5)}%`
+    const queue = data.queueLength == null ? NaN : Number(data.queueLength)
+    diskText('disk-queue-length', Number.isFinite(queue) ? queue.toFixed(1) : '--')
+    const queueBar = document.getElementById('disk-queue-bar')
+    if (queueBar) queueBar.style.width = `${Math.min(100, Math.max(0, queue || 0) * 10)}%`
+
+    if (Number.isFinite(read) && Number.isFinite(write) && data.readMBps != null && data.writeMBps != null) {
+        diskSamples.push({ read: data.readMBps, write: data.writeMBps })
+        if (diskSamples.length > DISK_HISTORY_LIMIT) diskSamples.shift()
+        const empty = document.getElementById('disk-chart-empty')
+        if (empty) empty.hidden = true
+        drawDiskChart()
+    } else {
+        const empty = document.getElementById('disk-chart-empty')
+        if (empty) {
+            empty.hidden = false
+            empty.textContent = Number.isFinite(read) ? 'Waiting for Windows throughput counters...' : 'Collecting disk samples...'
+        }
+    }
+    renderDiskDrives(data.drives)
+    renderDiskProcesses(data.processes)
+    diskText('disk-activity-updated', `Updated ${new Date(data.sampledAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`)
+}
+
+async function refreshDiskIO() {
+    if (diskMonitorLoading || !document.getElementById('section-mon-disk')?.classList.contains('active')) return
+    diskMonitorLoading = true
+    try {
+        const data = await invoke('get-disk-io')
+        if (data) renderDiskIO(data)
+    } catch {
+        diskText('disk-health-status', 'Unavailable')
+    } finally {
+        diskMonitorLoading = false
+    }
+}
+
+function startDiskPolling() {
+    if (diskMonitorTimer !== null || document.visibilityState === 'hidden') return
+    refreshDiskIO()
+    diskMonitorTimer = setInterval(refreshDiskIO, 2000)
+}
+
+function stopDiskPolling() {
+    if (diskMonitorTimer !== null) clearInterval(diskMonitorTimer)
+    diskMonitorTimer = null
+}
+
+function loadDiskIO() {
+    startDiskPolling()
+}
+
+document.getElementById('disk-refresh-btn')?.addEventListener('click', refreshDiskIO)
+const diskSection = document.getElementById('section-mon-disk')
+if (diskSection) {
+    new MutationObserver(() => {
+        if (diskSection.classList.contains('active') && document.visibilityState !== 'hidden') startDiskPolling()
+        else stopDiskPolling()
+    }).observe(diskSection, { attributes: true, attributeFilter: ['class'] })
+    document.addEventListener('visibilitychange', () => {
+        if (diskSection.classList.contains('active') && document.visibilityState !== 'hidden') startDiskPolling()
+        else stopDiskPolling()
+    })
+    window.addEventListener('resize', drawDiskChart)
 }
 
 
@@ -152,7 +404,7 @@ async function loadDiskHealth() {
             const btn = document.createElement('button')
             btn.className = 'drive-opt-btn'
             btn.textContent = d.type === 'SSD'
-                ? `⚡ Optimize ${d.name} (TRIM / Re-trim)`
+                ? `Optimize ${d.name} (TRIM / Re-trim)`
                 : `🔧 Defragment ${d.name}`
             btn.addEventListener('click', async () => {
                 btn.textContent = 'Running...'

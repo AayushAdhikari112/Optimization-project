@@ -22,6 +22,7 @@ async function invoke(channel, ...args) {
 
 // ─── Shared Optimization Helper ───────────────────────────────
 window.runOpt = function(btn, cmd) {
+    if (localStorage.getItem('opticore.confirmChanges') === 'true' && !window.confirm('This action will make a system change. Continue?')) return;
     const orig = btn.textContent;
     btn.textContent = '...';
     btn.disabled = true;
@@ -91,6 +92,151 @@ async function checkAdmin() {
 }
 checkAdmin()
 
+function getUsageProfile() {
+    return localStorage.getItem('opticore.usageProfile') || 'general'
+}
+
+function applyModePreference() {
+    const mode = localStorage.getItem('opticore.mode') || 'simple'
+    document.body.classList.toggle('simple-mode', mode === 'simple')
+    document.body.classList.toggle('advanced-mode', mode === 'advanced')
+    const modeBadge = document.getElementById('modeBadge')
+    if (modeBadge) modeBadge.textContent = mode === 'advanced' ? 'Advanced mode' : 'Simple mode'
+}
+
+function updateQuickCleanPreview() {
+    const el = document.getElementById('quickCleanPreview')
+    if (!el) return
+    const profile = getUsageProfile()
+    const previewMap = {
+        gaming: '~6.1 GB available',
+        work: '~4.8 GB available',
+        school: '~3.6 GB available',
+        general: '~4.2 GB available',
+    }
+    el.textContent = previewMap[profile] || previewMap.general
+}
+
+function renderSmartSuggestions() {
+    const host = document.getElementById('smartSuggestions')
+    if (!host) return
+    const profile = getUsageProfile()
+    const suggestions = {
+        gaming: [
+            'Your startup has 3 apps that delay launch. Remove them?',
+            'Gaming profile is ready for a cleaner boot sequence.',
+            'A one-click cleanup could free ~6 GB for more headroom.'
+        ],
+        work: [
+            '6 rarely used apps have been sitting idle for 12+ months.',
+            'You can keep your workflow lean without affecting work files.',
+            'A privacy pass will reduce background noise during meetings.'
+        ],
+        school: [
+            'Your laptop is ready for a lighter startup profile.',
+            'Clear temporary files before a project or study session.',
+            'Battery saver is recommended if you work unplugged.'
+        ],
+        general: [
+            'Your PC is healthy, but startup apps could be trimmed.',
+            'A quick cleanup is recommended before your next session.',
+            'Privacy controls can reduce background data sharing.'
+        ]
+    }
+    host.innerHTML = (suggestions[profile] || suggestions.general).map(item => `
+        <div class="smart-suggestion" style="padding:12px 14px;border:1px solid rgba(148,163,184,0.2);border-radius:10px;background:rgba(15,23,42,0.65);color:#e2e8f0;line-height:1.5;">${item}</div>
+    `).join('')
+}
+
+function initializeFirstRunExperience() {
+    const done = localStorage.getItem('opticore.onboardingComplete') === 'true'
+    const existing = document.getElementById('firstRunModal')
+    if (existing) existing.remove()
+
+    if (done) {
+        applyModePreference()
+        renderSmartSuggestions()
+        updateQuickCleanPreview()
+        return
+    }
+
+    const modal = document.createElement('div')
+    modal.id = 'firstRunModal'
+    modal.style.position = 'fixed'
+    modal.style.inset = '0'
+    modal.style.background = 'rgba(5, 10, 20, 0.7)'
+    modal.style.display = 'flex'
+    modal.style.alignItems = 'center'
+    modal.style.justifyContent = 'center'
+    modal.style.zIndex = '2000'
+    modal.innerHTML = `
+        <div style="width:min(560px,90vw);background:rgba(12,18,30,0.96);border:1px solid rgba(148,163,184,0.25);border-radius:18px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,0.55);color:#e2e8f0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <div>
+                    <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#70e1ff;">Welcome</div>
+                    <h2 style="margin:8px 0 0;font-size:30px;">Set up your PC</h2>
+                </div>
+                <button id="closeOnboarding" type="button" style="background:transparent;border:1px solid rgba(148,163,184,0.3);color:#cbd5e1;border-radius:10px;padding:8px 12px;cursor:pointer;">Skip</button>
+            </div>
+            <p style="margin:0 0 20px;color:#cbd5e1;line-height:1.6;">Choose the way you use your PC, and OptiCore will suggest safer, simpler defaults.</p>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px;">
+                <button class="usage-profile-btn" data-profile="gaming" style="padding:16px;border-radius:12px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.08);color:#ecfdf5;cursor:pointer;">Gaming</button>
+                <button class="usage-profile-btn" data-profile="work" style="padding:16px;border-radius:12px;border:1px solid rgba(96,165,250,0.35);background:rgba(96,165,250,0.08);color:#dbeafe;cursor:pointer;">Work</button>
+                <button class="usage-profile-btn" data-profile="school" style="padding:16px;border-radius:12px;border:1px solid rgba(251,191,36,0.35);background:rgba(251,191,36,0.08);color:#fef3c7;cursor:pointer;">School</button>
+                <button class="usage-profile-btn" data-profile="general" style="padding:16px;border-radius:12px;border:1px solid rgba(148,163,184,0.35);background:rgba(148,163,184,0.08);color:#e2e8f0;cursor:pointer;">General</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px;border-top:1px solid rgba(148,163,184,0.2);">
+                <div style="display:flex;gap:8px;">
+                    <button class="mode-btn" data-mode="simple" style="padding:10px 14px;border-radius:10px;border:1px solid rgba(16,185,129,0.4);background:rgba(16,185,129,0.12);color:#ecfdf5;cursor:pointer;">Simple mode</button>
+                    <button class="mode-btn" data-mode="advanced" style="padding:10px 14px;border-radius:10px;border:1px solid rgba(148,163,184,0.3);background:transparent;color:#cbd5e1;cursor:pointer;">Advanced</button>
+                </div>
+                <button id="startUsingOpticore" type="button" style="padding:12px 18px;border:none;border-radius:10px;background:linear-gradient(135deg,#10b981,#22d3ee);color:#041018;font-weight:700;cursor:pointer;">Start using OptiCore</button>
+            </div>
+        </div>
+    `
+    document.body.appendChild(modal)
+
+    const profileButtons = modal.querySelectorAll('.usage-profile-btn')
+    profileButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            profileButtons.forEach(b => b.style.borderColor = 'rgba(148,163,184,0.3)')
+            btn.style.borderColor = 'rgba(34,211,238,0.9)'
+            localStorage.setItem('opticore.usageProfile', btn.dataset.profile)
+        })
+    })
+
+    const modeButtons = modal.querySelectorAll('.mode-btn')
+    modeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modeButtons.forEach(b => b.style.background = 'transparent')
+            btn.style.background = 'rgba(16,185,129,0.12)'
+            localStorage.setItem('opticore.mode', btn.dataset.mode)
+            applyModePreference()
+        })
+    })
+
+    modal.querySelector('#closeOnboarding')?.addEventListener('click', () => {
+        const profile = localStorage.getItem('opticore.usageProfile') || 'general'
+        localStorage.setItem('opticore.onboardingComplete', 'true')
+        localStorage.setItem('opticore.mode', localStorage.getItem('opticore.mode') || 'simple')
+        localStorage.setItem('opticore.usageProfile', profile)
+        modal.remove();
+        renderSmartSuggestions();
+        updateQuickCleanPreview();
+        applyModePreference();
+    })
+
+    modal.querySelector('#startUsingOpticore')?.addEventListener('click', () => {
+        const selected = localStorage.getItem('opticore.usageProfile') || 'general'
+        localStorage.setItem('opticore.usageProfile', selected)
+        localStorage.setItem('opticore.onboardingComplete', 'true')
+        if (!localStorage.getItem('opticore.mode')) localStorage.setItem('opticore.mode', 'simple')
+        modal.remove();
+        renderSmartSuggestions();
+        updateQuickCleanPreview();
+        applyModePreference();
+    })
+}
 
 // ─── Navigation ───────────────────────────────────────────────
 const sectionTitles = {
@@ -278,12 +424,41 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
 
 const pageSearch = document.getElementById('pageSearch')
 if (pageSearch) {
+    const searchTargets = {
+        'dark mode': 'settings',
+        'slow startup': 'perf-startup',
+        'startup': 'perf-startup',
+        'cleanup': 'cl-windows',
+        'privacy': 'privacy',
+        'battery': 'perf-power',
+        'gaming': 'perf-gaming',
+        'restore': 'restore',
+        'network': 'cl-browser',
+        'performance': 'perf-startup',
+        'speed': 'perf-startup',
+        'app': 'perf-startup',
+        'appearance': 'settings',
+    }
+
     pageSearch.addEventListener('input', () => {
         const query = pageSearch.value.trim().toLowerCase()
         document.querySelectorAll('.nav-item').forEach(item => {
             item.hidden = query !== '' && !item.textContent.toLowerCase().includes(query)
         })
     })
+
+    pageSearch.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            const query = pageSearch.value.trim().toLowerCase()
+            const target = Object.keys(searchTargets).find(key => query.includes(key))
+            if (target) {
+                event.preventDefault()
+                navigateTo(searchTargets[target])
+                pageSearch.blur()
+            }
+        }
+    })
+
     document.addEventListener('keydown', event => {
         if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
             event.preventDefault()
@@ -301,6 +476,27 @@ if (pageSearch) {
 document.getElementById('sidebarHealthBtn')?.addEventListener('click', () => navigateTo('diag-health'))
 document.getElementById('openRestoreCenterBtn')?.addEventListener('click', () => navigateTo('restore'))
 document.getElementById('minimizeWindowBtn')?.addEventListener('click', () => invoke('minimize-window'))
+
+const dashboardActionPanel = document.getElementById('dashboardActionPanel')
+if (dashboardActionPanel) {
+    dashboardActionPanel.innerHTML = `
+        <div class="quick-action-row" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid rgba(148,163,184,0.2);border-radius:10px;background:rgba(15,23,42,0.65);color:#e2e8f0;">
+            <span class="quick-action-label" style="color:#94a3b8;">Recommended</span>
+            <strong id="modeBadge" style="color:#7dd3fc;">Simple mode</strong>
+        </div>
+        <div class="quick-action-row" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid rgba(148,163,184,0.2);border-radius:10px;background:rgba(15,23,42,0.65);color:#e2e8f0;">
+            <span class="quick-action-label" style="color:#94a3b8;">Safety</span>
+            <strong style="color:#86efac;">Restore point before changes</strong>
+        </div>
+    `
+}
+
+const quickSuggestionHost = document.getElementById('smartSuggestions')
+if (quickSuggestionHost) {
+    renderSmartSuggestions()
+}
+
+initializeFirstRunExperience()
 
 document.getElementById('createCheckpointBtn')?.addEventListener('click', async function () {
     const button = this
@@ -515,9 +711,6 @@ function renderStats(data) {
     set('si-commit', data.commitMem + ' GB')
     set('si-standby', data.standby + ' GB')
     if (data.uptimeSec) set('si-uptime', formatUptime(data.uptimeSec))
-
-    // ── RAM section gauge ──
-    updateRamGauge(data.ramPct, data.ramUsed, data.ramTotal, data.commitMem, data.standby)
 
     // ── CPU big section ──
     set('cpu-big-val', data.cpu + '%')
@@ -1261,17 +1454,17 @@ function renderBenchmark() {
 }
 
 document.getElementById('takeBefore')?.addEventListener('click', async function () {
-    this.textContent = '📸 Taking snapshot...'
+    this.textContent = 'Taking snapshot...'
     benchBefore = await takeBenchmark()
-    this.textContent = '📸 Before Snapshot Taken'
+    this.textContent = 'Before snapshot taken'
     addLog('Before benchmark snapshot taken', 'info')
     renderBenchmark()
 })
 
 document.getElementById('takeAfter')?.addEventListener('click', async function () {
-    this.textContent = '📸 Taking snapshot...'
+    this.textContent = 'Taking snapshot...'
     benchAfter = await takeBenchmark()
-    this.textContent = '📸 After Snapshot Taken'
+    this.textContent = 'After snapshot taken'
     addLog('After benchmark snapshot taken', 'info')
     renderBenchmark()
 })
@@ -1279,8 +1472,8 @@ document.getElementById('takeAfter')?.addEventListener('click', async function (
 document.getElementById('clearBenchmark')?.addEventListener('click', () => {
     benchBefore = benchAfter = null
     const el = document.getElementById('benchmarkCompare'); if (el) el.innerHTML = ''
-    document.getElementById('takeBefore')?.textContent && (document.getElementById('takeBefore').textContent = '📸 Take Before Snapshot')
-    document.getElementById('takeAfter')?.textContent && (document.getElementById('takeAfter').textContent = '📸 Take After Snapshot')
+    document.getElementById('takeBefore')?.textContent && (document.getElementById('takeBefore').textContent = 'Take before snapshot')
+    document.getElementById('takeAfter')?.textContent && (document.getElementById('takeAfter').textContent = 'Take after snapshot')
 })
 
 

@@ -70,84 +70,720 @@
 /* ================================================================
    MEMORY SECTION
 ================================================================ */
-.mem-layout { display: grid; grid-template-columns: 260px 1fr; gap: 16px; }
-.mem-gauge-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    display: flex; flex-direction: column; align-items: center; gap: 16px;
+.mem-layout {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 10px;
+    align-items: stretch;
 }
-.mem-gauge-wrap { position: relative; width: 200px; height: 200px; }
-.mem-gauge-glow {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 140px; height: 140px;
-    background: radial-gradient(circle, hsla(162,78%,42%,0.15) 0%, transparent 70%);
-    border-radius: 50%;
+
+#section-mon-ram .mem-gauge-panel {
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 14px 10px;
+    border-radius: 14px;
+}
+
+#section-mon-ram .mem-gauge-wrap,
+#section-mon-ram .mem-gauge-svg {
+    width: 142px;
+    height: 142px;
+}
+
+#section-mon-ram .mem-gauge-pct {
+    font-size: 28px;
+}
+
+#section-mon-ram .mem-gauge-legend {
+    gap: 5px;
+}
+
+#section-mon-ram .mgl-item {
+    gap: 4px;
+    padding: 4px 6px;
+    font-size: 9px;
+}
+
+#section-mon-ram .mem-stats-col {
+    gap: 7px;
+}
+
+#section-mon-ram .mem-stat-card {
+    padding: 8px 11px;
+    border-radius: 10px;
+}
+
+#section-mon-ram .mem-stat-card-top {
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+#section-mon-ram .mem-stat-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+}
+
+#section-mon-ram .mem-stat-icon svg {
+    width: 13px;
+    height: 13px;
+}
+
+#section-mon-ram .mem-stat-label {
+    font-size: 10px;
+}
+
+#section-mon-ram .mem-stat-value {
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+#section-mon-ram .mem-stat-bar-wrap {
+    height: 5px;
+}
+
+@media (max-width: 760px) {
+    #section-mon-ram .mem-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #section-mon-ram .mem-gauge-panel {
+        min-height: 0;
+        padding: 14px;
+    }
+
+    #section-mon-ram .mem-gauge-wrap,
+    #section-mon-ram .mem-gauge-svg {
+        width: 132px;
+        height: 132px;
+    }
+}
+
+.mem-gauge-panel {
+    position: relative;
+    background: linear-gradient(180deg, rgba(11, 19, 27, 0.92), rgba(10, 14, 20, 0.9));
+    border: 1px solid rgba(102, 252, 202, 0.18);
+    border-radius: 20px;
+    padding: 22px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 18px 36px rgba(1, 6, 10, 0.25);
+    overflow: hidden;
+}
+
+.mem-gauge-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(71, 207, 156, 0.12), transparent 40%);
     pointer-events: none;
 }
-.mem-gauge-svg { width: 200px; height: 200px; }
+
+.mem-gauge-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mem-gauge-glow {
+    position: absolute;
+    inset: 25px;
+    background: radial-gradient(circle, hsla(162, 78%, 42%, 0.2), transparent 62%);
+    border-radius: 50%;
+    filter: blur(18px);
+    pointer-events: none;
+}
+
+.mem-gauge-svg {
+    width: 200px;
+    height: 200px;
+}
+
 .mem-gauge-center {
-    position: absolute; top: 50%; left: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
 }
+
 .mem-gauge-pct {
-    font-size: 36px; font-weight: 800; line-height: 1;
-    background: linear-gradient(135deg,hsl(162,78%,45%),hsl(162,78%,65%));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1.2px;
+    background: linear-gradient(135deg, hsl(162, 78%, 52%), hsl(162, 78%, 72%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-.mem-gauge-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-.mem-gauge-abs { font-size: 13px; font-weight: 600; color: var(--text2); margin-top: 2px; }
-.mem-gauge-legend { display: flex; gap: 14px; }
-.mgl-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
-.mgl-item i { width: 8px; height: 8px; border-radius: 50%; display: block; }
-.mem-stats-col { display: flex; flex-direction: column; gap: 10px; }
+
+.mem-gauge-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.mem-gauge-abs {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text2);
+    margin-top: 5px;
+}
+
+.mem-gauge-legend {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mgl-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--text3);
+}
+
+.mgl-item i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 0 0 14px currentColor;
+}
+
+.mem-stats-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .mem-stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(16, 21, 29, 0.9), rgba(13, 17, 23, 0.86));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
-.mem-stat-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.mem-stat-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.mem-stat-icon svg { width: 14px; height: 14px; }
-.mem-stat-info { flex: 1; min-width: 0; }
-.mem-stat-label { display: block; font-size: 11px; color: var(--text3); }
-.mem-stat-value { display: block; font-size: 15px; font-weight: 700; }
+
+.mem-stat-card:hover {
+    border-color: rgba(116, 211, 170, 0.28);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.16);
+}
+
+.mem-stat-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.mem-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.16), rgba(45, 212, 191, 0.12));
+    border: 1px solid rgba(96, 254, 200, 0.2);
+    flex-shrink: 0;
+}
+
+.mem-stat-icon svg {
+    width: 15px;
+    height: 15px;
+    color: hsl(162, 78%, 68%);
+}
+
+.mem-stat-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.mem-stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.mem-stat-value {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 3px;
+}
+
 .mem-stat-badge {
-    padding: 2px 8px; border-radius: 100px;
-    font-size: 11px; font-weight: 600;
-    border: 1px solid;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(116, 211, 170, 0.22);
+    background: rgba(74, 222, 128, 0.08);
+    color: hsl(162, 78%, 70%);
 }
-.mem-stat-bar-wrap { height: 2px; background: rgba(255,255,255,0.05); border-radius: 1px; overflow: hidden; }
-.mem-stat-bar { height: 100%; border-radius: 1px; transition: width 0.6s ease; }
+
+.mem-stat-bar-wrap {
+    height: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+}
+
+.mem-stat-bar {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, hsl(162, 78%, 40%), hsl(162, 78%, 62%));
+    transition: width 0.6s ease;
+}
+
 .mem-action-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    background: linear-gradient(135deg, rgba(10, 16, 22, 0.96), rgba(16, 23, 30, 0.9));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
-.mem-action-info { display: flex; align-items: flex-start; gap: 14px; }
-.mem-action-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
-.mem-action-icon svg { width: 22px; height: 22px; }
-.mem-action-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.mem-action-desc { font-size: 12px; color: var(--text2); max-width: 380px; }
-.mem-action-right { flex-shrink: 0; }
+
+.mem-action-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.mem-action-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(14, 165, 233, 0.1));
+    border: 1px solid rgba(96, 165, 250, 0.22);
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.mem-action-icon svg {
+    width: 20px;
+    height: 20px;
+    color: hsl(200, 94%, 70%);
+}
+
+.mem-action-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.mem-action-desc {
+    font-size: 12px;
+    color: var(--text2);
+    max-width: 480px;
+    line-height: 1.5;
+}
+
+.mem-action-right {
+    flex-shrink: 0;
+}
+
 .mem-optimize-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 20px;
-    background: linear-gradient(135deg,hsl(162,78%,32%),hsl(162,78%,42%));
-    border: none; border-radius: var(--radius-sm);
-    color: #fff; font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, hsl(162, 78%, 32%), hsl(162, 78%, 46%));
+    border: 1px solid rgba(134, 239, 172, 0.25);
+    border-radius: 12px;
+    color: #f4fffb;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 10px 18px rgba(16, 185, 129, 0.2);
 }
-.mem-optimize-btn svg { width: 14px; height: 14px; }
-.mem-optimize-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-.mem-optimize-btn.running svg { animation: spin 1s linear infinite; }
-.mem-optimize-btn.done { background: linear-gradient(135deg,hsl(235,65%,42%),hsl(235,65%,52%)); }
+
+.mem-optimize-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.mem-optimize-btn:hover {
+    opacity: 0.96;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 22px rgba(16, 185, 129, 0.24);
+}
+
+.mem-optimize-btn.running svg {
+    animation: spin 1s linear infinite;
+}
+
+.mem-optimize-btn.done {
+    background: linear-gradient(135deg, hsl(235, 65%, 42%), hsl(235, 65%, 52%));
+    box-shadow: 0 12px 22px rgba(99, 102, 241, 0.22);
+}
+
+#section-mon-ram .mem-action-panel {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 16px 18px;
+    border-radius: 14px;
+}
+
+#section-mon-ram .mem-action-heading,
+#section-mon-ram .mem-optimization-controls,
+#section-mon-ram .mem-clean-meta,
+#section-mon-ram .mem-clean-options,
+#section-mon-ram .mem-admin-prompt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#section-mon-ram .mem-action-heading { min-width: 0; }
+#section-mon-ram .mem-action-desc { max-width: none; }
+
+#section-mon-ram .mem-optimization-controls {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#section-mon-ram .mem-clean-options {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#section-mon-ram .mem-option-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text2);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#section-mon-ram .mem-option-toggle input,
+#section-mon-ram .mem-auto-threshold input {
+    accent-color: #4be3ab;
+}
+
+#section-mon-ram .mem-aggressive-warning {
+    color: #f2c879;
+    font-size: 11px;
+}
+
+#section-mon-ram .mem-optimize-btn {
+    min-height: 52px;
+    min-width: 210px;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid rgba(75, 227, 171, 0.75);
+    border-radius: 8px;
+    background: #4be3ab;
+    color: #10221c;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: none;
+}
+
+#section-mon-ram .mem-optimize-btn:hover:not(:disabled) {
+    background: #74edc2;
+    color: #10221c;
+    box-shadow: 0 8px 18px rgba(75, 227, 171, 0.15);
+}
+
+#section-mon-ram .mem-optimize-btn:focus-visible,
+#section-mon-ram .mem-admin-restart:focus-visible,
+#section-mon-ram input:focus-visible {
+    outline: 2px solid #d2fff0;
+    outline-offset: 3px;
+}
+
+#section-mon-ram .mem-optimize-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.52;
+}
+
+#section-mon-ram .mem-optimize-btn.is-running svg { animation: mem-opt-spin 1s linear infinite; }
+
+@keyframes mem-opt-spin { to { transform: rotate(360deg); } }
+
+#section-mon-ram .mem-admin-prompt {
+    flex-wrap: wrap;
+    color: #f2c879;
+    font-size: 12px;
+}
+
+#section-mon-ram .mem-admin-restart {
+    border: 1px solid rgba(242, 200, 121, 0.35);
+    border-radius: 6px;
+    padding: 7px 10px;
+    background: rgba(242, 200, 121, 0.08);
+    color: #f2c879;
+    font: inherit;
+    cursor: pointer;
+}
+
+#section-mon-ram .mem-clean-result {
+    min-height: 18px;
+    color: var(--text2);
+    font-size: 12px;
+}
+
+#section-mon-ram .mem-service-note {
+    color: #f2c879;
+    font-size: 11px;
+}
+
+#section-mon-ram #ramGaugeCircle {
+    transition: stroke-dashoffset 700ms ease, stroke 400ms ease;
+}
+
+#section-mon-ram .mem-clean-meta {
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    color: var(--text3);
+    font-size: 11px;
+}
+
+#section-mon-ram .mem-auto-threshold {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#section-mon-ram .mem-auto-threshold input {
+    width: 46px;
+    padding: 4px 5px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+#section-mon-ram .mem-step-results {
+    display: grid;
+    gap: 4px;
+    color: var(--text3);
+    font-size: 11px;
+}
+
+#section-mon-ram .mem-step-results:empty { display: none; }
+#section-mon-ram .mem-step-error { color: #f28b82; }
+
+@media (max-width: 760px) {
+    #section-mon-ram .mem-optimization-controls { align-items: stretch; }
+    #section-mon-ram .mem-optimize-btn { width: 100%; }
+    #section-mon-ram .mem-clean-meta { align-items: flex-start; flex-direction: column; }
+}
+
+
+/* ================================================================
+   DISK I/O MONITOR
+================================================================ */
+#section-mon-disk .disk-hero {
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding: 16px 18px;
+    border: 1px solid rgba(244, 189, 85, 0.22);
+    border-radius: 10px;
+    background: linear-gradient(110deg, rgba(76, 59, 28, 0.3), rgba(21, 24, 27, 0.9) 54%);
+}
+
+#section-mon-disk .disk-hero .section-hero-icon {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+    background: rgba(244, 189, 85, 0.12);
+    border: 1px solid rgba(244, 189, 85, 0.25);
+}
+
+#section-mon-disk .disk-hero h2 { margin: 0 0 4px; }
+#section-mon-disk .disk-hero p { margin: 0; }
+
+.disk-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 34px;
+    margin-left: auto;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: rgba(255,255,255,0.02);
+    color: var(--text2);
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.disk-refresh-btn svg { width: 13px; height: 13px; }
+.disk-refresh-btn:hover { border-color: rgba(244,189,85,0.45); color: var(--text); }
+.disk-refresh-btn:focus-visible { outline: 2px solid #f4bd55; outline-offset: 2px; }
+
+.disk-stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.disk-stat-card,
+.disk-panel,
+.disk-drive-card {
+    min-width: 0;
+    border: 1px solid rgba(255,255,255,0.075);
+    border-radius: 9px;
+    background: #15191e;
+}
+
+.disk-stat-card { padding: 14px; }
+.disk-stat-label,
+.disk-panel-head,
+.disk-subsection-title {
+    color: #87919a;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+}
+
+.disk-stat-value {
+    overflow: hidden;
+    margin: 7px 0 5px;
+    color: #f4f5f6;
+    font-size: 23px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.disk-stat-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #99a4ad;
+    font-size: 10px;
+}
+
+.disk-stat-glyph { font-size: 12px; font-weight: 700; }
+.disk-blue { color: #62a8ff; }
+.disk-amber { color: #f3bd55; }
+.disk-green { color: #42d9a5; }
+.disk-violet { color: #aaa0e8; }
+
+.disk-insights-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(220px, 0.9fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.disk-panel { padding: 14px 16px; }
+.disk-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.disk-chart-legend { display: flex; gap: 12px; text-transform: none; letter-spacing: 0; }
+.disk-chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.disk-chart-legend i { width: 7px; height: 7px; border-radius: 2px; }
+.legend-read { background: #62a8ff; }
+.legend-write { background: #f3bd55; }
+
+#disk-throughput-chart { display: block; width: 100%; height: 145px; }
+.disk-chart-empty { padding: 58px 0; color: #77828b; font-size: 12px; text-align: center; }
+
+.disk-health-panel { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.disk-health-status { color: #55d8a9; font-size: 10px; text-transform: none; letter-spacing: 0; }
+.disk-health-metric { display: grid; gap: 6px; }
+.disk-health-metric > div:first-child { display: flex; justify-content: space-between; gap: 8px; color: #8e99a2; font-size: 11px; }
+.disk-health-metric strong { color: #f3f4f5; font-size: 12px; font-variant-numeric: tabular-nums; }
+.disk-health-track,
+.disk-drive-track,
+.disk-process-track { height: 4px; overflow: hidden; border-radius: 10px; background: #292e34; }
+.disk-health-track i,
+.disk-drive-track i,
+.disk-process-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #21c994, #54e4b2); transition: width 400ms ease; }
+
+.disk-subsection { margin-bottom: 14px; }
+.disk-subsection-title { margin: 0 0 9px; }
+.disk-drive-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.disk-drive-card { padding: 12px; }
+.disk-drive-head { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.disk-drive-icon { display: grid; flex: 0 0 30px; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(98,168,255,0.2); border-radius: 8px; background: rgba(98,168,255,0.1); color: #78b5ff; font-size: 10px; font-weight: 700; }
+.disk-drive-identity { display: grid; flex: 1; min-width: 0; gap: 3px; }
+.disk-drive-identity strong { overflow: hidden; color: #e6e9eb; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.disk-drive-identity span { overflow: hidden; color: #8c969f; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.disk-drive-head > b { color: #62a8ff; font-size: 13px; }
+.disk-drive-track { height: 4px; margin: 9px 0 6px; }
+.disk-drive-track i { background: linear-gradient(90deg, #4a9cf5, #82baff); }
+.disk-drive-footer { color: #9aa4ad; font-size: 10px; }
+
+.disk-activity-panel { padding-bottom: 4px; }
+.disk-activity-heading > span:last-child { color: #727e88; font-size: 9px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.disk-activity-table-wrap { overflow-x: auto; }
+.disk-activity-table { width: 100%; border-collapse: collapse; }
+.disk-activity-table th { padding: 0 8px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); color: #77828b; font-size: 9px; font-weight: 500; text-align: left; text-transform: uppercase; }
+.disk-activity-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.035); color: #c6cbd0; font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.disk-activity-table tr:last-child td { border-bottom: 0; }
+.disk-activity-table td:first-child { max-width: 180px; color: #edf0f2; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.disk-activity-table th:last-child,
+.disk-activity-table td:last-child { width: 24%; }
+.disk-process-track { height: 4px; min-width: 70px; }
+.disk-empty-state { padding: 16px 8px !important; color: #7f8992 !important; font-size: 11px !important; text-align: center; }
+
+@media (max-width: 860px) {
+    .disk-insights-grid { grid-template-columns: minmax(0, 1fr); }
+    .disk-health-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .disk-health-panel .disk-panel-head { grid-column: 1 / -1; }
+}
+
+@media (max-width: 620px) {
+    .disk-stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .disk-drive-grid { grid-template-columns: minmax(0, 1fr); }
+    #section-mon-disk .disk-hero { padding: 12px; }
+    #section-mon-disk .disk-hero .section-hero-icon { flex-basis: 38px; width: 38px; height: 38px; }
+    .disk-refresh-btn { padding: 0 8px; }
+    .disk-refresh-btn span { display: none; }
+    .disk-health-panel { grid-template-columns: minmax(0, 1fr); }
+    .disk-health-panel .disk-panel-head { grid-column: auto; }
+    .disk-activity-table th,
+    .disk-activity-table td { padding-right: 5px; padding-left: 5px; }
+}
 
 
 /* ================================================================

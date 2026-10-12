@@ -8,35 +8,130 @@
 <section class="section" id="section-reports">
         <div class="section-hero"><div class="section-hero-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div><div><h2>Reports &amp; Benchmarks</h2><p>Compare system metrics before and after optimization. Health scores are calculated from real, measured metrics.</p></div></div>
         <div class="benchmark-controls">
-            <button class="scan-btn" id="takeBefore">📸 Take Before Snapshot</button>
-            <button class="scan-btn" id="takeAfter">📸 Take After Snapshot</button>
+            <button class="scan-btn" id="takeBefore">Take before snapshot</button>
+            <button class="scan-btn" id="takeAfter">Take after snapshot</button>
             <button class="scan-btn" id="clearBenchmark" >Clear</button>
         </div>
         <div id="benchmarkCompare" class="benchmark-compare"></div>
     </section>
 <section class="section" id="section-settings">
-        <div class="section-hero"><div class="section-hero-icon" style="background:rgba(255,255,255,0.06)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#94a3b8"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h2>Settings</h2><p>Configure OptiCore preferences and optimization behavior.</p></div></div>
+        <div class="section-hero"><div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h2>Settings</h2><p>Set how OptiCore looks and how system changes are handled on this device.</p></div></div>
         <div class="settings-grid">
-            <div class="panel"><div class="panel-header"><h3>General</h3></div>
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>General</h3><span class="panel-sub">App behavior</span></div>
                 <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Launch at Windows startup</span><small>Start OptiCore automatically when Windows boots</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Minimize to system tray</span><small>Keep running in the background when window is closed</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Show notifications</span><small>Get alerts when optimization completes</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <label class="setting-row" for="settingsLanguage"><span class="setting-info"><span>Language</span><small>Choose the app language</small></span><select id="settingsLanguage" class="settings-select"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option></select></label>
+                    <label class="setting-row" for="settingsTheme"><span class="setting-info"><span>Color theme</span><small>Match your system or choose fixed appearance</small></span><select id="settingsTheme" class="settings-select"><option value="system">Match Windows</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+                    <label class="setting-row" for="settingsMode"><span class="setting-info"><span>Default mode</span><small>Simple mode keeps the app beginner-friendly</small></span><select id="settingsMode" class="settings-select"><option value="simple">Simple</option><option value="advanced">Advanced</option></select></label>
+                    <label class="setting-row" for="settingsStartPage"><span class="setting-info"><span>Default start page</span><small>Open on startup</small></span><select id="settingsStartPage" class="settings-select"><option value="dashboard">Dashboard</option><option value="perf-startup">Startup</option><option value="cl-windows">Apps & Cleanup</option></select></label>
+                    <label class="setting-row" for="settingsStartWithWindows"><span class="setting-info"><span>Start with Windows</span><small>Launch OptiCore automatically at sign-in</small></span><span class="toggle"><input id="settingsStartWithWindows" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsMinimizeToTray"><span class="setting-info"><span>Minimize to tray</span><small>Keep OptiCore running in the background</small></span><span class="toggle"><input id="settingsMinimizeToTray" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsAutoUpdateCheck"><span class="setting-info"><span>Check for updates automatically</span><small>Look for app updates on a schedule</small></span><span class="toggle"><input id="settingsAutoUpdateCheck" type="checkbox"><span class="toggle-slider"></span></span></label>
                 </div>
             </div>
-            <div class="panel"><div class="panel-header"><h3>Optimization</h3></div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Safety &amp; backup</h3><span class="panel-sub">Protection before changes</span></div>
                 <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Auto-clean temp files</span><small>Automatically clear junk files weekly</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Safe mode cleaning</span><small>Skip files that may be in use by the system</small></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
-                    <div class="setting-row"><div class="setting-info"><span>Deep scan mode</span><small>Scan more locations (slower but more thorough)</small></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                    <label class="setting-row" for="settingsRestoreBeforeChanges"><span class="setting-info"><span>Create restore point before every change</span><small>Recommended for risky Windows adjustments</small></span><span class="toggle"><input id="settingsRestoreBeforeChanges" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsConfirmDelete"><span class="setting-info"><span>Confirm before deleting or uninstalling</span><small>Prevents accidental removal</small></span><span class="toggle"><input id="settingsConfirmDelete" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsBackupLocation"><span class="setting-info"><span>Backup location</span><small>Folder used for restore snapshots</small></span><input id="settingsBackupLocation" type="text" class="settings-select" value="Documents\OptiCore\Backups" style="min-width:180px;" /></label>
+                    <label class="setting-row" for="settingsBackupRetention"><span class="setting-info"><span>Keep backups for</span><small>How long local backups are stored</small></span><select id="settingsBackupRetention" class="settings-select"><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option><option value="365">1 year</option></select></label>
+                    <label class="setting-row" for="settingsRiskyActionsWarn"><span class="setting-info"><span>Warn about risky actions</span><small>Show a security warning before dangerous steps</small></span><span class="toggle"><input id="settingsRiskyActionsWarn" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsExclusionList"><span class="setting-info"><span>Exclusion list</span><small>Apps and settings the tool must never touch</small></span><textarea id="settingsExclusionList" class="settings-select" rows="3" style="resize:vertical; min-width:220px;">Windows Defender, Microsoft Store, Steam</textarea></label>
                 </div>
             </div>
-            <div class="panel"><div class="panel-header"><h3>Account</h3></div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Uninstall &amp; cleanup</h3><span class="panel-sub">App removal behavior</span></div>
                 <div class="settings-list">
-                    <div class="setting-row"><div class="setting-info"><span>Username</span><small>admin</small></div><button class="settings-btn">Change</button></div>
-                    <div class="setting-row"><div class="setting-info"><span>Password</span><small>Last changed: Today</small></div><button class="settings-btn">Change</button></div>
-                    <div class="setting-row"><div class="setting-info"><span>Version</span><small>OptiCore v2.0.0</small></div><button class="settings-btn">Check Updates</button></div>
+                    <label class="setting-row" for="settingsCleanupLevel"><span class="setting-info"><span>Leftover cleanup level</span><small>Off, Safe, or Deep cleanup</small></span><select id="settingsCleanupLevel" class="settings-select"><option value="off">Off</option><option value="safe">Safe</option><option value="deep">Deep</option></select></label>
+                    <label class="setting-row" for="settingsSilentUninstall"><span class="setting-info"><span>Silent uninstall by default</span><small>Run without extra confirmation prompts</small></span><span class="toggle"><input id="settingsSilentUninstall" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsRecycleBinLeftovers"><span class="setting-info"><span>Move leftovers to Recycle Bin</span><small>Safer than permanent deletion</small></span><span class="toggle"><input id="settingsRecycleBinLeftovers" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsUninstallQueueMode"><span class="setting-info"><span>Uninstall queue behavior</span><small>Ask before a queued uninstall or run automatically</small></span><select id="settingsUninstallQueueMode" class="settings-select"><option value="ask">Ask first</option><option value="auto">Auto-run</option></select></label>
                 </div>
             </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Scanning &amp; automation</h3><span class="panel-sub">Maintenance scheduling</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsScheduledScan"><span class="setting-info"><span>Scheduled scan</span><small>How often to scan apps and startup items</small></span><select id="settingsScheduledScan" class="settings-select"><option value="off">Off</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label>
+                    <label class="setting-row" for="settingsScheduledAutoCleanup"><span class="setting-info"><span>Scheduled auto-cleanup</span><small>Run cleanup automatically</small></span><select id="settingsScheduledAutoCleanup" class="settings-select"><option value="off">Off</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label>
+                    <label class="setting-row" for="settingsScanWhenIdle"><span class="setting-info"><span>Scan only when idle</span><small>Reduce interruptions while you are working</small></span><span class="toggle"><input id="settingsScanWhenIdle" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsScanOnACPower"><span class="setting-info"><span>Scan only on AC power</span><small>Ignore scans when on battery</small></span><span class="toggle"><input id="settingsScanOnACPower" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsScanApps"><span class="setting-info"><span>Scan apps</span><small>Look for installed programs and leftovers</small></span><span class="toggle"><input id="settingsScanApps" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsScanStartup"><span class="setting-info"><span>Scan startup items</span><small>Find slow-start programs</small></span><span class="toggle"><input id="settingsScanStartup" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsScanTemp"><span class="setting-info"><span>Scan temp files</span><small>Clean caches and temp folders</small></span><span class="toggle"><input id="settingsScanTemp" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsScanStoreApps"><span class="setting-info"><span>Scan Store apps</span><small>Include Microsoft Store apps in checks</small></span><span class="toggle"><input id="settingsScanStoreApps" type="checkbox"><span class="toggle-slider"></span></span></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Notifications</h3><span class="panel-sub">Alerts and quiet hours</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsNotificationsEnabled"><span class="setting-info"><span>Enable notifications</span><small>Allow OptiCore to show alerts</small></span><span class="toggle"><input id="settingsNotificationsEnabled" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsAlertLowDisk"><span class="setting-info"><span>Low disk space alerts</span><small>Warn when storage is almost full</small></span><span class="toggle"><input id="settingsAlertLowDisk" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsAlertNewStartup"><span class="setting-info"><span>New startup item alerts</span><small>Alert on new startup activity</small></span><span class="toggle"><input id="settingsAlertNewStartup" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsAlertBloatware"><span class="setting-info"><span>Bloatware detected alerts</span><small>Show warnings when junk apps are found</small></span><span class="toggle"><input id="settingsAlertBloatware" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsAlertUpdates"><span class="setting-info"><span>Update available alerts</span><small>Remind you about software updates</small></span><span class="toggle"><input id="settingsAlertUpdates" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsQuietHours"><span class="setting-info"><span>Quiet hours</span><small>When notifications should be silenced</small></span><input id="settingsQuietHours" type="text" class="settings-select" value="22:00-07:00" style="min-width:180px;" /></label>
+                    <label class="setting-row" for="settingsNotificationStyle"><span class="setting-info"><span>Notification style</span><small>Popup, tray only, or none</small></span><select id="settingsNotificationStyle" class="settings-select"><option value="popup">Popup</option><option value="tray">Tray only</option><option value="none">None</option></select></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Updates</h3><span class="panel-sub">Software update behavior</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsAppUpdateBehavior"><span class="setting-info"><span>Per-app update behavior</span><small>Auto, notify, or ignore</small></span><select id="settingsAppUpdateBehavior" class="settings-select"><option value="auto">Auto</option><option value="notify">Notify</option><option value="ignore">Ignore</option></select></label>
+                    <label class="setting-row" for="settingsUpdateSource"><span class="setting-info"><span>Update source</span><small>Where app updates should come from</small></span><select id="settingsUpdateSource" class="settings-select"><option value="winget">winget</option><option value="msstore">Microsoft Store</option></select></label>
+                    <label class="setting-row" for="settingsIncludePrerelease"><span class="setting-info"><span>Include pre-release versions</span><small>Allow testing builds in update checks</small></span><span class="toggle"><input id="settingsIncludePrerelease" type="checkbox"><span class="toggle-slider"></span></span></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Privacy</h3><span class="panel-sub">Data collection and cleanup</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsAnonymousUsage"><span class="setting-info"><span>Anonymous usage data</span><small>Help us improve the app with anonymous data</small></span><span class="toggle"><input id="settingsAnonymousUsage" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsCrashReports"><span class="setting-info"><span>Crash reports</span><small>Send diagnostics after app crashes</small></span><span class="toggle"><input id="settingsCrashReports" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsClearHistoryBtn"><span class="setting-info"><span>History and logs</span><small>Remove stored activity and diagnostic logs</small></span><button id="settingsClearHistoryBtn" class="btn btn-secondary" type="button">Clear history</button></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Appearance &amp; display</h3><span class="panel-sub">Layout and readability</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsDensity"><span class="setting-info"><span>Interface density</span><small>Comfortable or compact layout</small></span><select id="settingsDensity" class="settings-select"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
+                    <label class="setting-row" for="settingsListView"><span class="setting-info"><span>List view</span><small>Comfortable or compact list presentation</small></span><select id="settingsListView" class="settings-select"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
+                    <label class="setting-row" for="settingsFontSize"><span class="setting-info"><span>Font size</span><small>Normal or larger text mode</small></span><select id="settingsFontSize" class="settings-select"><option value="normal">Normal</option><option value="large">Larger</option></select></label>
+                    <label class="setting-row" for="settingsHighContrast"><span class="setting-info"><span>High contrast</span><small>Increase readability for accessibility</small></span><span class="toggle"><input id="settingsHighContrast" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsShowSystemApps"><span class="setting-info"><span>Show system apps</span><small>Include built-in Windows apps in lists</small></span><span class="toggle"><input id="settingsShowSystemApps" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsSortOrder"><span class="setting-info"><span>Sort order</span><small>Default sorting method for app lists</small></span><select id="settingsSortOrder" class="settings-select"><option value="name">Name</option><option value="size">Size</option><option value="date">Date</option></select></label>
+                    <label class="setting-row" for="settingsMotion"><span class="setting-info"><span>Reduce motion</span><small>Lower animation and transition intensity</small></span><span class="toggle"><input id="settingsMotion" type="checkbox"><span class="toggle-slider"></span></span></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Advanced</h3><span class="panel-sub">Developer and support options</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsRunAsAdmin"><span class="setting-info"><span>Run as administrator by default</span><small>Use elevated rights when available</small></span><span class="toggle"><input id="settingsRunAsAdmin" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsLogging"><span class="setting-info"><span>Logging level</span><small>Off, Basic, or Detailed logging</small></span><select id="settingsLogging" class="settings-select"><option value="off">Off</option><option value="basic">Basic</option><option value="detailed">Detailed</option></select></label>
+                    <label class="setting-row" for="settingsDeveloperMode"><span class="setting-info"><span>Developer options</span><small>Show advanced internal tools</small></span><span class="toggle"><input id="settingsDeveloperMode" type="checkbox"><span class="toggle-slider"></span></span></label>
+                    <label class="setting-row" for="settingsProxySettings"><span class="setting-info"><span>Proxy settings</span><small>Use system proxy or custom server</small></span><input id="settingsProxySettings" type="text" class="settings-select" value="Use system proxy" style="min-width:180px;" /></label>
+                    <label class="setting-row" for="settingsOpenLogFolderBtn"><span class="setting-info"><span>Log folder</span><small>Open the saved diagnostics folder</small></span><button id="settingsOpenLogFolderBtn" class="btn btn-secondary" type="button">Open log folder</button></label>
+                </div>
+            </div>
+
+            <div class="panel settings-panel">
+                <div class="panel-header"><h3>Data &amp; reset</h3><span class="panel-sub">Backup and restore app configuration</span></div>
+                <div class="settings-list">
+                    <label class="setting-row" for="settingsExportBtn"><span class="setting-info"><span>Export settings</span><small>Save your app preferences to a file</small></span><button id="settingsExportBtn" class="btn btn-secondary" type="button">Export</button></label>
+                    <label class="setting-row" for="settingsImportBtn"><span class="setting-info"><span>Import settings</span><small>Restore a saved configuration</small></span><button id="settingsImportBtn" class="btn btn-secondary" type="button">Import</button></label>
+                    <label class="setting-row" for="settingsClearCacheBtn"><span class="setting-info"><span>Clear cache</span><small>Remove local temporary app data</small></span><button id="settingsClearCacheBtn" class="btn btn-secondary" type="button">Clear cache</button></label>
+                    <label class="setting-row" for="settingsVersionLabel"><span class="setting-info"><span>About</span><small>Version, license, help, and feedback</small></span><strong id="settingsVersionLabel">2.0.0</strong></label>
+                </div>
+                <p class="settings-note">Preferences are stored locally on this device. System monitoring and demo data behavior are unchanged.</p>
+            </div>
+
+            <div class="settings-footer"><span>OptiCore Suite <strong>2.0</strong></span><button id="resetSettingsBtn" class="btn btn-secondary" type="button">Restore default preferences</button></div>
         </div>
     </section>

@@ -34,7 +34,10 @@ void print_menu() {
     printf("Select an option: ");
 }
 
-int main() {
+int main(int argc, char **argv) {
+    int memoryCommand = memory_optimizer_cli(argc, argv);
+    if (memoryCommand >= 0) return memoryCommand;
+
     if (!is_run_as_admin()) {
         printf("\n[!] WARNING: You are not running as Administrator.\n");
         printf("Some optimizations (Network reset, Startup management) may fail.\n\n");

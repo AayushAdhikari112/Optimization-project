@@ -1,0 +1,975 @@
+:root {
+    color-scheme: light;
+    --bg: #f1f3ef;
+    --bg2: #e8ebe7;
+    --bg3: #dce1dc;
+    --surface: #f7f8f5;
+    --surface2: #edf0ec;
+    --glass: #f7f8f5;
+    --glass2: #edf0ec;
+    --border: #d7ddd7;
+    --border2: #c2cbc3;
+    --border-hot: #799b87;
+    --text: #27312b;
+    --text2: #4c5a51;
+    --text3: #5e6b62;
+    --accent: #326b56;
+    --accent2: #326b56;
+    --accent3: #24533f;
+    --primary: #326b56;
+    --on-primary: #f7f8f5;
+    --highlight: #895a24;
+    --cyan: #326b56;
+    --cyan2: #895a24;
+    --green: #326b56;
+    --warn: #895a24;
+    --danger: #895a24;
+    --glow-purple: none;
+    --glow-cyan: none;
+    --glow-green: none;
+    --radius: 8px;
+    --radius-sm: 8px;
+    --radius-lg: 8px;
+    --section-gap: 24px;
+    --grid-gap: 16px;
+    --motion-fast: 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    --motion-page: 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    --theme-page-bg: var(--bg);
+    --theme-panel: var(--surface);
+    --theme-panel-secondary: var(--surface2);
+    --theme-border: var(--border);
+    --theme-text: var(--text);
+    --theme-muted: var(--text2);
+    --theme-accent: var(--accent);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #1a201d;
+    --bg2: #222925;
+    --bg3: #2b332e;
+    --surface: #232a26;
+    --surface2: #2b332e;
+    --glass: #232a26;
+    --glass2: #2b332e;
+    --border: #39443d;
+    --border2: #4b594f;
+    --border-hot: #75937f;
+    --text: #e4e9e4;
+    --text2: #bdc7bf;
+    --text3: #a5b0a8;
+    --accent: #87b39a;
+    --accent2: #87b39a;
+    --accent3: #a9cbb7;
+    --primary: #87b39a;
+    --on-primary: #1a201d;
+    --highlight: #d5ad79;
+    --cyan: #87b39a;
+    --cyan2: #d5ad79;
+    --green: #87b39a;
+    --warn: #d5ad79;
+    --danger: #d5ad79;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) {
+        color-scheme: dark;
+        --bg: #1a201d;
+        --bg2: #222925;
+        --bg3: #2b332e;
+        --surface: #232a26;
+        --surface2: #2b332e;
+        --glass: #232a26;
+        --glass2: #2b332e;
+        --border: #39443d;
+        --border2: #4b594f;
+        --border-hot: #75937f;
+        --text: #e4e9e4;
+        --text2: #bdc7bf;
+        --text3: #a5b0a8;
+        --accent: #87b39a;
+        --accent2: #87b39a;
+        --accent3: #a9cbb7;
+        --primary: #87b39a;
+        --on-primary: #1a201d;
+        --highlight: #d5ad79;
+        --cyan: #87b39a;
+        --cyan2: #d5ad79;
+        --green: #87b39a;
+        --warn: #d5ad79;
+        --danger: #d5ad79;
+    }
+}
+
+html,
+body,
+.app-layout {
+    background: var(--bg) !important;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+body::before,
+.cozy-sidebar .maintenance-menu::before,
+.section-hero::before,
+.health-card::before,
+.safety-card::before {
+    background: none !important;
+    content: none !important;
+}
+
+body::before {
+    display: none !important;
+}
+
+.cozy-sidebar {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+}
+
+.cozy-sidebar .sidebar-header .logo,
+.title-left h1,
+.title-center,
+.section-hero h2,
+.panel-header h3,
+.snapshot-header h2 {
+    color: var(--text) !important;
+}
+
+.cozy-sidebar .sidebar-header .logo {
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.cozy-sidebar .search-bar input,
+.settings-select,
+input:not([type="checkbox"]),
+select,
+textarea {
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+}
+
+.cozy-sidebar .search-bar input::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--text3) !important;
+}
+
+.cozy-sidebar .search-bar input:focus,
+.settings-select:focus,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    border-color: var(--accent) !important;
+    outline: 3px solid color-mix(in srgb, var(--accent) 22%, transparent);
+    outline-offset: 1px;
+    box-shadow: none !important;
+}
+
+.cozy-sidebar .hotkey,
+.cozy-sidebar .premium-box,
+.title-bar,
+.system-snapshot,
+.health-card,
+.safety-card,
+.hw-card,
+.section-hero,
+.panel,
+.opt-card,
+.dc-card,
+.si-card,
+.si-runtime-item,
+.si-gpu-card,
+.si-stick,
+.si-drive-card,
+.hw-hero-card,
+.gpu-gauge-card,
+.gpu-info-card,
+.tweak-item,
+.snapshot-metric,
+.settings-panel,
+.settings-row,
+.adapter-card,
+.tool-card,
+.diagnostic-card,
+.privacy-card {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 5px 18px rgba(24, 36, 29, 0.055) !important;
+}
+
+.title-bar {
+    background: var(--surface) !important;
+    backdrop-filter: none !important;
+}
+
+.brand-icon-yuno {
+    background: var(--primary) !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+.title-center {
+    background: none !important;
+    -webkit-text-fill-color: var(--text2) !important;
+    font-weight: 600;
+}
+
+.demo-label {
+    border-color: var(--border2) !important;
+    color: var(--text2) !important;
+    -webkit-text-fill-color: var(--text2) !important;
+}
+
+.cozy-sidebar .menu-label,
+.cozy-sidebar .premium-box p,
+.cozy-sidebar .nav-item,
+.cozy-sidebar .nav-item svg,
+.health-status,
+.snapshot-header p {
+    color: var(--text2) !important;
+}
+
+.status-item,
+.status-item strong,
+.health-status .status-item span:not(.dot) {
+    color: var(--text2) !important;
+}
+
+.dot.green,
+.dot.yellow {
+    background: var(--primary) !important;
+    box-shadow: none !important;
+}
+
+.cozy-sidebar .nav-item {
+    min-height: 38px;
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.cozy-sidebar .nav-item:hover,
+.cozy-sidebar .nav-item[data-section]:hover {
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    transform: none !important;
+}
+
+.cozy-sidebar .nav-item.active,
+.cozy-sidebar .nav-item.active[data-section] {
+    background: color-mix(in srgb, var(--accent) 13%, var(--surface)) !important;
+    color: var(--accent3) !important;
+}
+
+.cozy-sidebar .nav-item.active svg,
+.cozy-sidebar .nav-item.active[data-section] svg {
+    color: var(--accent) !important;
+}
+
+.cozy-sidebar .nav-item[data-section] {
+    --item-accent: var(--accent) !important;
+}
+
+.cozy-sidebar .nav-item[data-section] svg {
+    color: var(--text2) !important;
+    border-color: transparent !important;
+    background: transparent !important;
+}
+
+.cozy-sidebar .nav-item.active[data-section]::before {
+    background: var(--accent) !important;
+    box-shadow: none !important;
+}
+
+.cozy-sidebar .premium-badge {
+    color: var(--text2) !important;
+}
+
+.badge.beta::before {
+    content: none !important;
+}
+
+.cozy-sidebar .premium-btn,
+.btn-primary,
+.run-btn,
+.scan-btn,
+button.primary,
+.settings-btn {
+    border: 1px solid var(--primary) !important;
+    border-radius: 8px !important;
+    background: var(--primary) !important;
+    color: var(--on-primary) !important;
+    box-shadow: none !important;
+    transition: filter var(--motion-fast), transform var(--motion-fast);
+}
+
+.cozy-sidebar .premium-btn:hover,
+.btn-primary:hover,
+.run-btn:hover,
+.scan-btn:hover,
+.settings-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+.btn-secondary,
+.settings-btn.secondary,
+button:not(.btn-primary):not(.premium-btn):not(.run-btn):not(.scan-btn):not(.nav-item):not(.win-btn):not(.mobile-nav-toggle) {
+    border-radius: 8px;
+    transition: background-color var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast), transform var(--motion-fast);
+}
+
+.btn-secondary {
+    border: 1px solid var(--border2) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+}
+
+.btn-secondary:hover,
+button:not(:disabled):not(.btn-primary):not(.premium-btn):not(.run-btn):not(.scan-btn):not(.nav-item):hover {
+    border-color: var(--border2);
+    background: var(--bg2);
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input[type="checkbox"]:focus-visible + .toggle-slider {
+    outline: 3px solid color-mix(in srgb, var(--accent) 36%, transparent);
+    outline-offset: 2px;
+}
+
+.section {
+    gap: var(--section-gap);
+}
+
+.section.active > * {
+    animation: section-enter var(--motion-page) both;
+}
+
+@keyframes section-enter {
+    from { opacity: 0; transform: translateY(9px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-hero {
+    padding: 22px 24px !important;
+}
+
+.section-hero-icon,
+.tweak-icon {
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface2) !important;
+    color: var(--accent) !important;
+}
+
+.section-hero-icon svg,
+.tweak-icon svg {
+    color: var(--accent) !important;
+    stroke: currentColor;
+}
+
+.section-hero p,
+.panel-sub,
+.dim,
+.last-backup,
+.settings-note {
+    color: var(--text3) !important;
+}
+
+.tweak-item:hover,
+.panel:hover,
+.hw-card:hover,
+.si-card:hover,
+.opt-card:hover {
+    border-color: var(--border2) !important;
+    background: var(--surface) !important;
+    box-shadow: 0 8px 22px rgba(24, 36, 29, 0.08) !important;
+    transform: translateY(-1px);
+}
+
+.health-score,
+.hw-value,
+.snapshot-metric strong,
+.stat-value,
+.metric-value,
+.data-value,
+.si-card strong {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+}
+
+.health-svg .progress,
+.cpu-fill,
+.gpu-fill,
+.ram-fill,
+.disk-fill,
+.hw-bar .fill {
+    stroke: var(--primary) !important;
+    background: var(--primary) !important;
+    box-shadow: none !important;
+}
+
+.health-svg,
+.ring-glow {
+    filter: none !important;
+}
+
+.ring-glow {
+    display: none !important;
+}
+
+.hw-bar,
+.hw-core-bar {
+    background: var(--bg3) !important;
+}
+
+.health-card,
+.safety-card,
+.hw-card,
+.system-snapshot {
+    padding: 20px !important;
+}
+
+.hw-badge.neutral,
+.badge.beta,
+.status-badge,
+.data-badge {
+    border-color: var(--border) !important;
+    background: var(--surface2) !important;
+    color: var(--text2) !important;
+}
+
+.settings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+}
+
+.settings-panel {
+    padding: 20px;
+}
+
+.settings-panel .panel-header {
+    margin-bottom: 12px;
+}
+
+.settings-panel .settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-panel .setting-row {
+    display: flex;
+    min-height: 68px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.settings-panel .setting-row:last-child {
+    border-bottom: 0;
+}
+
+.setting-info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--text);
+}
+
+.setting-info small {
+    color: var(--text3);
+    line-height: 1.45;
+}
+
+.settings-select {
+    width: 142px;
+    min-height: 38px;
+    padding: 0 32px 0 10px;
+    flex: 0 0 auto;
+}
+
+.settings-panel .toggle {
+    flex: 0 0 auto;
+}
+
+.toggle-slider {
+    background: var(--bg3) !important;
+    border: 1px solid var(--border2);
+}
+
+.toggle input:checked + .toggle-slider {
+    background: var(--primary) !important;
+    border-color: var(--primary);
+}
+
+.settings-note {
+    margin: 16px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.settings-footer {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+    color: var(--text3);
+    font-size: 13px;
+}
+
+.settings-footer strong {
+    color: var(--text2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+}
+
+.snapshot-metric + .snapshot-metric {
+    border-color: var(--border) !important;
+}
+
+#sections-container [class*="-card"],
+#sections-container [class*="-panel"],
+#sections-container [class*="-tile"],
+#sections-container [class*="-group"] {
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    background-color: var(--surface) !important;
+    background-image: none !important;
+    box-shadow: 0 5px 18px rgba(24, 36, 29, 0.055) !important;
+}
+
+#sections-container h1,
+#sections-container h2,
+#sections-container h3,
+#sections-container h4,
+#sections-container strong,
+#sections-container b {
+    color: var(--text) !important;
+}
+
+#sections-container p,
+#sections-container small,
+#sections-container label,
+#sections-container li,
+#sections-container dt,
+#sections-container dd,
+#sections-container th,
+#sections-container td {
+    color: var(--text2) !important;
+}
+
+#sections-container input,
+#sections-container select,
+#sections-container textarea {
+    background: var(--surface2) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+}
+
+#sections-container .hw-live-blue,
+#sections-container .hw-live-red,
+#sections-container .hw-live-green,
+#sections-container .hw-live-purple,
+#sections-container .hw-live-orange {
+    border-color: var(--border) !important;
+    background: var(--surface) !important;
+}
+
+#sections-container .hw-live-val,
+#sections-container .hw-live-label,
+#sections-container .hw-core-row,
+#sections-container .hw-core-header {
+    color: var(--text2) !important;
+}
+
+#sections-container .hw-core-table,
+#sections-container .hw-core-header,
+#sections-container .hw-core-row:hover {
+    border-color: var(--border) !important;
+    background: var(--surface2) !important;
+}
+
+#sections-container .hw-core-bar,
+#sections-container .hw-core-bar div {
+    background: var(--bg3) !important;
+}
+
+#sections-container .hw-core-bar div {
+    background: var(--primary) !important;
+}
+
+.section {
+    --section-accent: var(--accent) !important;
+}
+
+#sections-container svg[stroke] {
+    stroke: var(--text3) !important;
+}
+
+#sections-container .section-hero-icon svg,
+#sections-container .tweak-icon svg,
+#sections-container .hw-title svg {
+    stroke: var(--accent) !important;
+}
+
+#sections-container button:not(.btn-primary):not(.premium-btn):not(.run-btn):not(.scan-btn):not(.cleanup-rescan-btn) {
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface2) !important;
+    background-image: none !important;
+    color: var(--text2) !important;
+    box-shadow: none !important;
+}
+
+#sections-container button:not(:disabled):not(.btn-primary):not(.premium-btn):not(.run-btn):not(.scan-btn):not(.cleanup-rescan-btn):hover {
+    border-color: var(--border2) !important;
+    background: var(--bg2) !important;
+    color: var(--text) !important;
+}
+
+#sections-container #section-win-ui .si-tabs {
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface2) !important;
+    box-shadow: none !important;
+}
+
+#sections-container #section-win-ui .si-tab {
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: var(--text2) !important;
+    letter-spacing: 0;
+}
+
+#sections-container #section-win-ui .si-tab.active {
+    border-color: var(--border2) !important;
+    background: color-mix(in srgb, var(--accent) 13%, var(--surface)) !important;
+    color: var(--accent3) !important;
+    box-shadow: inset 0 -2px 0 var(--accent) !important;
+}
+
+#sections-container #section-win-ui .win-ui-header-row {
+    border-color: var(--border) !important;
+    color: var(--accent3) !important;
+    letter-spacing: 0.04em;
+}
+
+#sections-container #section-win-ui .win-ui-count,
+#sections-container #section-win-ui .pc-toggle-label {
+    color: var(--text3) !important;
+}
+
+#sections-container #section-win-ui .premium-card {
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface) !important;
+    box-shadow: 0 5px 18px rgba(24, 36, 29, 0.055) !important;
+}
+
+#sections-container #section-win-ui .premium-card:hover {
+    border-color: var(--border2) !important;
+    background: var(--surface) !important;
+    transform: translateY(-1px);
+}
+
+#sections-container #section-win-ui .pc-pill,
+#sections-container #section-win-ui .pc-icons {
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--surface2) !important;
+    color: var(--text2) !important;
+}
+
+#sections-container #section-win-ui .pc-title {
+    color: var(--text) !important;
+    letter-spacing: 0;
+}
+
+#sections-container #section-win-ui .pc-desc {
+    color: var(--text2) !important;
+}
+
+#sections-container #section-win-ui .pc-slider {
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    background: var(--bg3) !important;
+}
+
+#sections-container #section-win-ui input:checked + .pc-slider {
+    border-color: var(--primary) !important;
+    background: var(--primary) !important;
+}
+
+#sections-container #section-win-ui .pc-slider::before {
+    background: var(--surface) !important;
+    box-shadow: 0 1px 2px rgba(24, 36, 29, 0.14) !important;
+}
+
+.dot.pulse,
+.orbit,
+.orbit-dot,
+.ring-glow {
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+.status-dot,
+.hw-live-dot,
+.gaming-mode-card.active .gm-dot {
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+    .settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .settings-footer {
+        grid-column: auto;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 700px) {
+    .section {
+        padding: 16px !important;
+    }
+
+    .section-hero {
+        align-items: flex-start;
+        padding: 18px !important;
+    }
+
+    .settings-panel {
+        padding: 16px;
+    }
+
+    .settings-panel .setting-row {
+        gap: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --motion-fast: 1ms linear;
+        --motion-page: 1ms linear;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] *::before,
+:root[data-motion="reduce"] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
+
+:root[data-density="compact"] {
+    --section-gap: 16px;
+    --grid-gap: 12px;
+}
+
+:root[data-density="compact"] .section {
+    padding-top: 16px;
+    padding-bottom: 20px;
+}
+
+:root[data-density="compact"] .health-card,
+:root[data-density="compact"] .safety-card,
+:root[data-density="compact"] .hw-card,
+:root[data-density="compact"] .system-snapshot,
+:root[data-density="compact"] .settings-panel {
+    padding: 14px !important;
+}
+
+#sections-container #section-diag-health {
+    --bg: var(--theme-page-bg);
+    --bg-header: var(--theme-panel);
+    --surface: var(--theme-panel);
+    --surface-hover: var(--theme-panel-secondary);
+    --surface-hero-from: var(--theme-panel);
+    --surface-hero-to: var(--theme-panel);
+    --border: var(--theme-border);
+    --border-btn: var(--theme-border);
+    --text: var(--theme-text);
+    --text-muted: var(--theme-muted);
+    --text-label: var(--theme-muted);
+    --accent-green: var(--theme-accent);
+    --accent-purple: var(--theme-accent);
+    --accent-purple-hover: var(--theme-accent);
+    --accent-green-bg: color-mix(in srgb, var(--theme-accent) 12%, transparent);
+    --accent-green-border: color-mix(in srgb, var(--theme-accent) 30%, transparent);
+    background: var(--theme-page-bg) !important;
+    color: var(--theme-text) !important;
+}
+
+#sections-container #section-diag-health .si-tabs,
+#sections-container #section-diag-health .si-os-hero,
+#sections-container #section-diag-health .si-card-group,
+#sections-container #section-diag-health .si-fw-card {
+    background: var(--theme-panel) !important;
+    border-color: var(--theme-border) !important;
+    box-shadow: 0 5px 18px rgba(24, 36, 29, 0.055) !important;
+}
+
+#sections-container #section-diag-health .si-tab {
+    color: var(--theme-muted) !important;
+}
+
+#sections-container #section-diag-health .si-tab:hover,
+#sections-container #section-diag-health .si-tab:focus-visible {
+    background: var(--theme-panel-secondary) !important;
+    color: var(--theme-text) !important;
+}
+
+#sections-container #section-diag-health .si-tab.active,
+#sections-container #section-diag-health .si-tab[aria-current="page"],
+#sections-container #section-diag-health .si-tab[aria-selected="true"] {
+    background: color-mix(in srgb, var(--theme-accent) 13%, var(--theme-panel)) !important;
+    color: var(--theme-accent) !important;
+    border-color: color-mix(in srgb, var(--theme-accent) 35%, var(--theme-border)) !important;
+    box-shadow: inset 0 -2px 0 var(--theme-accent) !important;
+}
+
+#sections-container #section-diag-health .si-os-icon {
+    background: color-mix(in srgb, var(--theme-accent) 14%, var(--theme-panel)) !important;
+    border-color: color-mix(in srgb, var(--theme-accent) 30%, var(--theme-border)) !important;
+    color: var(--theme-accent) !important;
+}
+
+#sections-container #section-diag-health .si-card-row {
+    border-color: var(--theme-border) !important;
+}
+
+#sections-container #section-diag-health .si-row-label,
+#sections-container #section-diag-health .si-live-label {
+    color: var(--theme-muted) !important;
+}
+
+#sections-container #section-diag-health .si-live-val {
+    color: var(--theme-text) !important;
+}
+
+#sections-container #section-diag-health .si-mini-bar {
+    background: var(--theme-panel-secondary) !important;
+}
+
+#sections-container #section-diag-health .hw-hero-card,
+#sections-container #section-diag-health .hw-stat,
+#sections-container #section-diag-health .hw-live-card,
+#sections-container #section-diag-health .hw-core-table,
+#sections-container #section-diag-health .hw-stick-card,
+#sections-container #section-diag-health .hw-drive-card,
+#sections-container #section-diag-health .hw-net-adapter-card,
+#sections-container #section-diag-health .hw-gpu-block,
+#sections-container #section-diag-health .hw-battery-widget,
+#sections-container #section-diag-health .hw-audio-item,
+#sections-container #section-diag-health .hw-driver-row:not(.hw-driver-head),
+#sections-container #section-diag-health .si-runtime-item,
+#sections-container #section-diag-health .si-gpu-card,
+#sections-container #section-diag-health .si-stick,
+#sections-container #section-diag-health .si-drive-card,
+#sections-container #section-diag-health .si-net-card,
+#sections-container #section-diag-health .si-monitor-list,
+#sections-container #section-diag-health .si-audio-item,
+#sections-container #section-diag-health .si-battery-widget {
+    background: var(--theme-panel) !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text) !important;
+    box-shadow: 0 5px 18px rgba(24, 36, 29, 0.055) !important;
+}
+
+#sections-container #section-diag-health .hw-core-header,
+#sections-container #section-diag-health .hw-driver-head {
+    background: var(--theme-panel-secondary) !important;
+    color: var(--theme-muted) !important;
+}
+
+#sections-container #section-diag-health .hw-core-row,
+#sections-container #section-diag-health .hw-driver-row,
+#sections-container #section-diag-health .hw-stick-model,
+#sections-container #section-diag-health .hw-drive-name,
+#sections-container #section-diag-health .hw-driver-group-title,
+#sections-container #section-diag-health .hw-partition-row,
+#sections-container #section-diag-health .hw-audio-item,
+#sections-container #section-diag-health .hw-health-bar-label,
+#sections-container #section-diag-health .hw-batt-lbl,
+#sections-container #section-diag-health .si-hero-name,
+#sections-container #section-diag-health .si-drive-name,
+#sections-container #section-diag-health .si-part-label,
+#sections-container #section-diag-health .si-driver-row:not(.si-driver-header),
+#sections-container #section-diag-health .si-audio-item {
+    color: var(--theme-text) !important;
+}
+
+#sections-container #section-diag-health .hw-stat-l,
+#sections-container #section-diag-health .hw-drive-sub,
+#sections-container #section-diag-health .hw-part-fs,
+#sections-container #section-diag-health .hw-vumeter-label,
+#sections-container #section-diag-health .hw-batt-lbl,
+#sections-container #section-diag-health .hw-health-bar-text,
+#sections-container #section-diag-health .si-hero-sub,
+#sections-container #section-diag-health .si-drive-sub,
+#sections-container #section-diag-health .si-batt-label,
+#sections-container #section-diag-health .si-battery-health-label,
+#sections-container #section-diag-health .si-battery-health-text {
+    color: var(--theme-muted) !important;
+}
+
+#sections-container #section-diag-health .hw-part-fs,
+#sections-container #section-diag-health .hw-bar,
+#sections-container #section-diag-health .hw-core-bar,
+#sections-container #section-diag-health .hw-wear-bar,
+#sections-container #section-diag-health .hw-vumeter,
+#sections-container #section-diag-health .hw-health-bar,
+#sections-container #section-diag-health .si-part-fs,
+#sections-container #section-diag-health .si-bar,
+#sections-container #section-diag-health .si-battery-health-bar {
+    background: var(--theme-panel-secondary) !important;
+}
+
+#sections-container #section-diag-health .hw-core-row,
+#sections-container #section-diag-health .hw-driver-row,
+#sections-container #section-diag-health .si-driver-row,
+#sections-container #section-diag-health .si-partition-list {
+    border-color: var(--theme-border) !important;
+}
+
+#sections-container #section-diag-health .hw-core-row:hover,
+#sections-container #section-diag-health .hw-driver-row:not(.hw-driver-head):hover,
+#sections-container #section-diag-health .si-driver-row:not(.si-driver-header):hover {
+    background: var(--theme-panel-secondary) !important;
+}
