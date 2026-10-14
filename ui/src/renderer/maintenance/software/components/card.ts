@@ -76,7 +76,7 @@ export function renderAppCard(app: CatalogApp): HTMLElement {
           <input
             type="checkbox"
             class="card-checkbox"
-            id="chk-${app.id}"
+            id="chk-${card.id}"
             aria-label="Select ${app.name}"
             ${isSelected ? 'checked' : ''}
           />
@@ -105,7 +105,7 @@ export function renderAppCard(app: CatalogApp): HTMLElement {
         </div>
         <button
           class="card-action-btn ${actionBtnClass}"
-          id="btn-action-${app.id}"
+          id="btn-action-${card.id}"
           ${actionDisabled ? 'disabled' : ''}
         >
           ${actionBtnText}
@@ -115,14 +115,14 @@ export function renderAppCard(app: CatalogApp): HTMLElement {
   `
 
   // Event: Checkbox click
-  const checkbox = card.querySelector<HTMLInputElement>(`#chk-${app.id}`)
+  const checkbox = card.querySelector<HTMLInputElement>('.card-checkbox')
   checkbox?.addEventListener('click', e => {
     e.stopPropagation()
     appState.toggleSelectApp(app.id)
   })
 
   // Event: Action Button click
-  const actionBtn = card.querySelector<HTMLButtonElement>(`#btn-action-${app.id}`)
+  const actionBtn = card.querySelector<HTMLButtonElement>('.card-action-btn')
   actionBtn?.addEventListener('click', async e => {
     e.stopPropagation()
     if (cardStatus === 'installing') return

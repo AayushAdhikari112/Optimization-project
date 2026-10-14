@@ -16,8 +16,64 @@
     </section>
 <section class="section" id="section-settings">
         <div class="section-hero"><div class="section-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h2>Settings</h2><p>Set how OptiCore looks and how system changes are handled on this device.</p></div></div>
+
+        <!-- SETTINGS CATEGORY NAVIGATION BAR -->
+        <div class="settings-nav-wrapper">
+            <nav class="settings-navbar" id="settingsNavBar" role="tablist" aria-label="Settings Categories">
+                <button type="button" class="settings-nav-tab active" data-tab="all" role="tab" aria-selected="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>All</span>
+                    <span class="tab-badge">10</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="general" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>General</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="safety" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Safety &amp; Backup</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="cleanup" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <span>Cleanup</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="scanning" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Scanning</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="notifications" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span>Notifications</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="updates" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                    <span>Updates</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="privacy" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Privacy</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="appearance" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                    <span>Appearance</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="advanced" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    <span>Advanced</span>
+                </button>
+                <button type="button" class="settings-nav-tab" data-tab="data-reset" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Data &amp; Reset</span>
+                </button>
+            </nav>
+            <div class="settings-quick-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="settingsQuickSearch" placeholder="Filter settings..." aria-label="Filter settings in current view">
+            </div>
+        </div>
+
         <div class="settings-grid">
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-general" data-category="general">
                 <div class="panel-header"><h3>General</h3><span class="panel-sub">App behavior</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsLanguage"><span class="setting-info"><span>Language</span><small>Choose the app language</small></span><select id="settingsLanguage" class="settings-select"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option></select></label>
@@ -30,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-safety" data-category="safety">
                 <div class="panel-header"><h3>Safety &amp; backup</h3><span class="panel-sub">Protection before changes</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsRestoreBeforeChanges"><span class="setting-info"><span>Create restore point before every change</span><small>Recommended for risky Windows adjustments</small></span><span class="toggle"><input id="settingsRestoreBeforeChanges" type="checkbox"><span class="toggle-slider"></span></span></label>
@@ -42,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-cleanup" data-category="cleanup">
                 <div class="panel-header"><h3>Uninstall &amp; cleanup</h3><span class="panel-sub">App removal behavior</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsCleanupLevel"><span class="setting-info"><span>Leftover cleanup level</span><small>Off, Safe, or Deep cleanup</small></span><select id="settingsCleanupLevel" class="settings-select"><option value="off">Off</option><option value="safe">Safe</option><option value="deep">Deep</option></select></label>
@@ -52,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-scanning" data-category="scanning">
                 <div class="panel-header"><h3>Scanning &amp; automation</h3><span class="panel-sub">Maintenance scheduling</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsScheduledScan"><span class="setting-info"><span>Scheduled scan</span><small>How often to scan apps and startup items</small></span><select id="settingsScheduledScan" class="settings-select"><option value="off">Off</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label>
@@ -66,7 +122,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-notifications" data-category="notifications">
                 <div class="panel-header"><h3>Notifications</h3><span class="panel-sub">Alerts and quiet hours</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsNotificationsEnabled"><span class="setting-info"><span>Enable notifications</span><small>Allow OptiCore to show alerts</small></span><span class="toggle"><input id="settingsNotificationsEnabled" type="checkbox"><span class="toggle-slider"></span></span></label>
@@ -79,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-updates" data-category="updates">
                 <div class="panel-header"><h3>Updates</h3><span class="panel-sub">Software update behavior</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsAppUpdateBehavior"><span class="setting-info"><span>Per-app update behavior</span><small>Auto, notify, or ignore</small></span><select id="settingsAppUpdateBehavior" class="settings-select"><option value="auto">Auto</option><option value="notify">Notify</option><option value="ignore">Ignore</option></select></label>
@@ -88,7 +144,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-privacy" data-category="privacy">
                 <div class="panel-header"><h3>Privacy</h3><span class="panel-sub">Data collection and cleanup</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsAnonymousUsage"><span class="setting-info"><span>Anonymous usage data</span><small>Help us improve the app with anonymous data</small></span><span class="toggle"><input id="settingsAnonymousUsage" type="checkbox"><span class="toggle-slider"></span></span></label>
@@ -97,7 +153,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-appearance" data-category="appearance">
                 <div class="panel-header"><h3>Appearance &amp; display</h3><span class="panel-sub">Layout and readability</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsDensity"><span class="setting-info"><span>Interface density</span><small>Comfortable or compact layout</small></span><select id="settingsDensity" class="settings-select"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
@@ -110,7 +166,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-advanced" data-category="advanced">
                 <div class="panel-header"><h3>Advanced</h3><span class="panel-sub">Developer and support options</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsRunAsAdmin"><span class="setting-info"><span>Run as administrator by default</span><small>Use elevated rights when available</small></span><span class="toggle"><input id="settingsRunAsAdmin" type="checkbox"><span class="toggle-slider"></span></span></label>
@@ -121,7 +177,7 @@
                 </div>
             </div>
 
-            <div class="panel settings-panel">
+            <div class="panel settings-panel" id="settings-panel-data-reset" data-category="data-reset">
                 <div class="panel-header"><h3>Data &amp; reset</h3><span class="panel-sub">Backup and restore app configuration</span></div>
                 <div class="settings-list">
                     <label class="setting-row" for="settingsExportBtn"><span class="setting-info"><span>Export settings</span><small>Save your app preferences to a file</small></span><button id="settingsExportBtn" class="btn btn-secondary" type="button">Export</button></label>

@@ -2,11 +2,12 @@
   "name": "opticore-ui",
   "version": "1.0.0",
   "description": "OptiCore Login UI",
-  "main": "dist/main/index.js",
+  "main": "main.js",
   "scripts": {
     "dev": "npm run build && electron .",
-    "start": "npm run dev",
+    "start": "electron .",
     "demo": "npm run build && electron . --demo",
+    "standalone": "electron dist/main/index.js",
     "build": "node scripts/build.mjs",
     "test": "npm run build && node --test tests/*.test.cjs",
     "package": "npm run build && electron-packager . OptiCore --platform=win32 --arch=x64 --out=release --overwrite"

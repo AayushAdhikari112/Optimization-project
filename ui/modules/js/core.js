@@ -65,6 +65,159 @@ window.runOptToggle = function(checkbox, enableCmd, disableCmd) {
     window.runOpt(dummyBtn, cmd);
 }
 
+// ─── Tweak Details Drawer ─────────────────────────────────────────
+let currentDrawerCard = null;
+
+window.closeTweakDrawer = function() {
+    const drawer = document.getElementById('tweakDetailsDrawer');
+    if (!drawer) return;
+    drawer.classList.remove('active');
+    drawer.setAttribute('aria-hidden', 'true');
+    currentDrawerCard = null;
+};
+
+window.openTweakDetails = function(card) {
+    const drawer = document.getElementById('tweakDetailsDrawer');
+    if (!drawer) return;
+
+    currentDrawerCard = card;
+    const title = card.querySelector('.pc-title')?.textContent.trim() || 'Optimization Detail';
+    const pill = card.querySelector('.pc-pill')?.textContent.trim() || 'Tweak';
+    const desc = card.querySelector('.pc-desc')?.textContent.trim() || 'System performance optimization.';
+
+    const titleEl = document.getElementById('tweakDrawerTitle');
+    const catEl = document.getElementById('tweakDrawerCategory');
+    const descEl = document.getElementById('tweakDrawerDesc');
+    const cmdCode = document.getElementById('tweakDrawerCmdCode');
+    const statusText = document.getElementById('tweakDrawerStatusText');
+    const actionContainer = document.getElementById('tweakDrawerActionContainer');
+
+    if (titleEl) titleEl.textContent = title;
+    if (catEl) catEl.textContent = pill;
+    if (descEl) descEl.textContent = desc;
+
+    // Check for toggle or button in card
+    const checkbox = card.querySelector('.pc-switch input[type="checkbox"], input[type="checkbox"]');
+    const runBtn = card.querySelector('.run-btn, button');
+
+    let command = '';
+    if (checkbox) {
+        const onchangeAttr = checkbox.getAttribute('onchange') || '';
+        const match = onchangeAttr.match(/runOptToggle\s*\(\s*this\s*,\s*['"]([^'"]*)['"]/);
+        if (match && match[1]) {
+            command = match[1];
+        } else if (onchangeAttr) {
+            command = onchangeAttr;
+        }
+    } else if (runBtn) {
+        const onclickAttr = runBtn.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/runOpt\s*\(\s*this\s*,\s*['"]([^'"]*)['"]/);
+        if (match && match[1]) {
+            command = match[1];
+        } else if (onclickAttr) {
+            command = onclickAttr;
+        }
+    }
+
+    if (cmdCode) {
+        if (command && command.trim()) {
+            cmdCode.textContent = command.trim();
+        } else {
+            cmdCode.textContent = `Optimizes Windows component: ${title}`;
+        }
+    }
+
+    if (actionContainer && statusText) {
+        actionContainer.innerHTML = '';
+        if (checkbox) {
+            const isChecked = checkbox.checked;
+            statusText.textContent = isChecked ? 'Active (Applied)' : 'Inactive';
+            statusText.style.color = isChecked ? 'var(--primary, #4ade80)' : 'var(--text3)';
+
+            const toggleWrapper = document.createElement('div');
+            toggleWrapper.className = 'pc-toggle-wrap';
+            toggleWrapper.innerHTML = `
+                <span class="pc-toggle-label" style="font-weight: 600; color: ${isChecked ? '#3b82f6' : 'var(--text2)'}">${isChecked ? 'Deactivate' : 'Activate'}</span>
+                <label class="pc-switch">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} />
+                    <span class="pc-slider"></span>
+                </label>
+            `;
+            const drawerCheckbox = toggleWrapper.querySelector('input[type="checkbox"]');
+            drawerCheckbox.onchange = () => {
+                checkbox.click();
+                const nowChecked = checkbox.checked;
+                statusText.textContent = nowChecked ? 'Active (Applied)' : 'Inactive';
+                statusText.style.color = nowChecked ? 'var(--primary, #4ade80)' : 'var(--text3)';
+                const lbl = toggleWrapper.querySelector('.pc-toggle-label');
+                if (lbl) {
+                    lbl.textContent = nowChecked ? 'Deactivate' : 'Activate';
+                    lbl.style.color = nowChecked ? '#3b82f6' : 'var(--text2)';
+                }
+            };
+            actionContainer.appendChild(toggleWrapper);
+        } else if (runBtn) {
+            statusText.textContent = 'Available to run';
+            statusText.style.color = 'var(--primary, #4ade80)';
+            const btn = document.createElement('button');
+            btn.className = 'run-btn tweak-drawer-action-btn';
+            btn.textContent = runBtn.textContent?.trim() || 'Execute Tweak';
+            btn.onclick = () => {
+                runBtn.click();
+                btn.textContent = '✓ Executed';
+                setTimeout(() => { btn.textContent = runBtn.textContent?.trim() || 'Execute Tweak'; }, 2000);
+            };
+            actionContainer.appendChild(btn);
+        }
+    }
+
+    drawer.classList.add('active');
+    drawer.setAttribute('aria-hidden', 'false');
+};
+
+window.initTweakCardDetails = function() {
+    document.querySelectorAll('.premium-card').forEach(card => {
+        if (card.dataset.tweakDrawerBound) return;
+        card.dataset.tweakDrawerBound = 'true';
+
+        // Stop propagation on interactive controls so toggle/button click won't open drawer
+        card.querySelectorAll('input, label, button, .pc-toggle-wrap, .run-btn').forEach(ctrl => {
+            ctrl.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+
+        // Clicking anywhere on the card opens the details drawer
+        card.addEventListener('click', () => {
+            window.openTweakDetails(card);
+        });
+    });
+
+    const drawer = document.getElementById('tweakDetailsDrawer');
+    if (drawer && !drawer.dataset.bound) {
+        drawer.dataset.bound = 'true';
+        document.getElementById('tweakDrawerCloseBtn')?.addEventListener('click', window.closeTweakDrawer);
+        drawer.addEventListener('click', (e) => {
+            if (e.target === drawer) window.closeTweakDrawer();
+        });
+        document.getElementById('tweakDrawerCopyBtn')?.addEventListener('click', () => {
+            const code = document.getElementById('tweakDrawerCmdCode')?.textContent || '';
+            if (code) {
+                navigator.clipboard.writeText(code).then(() => {
+                    const btn = document.getElementById('tweakDrawerCopyBtn');
+                    if (btn) {
+                        btn.textContent = '✓ Copied';
+                        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+                    }
+                }).catch(() => {});
+            }
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeTweakDrawer();
+        });
+    }
+};
+
 
 // ─── Clock ────────────────────────────────────────────────────
 function updateClock() {
@@ -349,9 +502,16 @@ navScrim?.addEventListener('click', () => setMobileNavOpen(false))
 // Promise that resolves once section HTML has been injected into the DOM
 let _sectionsReadyResolve;
 const sectionsReady = new Promise(res => { _sectionsReadyResolve = res; });
-document.addEventListener('sectionsLoaded', () => _sectionsReadyResolve());
+document.addEventListener('sectionsLoaded', () => {
+    _sectionsReadyResolve();
+    setTimeout(window.initTweakCardDetails, 30);
+});
 // If sections were already injected synchronously (Electron), resolve immediately
-if (document.getElementById('sections-container')?.children.length > 0) _sectionsReadyResolve();
+if (document.getElementById('sections-container')?.children.length > 0) {
+    _sectionsReadyResolve();
+    setTimeout(window.initTweakCardDetails, 30);
+}
+sectionsReady.then(() => setTimeout(window.initTweakCardDetails, 50));
 
 async function navigateTo(sectionId) {
     // Wait for async section HTML to land in the DOM
@@ -381,6 +541,9 @@ async function navigateTo(sectionId) {
     // Update title
     const titleEl = document.getElementById('pageTitle')
     if (titleEl) titleEl.textContent = sectionTitles[sectionId] || sectionId
+
+    // Initialize tweak card drawers for the newly opened section
+    setTimeout(window.initTweakCardDetails, 30);
 
     // Load data once
     if (!loadedSections.has(sectionId) && getSectionLoaders()[sectionId]) {

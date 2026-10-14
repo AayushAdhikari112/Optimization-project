@@ -52,6 +52,25 @@ async function initializeApp(): Promise<void> {
     }
   })
 
+  // Support parent window electronAPI when embedded in an iframe inside OptiCore
+  if (!window.electronAPI && typeof window.parent !== 'undefined' && window.parent && window.parent.electronAPI) {
+    window.electronAPI = window.parent.electronAPI
+  }
+
+  // Detect embedded iframe mode inside OptiCore Suite dashboard
+  const isEmbedded = typeof window !== 'undefined' && window.self !== window.top
+  if (isEmbedded) {
+    document.body.classList.add('is-embedded')
+    try {
+      if (window.parent && window.parent.document) {
+        const parentTheme = window.parent.document.documentElement.dataset.theme
+        if (parentTheme) {
+          document.documentElement.dataset.theme = parentTheme
+        }
+      }
+    } catch {}
+  }
+
   // Connect Electron IPC
   if (window.electronAPI) {
     // 1. Register background stream listeners

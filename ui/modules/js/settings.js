@@ -251,8 +251,89 @@ function bindSettings() {
     controls.openLogFolderBtn?.addEventListener('click', () => {
         window.alert('Log folder is not yet connected to a real file system path in this demo build.')
     })
+
+    initSettingsNav()
+}
+
+function initSettingsNav() {
+    const navBar = document.getElementById('settingsNavBar')
+    const grid = document.querySelector('#section-settings .settings-grid')
+    if (!navBar || !grid) return
+
+    const tabs = navBar.querySelectorAll('.settings-nav-tab')
+    const panels = grid.querySelectorAll('.settings-panel')
+    const searchInput = document.getElementById('settingsQuickSearch')
+
+    let activeCategory = 'all'
+
+    function filterSettings() {
+        const query = searchInput ? searchInput.value.trim().toLowerCase() : ''
+
+        panels.forEach(panel => {
+            const matchesCategory = (activeCategory === 'all' || panel.dataset.category === activeCategory)
+
+            if (!matchesCategory) {
+                panel.style.display = 'none'
+                return
+            }
+
+            const rows = panel.querySelectorAll('.setting-row')
+            let panelHasMatch = false
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase()
+                if (!query || text.includes(query)) {
+                    row.style.display = ''
+                    panelHasMatch = true
+                } else {
+                    row.style.display = 'none'
+                }
+            })
+
+            if (query && !panelHasMatch) {
+                panel.style.display = 'none'
+            } else {
+                panel.style.display = ''
+                panel.classList.remove('fade-in')
+                void panel.offsetWidth
+                panel.classList.add('fade-in')
+            }
+        })
+
+        if (activeCategory === 'all' && !query) {
+            grid.classList.remove('single-view')
+        } else {
+            grid.classList.add('single-view')
+        }
+    }
+
+    tabs.forEach(tab => {
+        tab.onclick = () => {
+            tabs.forEach(t => {
+                t.classList.remove('active')
+                t.setAttribute('aria-selected', 'false')
+            })
+            tab.classList.add('active')
+            tab.setAttribute('aria-selected', 'true')
+            activeCategory = tab.dataset.tab || 'all'
+            filterSettings()
+            tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+        }
+    })
+
+    if (searchInput) {
+        searchInput.oninput = () => {
+            filterSettings()
+        }
+    }
 }
 
 applyAppearancePreferences()
-document.addEventListener('DOMContentLoaded', bindSettings, { once: true })
-document.addEventListener('sectionsLoaded', bindSettings)
+document.addEventListener('DOMContentLoaded', () => {
+    bindSettings()
+    initSettingsNav()
+}, { once: true })
+document.addEventListener('sectionsLoaded', () => {
+    bindSettings()
+    initSettingsNav()
+})

@@ -142,6 +142,31 @@ ipcMain.handle('request-admin', () => relaunchAsAdmin())
 ipcMain.handle('minimize-window', event => BrowserWindow.fromWebContents(event.sender)?.minimize())
 
 // ─────────────────────────────────────────────
+// IPC: Winget Software Installer & Catalog
+// ─────────────────────────────────────────────
+try {
+    const {
+        CatalogLoader,
+        WingetService,
+        MockWinget,
+        JobQueue,
+        ConfigManager,
+        registerIpcHandlers
+    } = require('./dist/test-lib.cjs');
+
+    const configManager = new ConfigManager();
+    const config = configManager.getConfig();
+    const catalogLoader = new CatalogLoader(config.remoteCatalogUrl);
+    const wingetService = config.demoMode ? new MockWinget() : new WingetService();
+    const jobQueue = new JobQueue(wingetService, catalogLoader, configManager);
+
+    registerIpcHandlers(wingetService, catalogLoader, configManager, jobQueue, () => win);
+    console.log('[OptiCore] Winget software installer IPC handlers registered successfully.');
+} catch (err) {
+    console.error('[OptiCore] Winget software installer initialization failed:', err);
+}
+
+// ─────────────────────────────────────────────
 // IPC: Native memory service
 // ─────────────────────────────────────────────
 const MEMORY_CLEAN_INTERVAL_MS = 10000
@@ -1486,3 +1511,4 @@ ipcMain.handle('toggle-nvidia-preset', async (_, { enable }) => {
         setTimeout(() => resolve({ success: true, enabled: enable }), 1500)
     })
 })
+
